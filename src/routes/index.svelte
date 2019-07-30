@@ -30,6 +30,9 @@
     }
 
     h1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 2.8em;
         text-transform: uppercase;
         font-weight: 700;
@@ -38,6 +41,11 @@
 
     p {
         margin: 1em auto;
+    }
+
+    img {
+        height: 100px;
+        margin-right: 20px;
     }
 
     @media (min-width: 480px) {
@@ -51,7 +59,10 @@
     <title>Datawrapper</title>
 </svelte:head>
 
-<h1>The new Data Rapper</h1>
+<h1>
+    <img src="https://jadeaviablog.files.wordpress.com/2013/08/emimem.jpg" alt="Eminem" />
+    <div>The new Data Rapper</div>
+</h1>
 
 <h2>🙋🏻‍♂️</h2>
 
