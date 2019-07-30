@@ -19,7 +19,7 @@ async function authMiddleware(req, res, next) {
      */
     let userRequest = { ok: false };
     try {
-        userRequest = await fetch(`http://datawrapper.localhost:3001/v3/me`, {
+        userRequest = await fetch(`${API_BASE_URL}/me`, {
             headers: req.headers
         });
     } catch (error) {
@@ -30,14 +30,14 @@ async function authMiddleware(req, res, next) {
         user = await userRequest.json();
     } else {
         try {
-            const session = await fetch(`http://datawrapper.localhost:3001/v3/auth/session`, {
+            const session = await fetch(`${API_BASE_URL}/auth/session`, {
                 method: 'POST',
                 headers: req.headers
             });
 
             res.setHeader('set-cookie', session.headers.get('set-cookie'));
 
-            userRequest = await fetch(`http://datawrapper.localhost:3001/v3/me`, {
+            userRequest = await fetch(`${API_BASE_URL}/me`, {
                 headers: {
                     cookie: session.headers.get('set-cookie').split(';')[0]
                 }
