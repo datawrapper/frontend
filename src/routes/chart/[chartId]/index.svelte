@@ -4,7 +4,7 @@
         let chart;
         try {
             const chartRes = await this.fetch(
-                `http://datawrapper.localhost:3001/v3/charts/${chartId}`,
+                `${API_BASE_URL}/charts/${chartId}`,
                 {
                     credentials: 'include'
                 }
@@ -31,7 +31,7 @@
 
     async function handleKeyup(e) {
         if (e.which === 13 && e.altKey) {
-            const res = await fetch(`http://datawrapper.localhost:3001/v3/charts/${chart.id}`, {
+            const res = await fetch(`${API_BASE_URL}/charts/${chart.id}`, {
                 method: 'PATCH',
                 credentials: 'include',
                 headers: {

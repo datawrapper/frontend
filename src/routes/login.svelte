@@ -16,7 +16,7 @@
         e.preventDefault();
 
         loading = true;
-        const res = await fetch(`http://datawrapper.localhost:3001/v3/auth/login`, {
+        const res = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
             credentials: 'include',
             mode: 'cors',
@@ -24,7 +24,7 @@
         });
 
         if (res.ok) {
-            const userRes = await fetch(`http://datawrapper.localhost:3001/v3/me`, {
+            const userRes = await fetch(`${API_BASE_URL}/me`, {
                 credentials: 'include',
                 mode: 'cors'
             });
