@@ -57,7 +57,20 @@
             templateJS: false
         };
 
-        return { data, theme, css, deps };
+        const isD3Map =
+            data.visJSON.id === 'd3-maps-choropleth' || data.visJSON.id === 'd3-maps-symbols';
+
+        async function getBasemap() {
+            // TO DO: set default basemap as fallback
+            const basemapId = chart.metadata.visualize.basemap;
+            const basemap = await (await api(`/basemaps/${basemapId}`)).json();
+            basemap.__id = basemapId;
+            return basemap;
+        }
+
+        const basemap = isD3Map ? await getBasemap() : null;
+
+        return { data, theme, css, deps, basemap };
     }
 </script>
 
@@ -69,6 +82,7 @@
     export let theme;
     export let css;
     export let deps;
+    export let basemap;
 </script>
 
 <svelte:head>
@@ -85,4 +99,8 @@
     <script src={`chart/pYQK3/preview/${data.visJSON.id}.js?plugin=${data.visJSON.__plugin}`}>
 
     </script>
+
+    {#if basemap}
+        {@html `<script>__dwParams = { d3maps_basemap: {} }; __dwParams.d3maps_basemap['${basemap.__id}'] = ${JSON.stringify(basemap)};</script>`}
+    {/if}
 </div>
