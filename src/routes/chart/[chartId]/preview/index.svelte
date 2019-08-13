@@ -63,7 +63,39 @@
         async function getBasemap() {
             // TO DO: set default basemap as fallback
             const basemapId = chart.metadata.visualize.basemap;
-            const basemap = await (await api(`/basemaps/${basemapId}`)).json();
+
+            let basemap = {};
+            if (basemapId === 'custom_upload') {
+                basemap = {
+                    content: await (await api(`/charts/${chartId}/assets/map.json`)).json(),
+                    meta: {
+                        regions: chart.metadata.visualize.basemapRegions,
+                        projection: {
+                            type: chart.metadata.visualize.basemapProjection
+                        },
+                        extent: {
+                            padding: false,
+                            exclude: {}
+                        }
+                    }
+                }
+
+                // gather all unique keys from basemap and include them in metadata
+                const keyIds = [];
+                basemap.content.objects[basemap.meta.regions].geometries.forEach(geo => {
+                    for (const key in geo.properties) {
+                        if (key !== 'cx' && key !== 'cy' && !(keyIds.includes(key))) {
+                            keyIds.push(key);
+                        }
+                    }
+                });
+                const keys = keyIds.map(key => ({ value: key, label: key }));
+                basemap.meta.keys = keys;
+
+            }
+            else {
+                basemap = await (await api(`/basemaps/${basemapId}`)).json();
+            }
             basemap.__id = basemapId;
             return basemap;
         }
