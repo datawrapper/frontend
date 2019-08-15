@@ -67,7 +67,7 @@
             let basemap = {};
             if (basemapId === 'custom_upload') {
                 basemap = {
-                    content: await (await api(`/charts/${chartId}/assets/map.json`)).json(),
+                    content: await (await api(`/charts/${chartId}/assets/${chartId}.map.json`)).json(),
                     meta: {
                         regions: chart.metadata.visualize.basemapRegions,
                         projection: {
