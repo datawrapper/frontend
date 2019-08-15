@@ -13,7 +13,7 @@
         }
 
         const chartPromise = api(`/charts/${chartId}`);
-        const csvPromise = api(`/charts/${chartId}/data`);
+        const csvPromise = api(`/charts/${chartId}/assets/${chartId}.csv`);
 
         const [chartRes, csvRes] = await Promise.all([chartPromise, csvPromise]);
         const [chart, csv] = await Promise.all([chartRes.json(), csvRes.text()]);
