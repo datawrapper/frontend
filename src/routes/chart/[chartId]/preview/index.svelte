@@ -1,5 +1,6 @@
 <script context="module">
     import { getDependencies } from '@datawrapper/chart-core/lib/get-dependencies.js';
+    import get from '@datawrapper/shared/get';
 
     export async function preload(page, session) {
         const { chartId } = page.params;
@@ -95,6 +96,16 @@
             }
             else {
                 basemap = await (await api(`/basemaps/${basemapId}`)).json();
+                if (basemap.meta.attribution) {
+                    // TO DO: translate default string (currently stored in d3-maps -> footer / map data)
+                    let text = 'Map data';
+                    text = get(theme, 'data.options.footer.mapData', text);
+
+                    data.basemapAttribution = {
+                        caption: basemap.meta.attribution,
+                        text
+                    }
+                }
             }
             basemap.__id = basemapId;
             return basemap;
