@@ -44,12 +44,21 @@
 
         const deps = getDependencies({ locale: 'en_US', dependencies: vis.dependencies });
 
+        // TO DO: get and set chartLocale
+        const chartLocale = 'en-US';
+
+        if (vis.locale) {
+            Object.keys(vis.locale).map(key => {
+                vis.locale[key] = vis.locale[key][chartLocale];
+            });
+        }
+
         const data = {
             visJSON: vis,
             chartJSON: chart,
             chartData: csv,
             isPreview: false,
-            chartLocale: 'en_US',
+            chartLocale,
             locales: {},
             metricPrefix: {},
             themeId: theme.id,
