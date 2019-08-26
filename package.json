@@ -11,7 +11,7 @@
         "start": "node __sapper__/build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "1.0.2",
+        "@datawrapper/chart-core": "1.0.3",
         "node-fetch": "2.6.0",
         "polka": "0.5.2",
         "serve-static": "1.14.1"
@@ -38,7 +38,7 @@
         "rollup-plugin-svelte": "~5.1.0",
         "rollup-plugin-terser": "~5.1.1",
         "sapper": "~0.27.4",
-        "svelte": "~3.6.8"
+        "svelte": "~3.9.1"
     },
     "husky": {
         "hooks": {
