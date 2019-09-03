@@ -3,12 +3,9 @@
         const { chartId } = page.params;
         let chart;
         try {
-            const chartRes = await this.fetch(
-                `${API_BASE_URL}/charts/${chartId}`,
-                {
-                    credentials: 'include'
-                }
-            );
+            const chartRes = await this.fetch(`${API_BASE_URL}/charts/${chartId}`, {
+                credentials: 'include'
+            });
 
             if (!chartRes.ok) {
                 this.error(chartRes.status, chartRes.statusText);
