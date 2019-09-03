@@ -45,8 +45,9 @@
         const deps = getDependencies({ locale: 'en_US', dependencies: vis.dependencies });
 
         // TO DO: get and set chartLocale
-        const chartLocale = 'en-US';
+        const chartLocale = 'de-DE';
 
+        const translations = await (await fetch(`locale/${chartLocale}.json`)).json();
         if (vis.locale) {
             Object.keys(vis.locale).map(key => {
                 vis.locale[key] = vis.locale[key][chartLocale];
@@ -77,7 +78,9 @@
             let basemap = {};
             if (basemapId === 'custom_upload') {
                 basemap = {
-                    content: await (await api(`/charts/${chartId}/assets/${chartId}.map.json`)).json(),
+                    content: await (await api(
+                        `/charts/${chartId}/assets/${chartId}.map.json`
+                    )).json(),
                     meta: {
                         regions: chart.metadata.visualize.basemapRegions,
                         projection: {
@@ -88,22 +91,20 @@
                             exclude: {}
                         }
                     }
-                }
+                };
 
                 // gather all unique keys from basemap and include them in metadata
                 const keyIds = [];
                 basemap.content.objects[basemap.meta.regions].geometries.forEach(geo => {
                     for (const key in geo.properties) {
-                        if (key !== 'cx' && key !== 'cy' && !(keyIds.includes(key))) {
+                        if (key !== 'cx' && key !== 'cy' && !keyIds.includes(key)) {
                             keyIds.push(key);
                         }
                     }
                 });
                 const keys = keyIds.map(key => ({ value: key, label: key }));
                 basemap.meta.keys = keys;
-
-            }
-            else {
+            } else {
                 basemap = await (await api(`/basemaps/${basemapId}`)).json();
                 if (basemap.meta.attribution) {
                     // TO DO: translate default string (currently stored in d3-maps -> footer / map data)
@@ -113,7 +114,7 @@
                     data.basemapAttribution = {
                         caption: basemap.meta.attribution,
                         text
-                    }
+                    };
                 }
             }
             basemap.__id = basemapId;
@@ -122,7 +123,7 @@
 
         const basemap = isD3Map ? await getBasemap() : null;
 
-        return { data, theme, css, deps, basemap };
+        return { data, theme, translations, css, deps, basemap };
     }
 </script>
 
@@ -132,6 +133,7 @@
 
     export let data;
     export let theme;
+    export let translations;
     export let css;
     export let deps;
     export let basemap;
@@ -141,7 +143,7 @@
     {@html css}
 </svelte:head>
 <div class="dw-chart chart">
-    <Chart {data} {theme} />
+    <Chart {data} {theme} {translations} />
     {#each deps as script}
         <script src={`vendor/${script}`}>
 
