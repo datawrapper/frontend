@@ -42,12 +42,15 @@
             return fonts;
         }, {});
 
-        const deps = getDependencies({ locale: 'en_US', dependencies: vis.dependencies });
+        const chartLocale = chart.language;
+        const deps = getDependencies({ locale: chartLocale, dependencies: vis.dependencies });
 
-        // TO DO: get and set chartLocale
-        const chartLocale = 'de-DE';
-
-        const translations = await (await fetch(`locale/${chartLocale}.json`)).json();
+        let translations = {};
+        try {
+            translations = await (await fetch(`locale/${chartLocale}.json`)).json();
+        } catch (error) {
+            console.error(`No locales found for [${chartLocale}]`);
+        }
         if (vis.locale) {
             Object.keys(vis.locale).map(key => {
                 vis.locale[key] = vis.locale[key][chartLocale];
