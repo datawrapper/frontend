@@ -19,9 +19,7 @@
         const [chartRes, csvRes] = await Promise.all([chartPromise, csvPromise]);
         const [chart, csv] = await Promise.all([chartRes.json(), csvRes.text()]);
 
-        const visPromise = api(`/visualizations/${chart.type}`, {
-            baseUrl: `http${FRONTEND_HTTPS ? 's' : ''}://${FRONTEND_DOMAIN}:3000`
-        });
+        const visPromise = api(`/visualizations/${chart.type}`);
         const themePromise = api(`/themes/${chart.theme}?extend=true`);
 
         const [visRes, themeRes] = await Promise.all([visPromise, themePromise]);
@@ -156,8 +154,7 @@
     <script src={`chart/pYQK3/preview/${data.visJSON.id}.js?plugin=${data.visJSON.__plugin}`}>
 
     </script>
-
     {#if basemap}
-        {@html `<script>__dwParams = { d3maps_basemap: {} }; __dwParams.d3maps_basemap['${basemap.__id}'] = ${JSON.stringify(basemap)};</script>`}
+        {@html `<${'script'}>__dwParams = { d3maps_basemap: {} }; __dwParams.d3maps_basemap['${basemap.__id}'] = ${JSON.stringify(basemap)};</script>`}
     {/if}
 </div>
