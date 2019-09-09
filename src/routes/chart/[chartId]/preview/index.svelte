@@ -41,11 +41,19 @@
         }, {});
 
         const chartLocale = chart.language;
-        const deps = getDependencies({ locale: chartLocale, dependencies: vis.dependencies });
+
+        const deps = getDependencies({
+            locale: chartLocale,
+            dependencies: vis.dependencies
+        });
+
+        const libraries = vis.libraries.map(lib => lib.cdn);
 
         let translations = {};
         try {
-            translations = await (await fetch(`locale/${chartLocale}.json`)).json();
+            translations = await (await fetch(
+                `locale/${chartLocale.replace('_', '-')}.json`
+            )).json();
         } catch (error) {
             console.error(`No locales found for [${chartLocale}]`);
         }
@@ -124,7 +132,7 @@
 
         const basemap = isD3Map ? await getBasemap() : null;
 
-        return { data, theme, translations, css, deps, basemap };
+        return { data, theme, translations, css, deps, libraries, basemap };
     }
 </script>
 
@@ -137,6 +145,7 @@
     export let translations;
     export let css;
     export let deps;
+    export let libraries;
     export let basemap;
 </script>
 
@@ -145,6 +154,11 @@
 </svelte:head>
 <div class="dw-chart chart">
     <Chart {data} {theme} {translations} />
+    {#each libraries as lib}
+        <script src={lib}>
+
+        </script>
+    {/each}
     {#each deps as script}
         <script src={`vendor/${script}`}>
 
