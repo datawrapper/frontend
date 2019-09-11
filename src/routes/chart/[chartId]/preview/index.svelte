@@ -1,39 +1,24 @@
 <script context="module">
     import { getDependencies } from '@datawrapper/chart-core/lib/get-dependencies.js';
     import get from '@datawrapper/shared/get';
+    import { createAPI } from './_helpers.js';
 
     export async function preload(page, session) {
         const { chartId } = page.params;
         const fetch = this.fetch;
+        const { api, getBasemap, getLocatorMapData } = createAPI(fetch);
 
-        function api(path, { baseUrl = API_BASE_URL } = {}) {
-            return fetch(`${baseUrl}${path}`, {
-                credentials: 'include',
-                mode: 'cors'
-            });
-        }
+        const chart = await api(`/charts/${chartId}`);
 
-        const chartPromise = api(`/charts/${chartId}`);
-        const csvPromise = api(`/charts/${chartId}/assets/${chartId}.csv`);
+        const [vis, theme, csv] = await Promise.all([
+            api(`/visualizations/${chart.type}`),
+            api(`/themes/${chart.theme}?extend=true`),
+            api(`/charts/${chartId}/assets/${chartId}.csv`, { json: false }).then(res => res.text())
+        ]);
 
-        const [chartRes, csvRes] = await Promise.all([chartPromise, csvPromise]);
-        const [chart, csv] = await Promise.all([chartRes.json(), csvRes.text()]);
-
-        const visPromise = api(`/visualizations/${chart.type}`);
-        const themePromise = api(`/themes/${chart.theme}?extend=true`);
-
-        const [visRes, themeRes] = await Promise.all([visPromise, themePromise]);
-        const [vis, theme] = await Promise.all([visRes.json(), themeRes.json()]);
-
-        let css = await (await api(
-            `/visualizations/${vis.id}/styles.css?theme=${theme.id}`
-        )).text();
-
-        /**
-         * 'style' is interpolated to trick Prettier into not breaking this line of code.
-         * Prettier and Svelte are still not best friends.
-         */
-        css = `<${'style'}>${css}</style>`;
+        let css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
+            json: false
+        }).then(res => res.text());
 
         const fonts = Object.entries(theme.assets).reduce((fonts, [key, value]) => {
             if (theme.assets[key].type === 'font') fonts[key] = value;
@@ -51,9 +36,7 @@
 
         let translations = {};
         try {
-            translations = await (await fetch(
-                `locale/${chartLocale.replace('_', '-')}.json`
-            )).json();
+            translations = await fetch(`locale/${chartLocale.replace('_', '-')}.json`);
         } catch (error) {
             console.error(`No locales found for [${chartLocale}]`);
         }
@@ -77,62 +60,14 @@
             templateJS: false
         };
 
-        const isD3Map =
-            data.visJSON.id === 'd3-maps-choropleth' || data.visJSON.id === 'd3-maps-symbols';
+        const isMinimapEnabled = get(chart, 'metadata.visualize.miniMap.enabled', false);
+        const isHighlightEnabled = get(chart, 'metadata.visualize.miniMap.enabled', false);
 
-        async function getBasemap() {
-            // TO DO: set default basemap as fallback
-            const basemapId = chart.metadata.visualize.basemap;
+        const isD3Map = vis.id === 'd3-maps-choropleth' || vis.id === 'd3-maps-symbols';
+        const basemap = isD3Map ? await getBasemap(chart) : null;
+        const { minimap, highlight } = await getLocatorMapData(chart, vis.id);
 
-            let basemap = {};
-            if (basemapId === 'custom_upload') {
-                basemap = {
-                    content: await (await api(
-                        `/charts/${chartId}/assets/${chartId}.map.json`
-                    )).json(),
-                    meta: {
-                        regions: chart.metadata.visualize.basemapRegions,
-                        projection: {
-                            type: chart.metadata.visualize.basemapProjection
-                        },
-                        extent: {
-                            padding: false,
-                            exclude: {}
-                        }
-                    }
-                };
-
-                // gather all unique keys from basemap and include them in metadata
-                const keyIds = [];
-                basemap.content.objects[basemap.meta.regions].geometries.forEach(geo => {
-                    for (const key in geo.properties) {
-                        if (key !== 'cx' && key !== 'cy' && !keyIds.includes(key)) {
-                            keyIds.push(key);
-                        }
-                    }
-                });
-                const keys = keyIds.map(key => ({ value: key, label: key }));
-                basemap.meta.keys = keys;
-            } else {
-                basemap = await (await api(`/basemaps/${basemapId}`)).json();
-                if (basemap.meta.attribution) {
-                    // TO DO: translate default string (currently stored in d3-maps -> footer / map data)
-                    let text = 'Map data';
-                    text = get(theme, 'data.options.footer.mapData', text);
-
-                    data.basemapAttribution = {
-                        caption: basemap.meta.attribution,
-                        text
-                    };
-                }
-            }
-            basemap.__id = basemapId;
-            return basemap;
-        }
-
-        const basemap = isD3Map ? await getBasemap() : null;
-
-        return { data, theme, translations, css, deps, libraries, basemap };
+        return { data, theme, translations, css, deps, libraries, basemap, minimap, highlight };
     }
 </script>
 
@@ -147,10 +82,12 @@
     export let deps;
     export let libraries;
     export let basemap;
+    export let minimap;
+    export let highlight;
 </script>
 
 <svelte:head>
-    {@html css}
+    {@html `<${'style'}>${css}</style>`}
 </svelte:head>
 <div class="dw-chart chart">
     <Chart {data} {theme} {translations} />
@@ -168,7 +105,20 @@
     <script src={`chart/pYQK3/preview/${data.visJSON.id}.js?plugin=${data.visJSON.__plugin}`}>
 
     </script>
+    <script>
+        window.__dwParams = {};
+    </script>
     {#if basemap}
-        {@html `<${'script'}>__dwParams = { d3maps_basemap: {} }; __dwParams.d3maps_basemap['${basemap.__id}'] = ${JSON.stringify(basemap)};</script>`}
+        {@html `<${'script'}>
+            __dwParams.d3maps_basemap = {};
+            __dwParams.d3maps_basemap['${basemap.__id}'] = ${JSON.stringify(basemap)};
+        </script>`}
+    {/if}
+    {#if minimap}
+        {@html `<${'script'}>
+            __dwParams.locatorMap = {};
+            __dwParams.locatorMap.minimapGeom = ${minimap};
+            __dwParams.locatorMap.highlightGeom = ${highlight === minimap ? '__dwParams.locatorMap.minimapGeom' : highlight};
+        </script>`}
     {/if}
 </div>
