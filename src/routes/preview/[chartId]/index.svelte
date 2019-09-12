@@ -4,9 +4,14 @@
     import { createAPI } from './_helpers.js';
 
     export async function preload(page, session) {
+        if (!session.user) {
+            this.error('403', 'Forbidden');
+            return;
+        }
+
         const { chartId } = page.params;
         const fetch = this.fetch;
-        const { api, getBasemap, getLocatorMapData } = createAPI(fetch);
+        const { api, getBasemap, getLocatorMapData } = createAPI(fetch, session.headers);
 
         const chart = await api(`/charts/${chartId}`);
 
@@ -36,7 +41,9 @@
 
         let translations = {};
         try {
-            translations = await fetch(`locale/${chartLocale.replace('_', '-')}.json`);
+            translations = await fetch(`core/locale/${chartLocale.replace('_', '-')}.json`).then(
+                r => r.json()
+            );
         } catch (error) {
             console.error(`No locales found for [${chartLocale}]`);
         }
@@ -50,7 +57,7 @@
             visJSON: vis,
             chartJSON: chart,
             chartData: csv,
-            isPreview: false,
+            isPreview: true,
             chartLocale,
             locales: {},
             metricPrefix: {},
@@ -72,7 +79,6 @@
 </script>
 
 <script>
-    import { onMount } from 'svelte';
     import Chart from '@datawrapper/chart-core/lib/Chart.svelte';
 
     export let data;
@@ -97,7 +103,7 @@
         </script>
     {/each}
     {#each deps as script}
-        <script src={`vendor/${script}`}>
+        <script src={`core/${script}`}>
 
         </script>
     {/each}
