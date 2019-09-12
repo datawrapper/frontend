@@ -8,10 +8,11 @@
         "dev": "sapper dev",
         "build": "sapper build --legacy",
         "export": "sapper export --legacy",
+        "frontend": "node __sapper__/build",
         "start": "node __sapper__/build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "1.1.0",
+        "@datawrapper/chart-core": "3.0.0",
         "node-fetch": "2.6.0",
         "polka": "0.5.2",
         "serve-static": "1.14.1"

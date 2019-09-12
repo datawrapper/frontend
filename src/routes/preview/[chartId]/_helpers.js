@@ -1,10 +1,11 @@
 import get from '@datawrapper/shared/get';
 
-export function createAPI(fetch) {
+export function createAPI(fetch, headers) {
     async function api(path, { baseUrl = API_BASE_URL, json = true } = {}) {
         const response = fetch(`${baseUrl}${path}`, {
             credentials: 'include',
-            mode: 'cors'
+            mode: 'cors',
+            headers
         });
 
         if (json) {

@@ -21,8 +21,10 @@ const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
-const { api } = DW_CONFIG;
-const API_BASE_URL = JSON.stringify(`http${api.https ? 's' : ''}://${api.domain}:${api.port}/v3`);
+const { api, frontend } = DW_CONFIG;
+const API_BASE_URL = dev
+    ? JSON.stringify(`http${api.https ? 's' : ''}://${api.domain}:${api.port}/v3`)
+    : JSON.stringify(`http${api.https ? 's' : ''}://${api.subdomain}.${api.domain}/v3`);
 
 export default {
     client: {
@@ -33,7 +35,7 @@ export default {
                 'process.browser': true,
                 'process.env.NODE_ENV': JSON.stringify(mode),
                 API_BASE_URL: API_BASE_URL,
-                ...flatten(DW_CONFIG)
+                ...flatten({ api, frontend })
             }),
             svelte({
                 dev,

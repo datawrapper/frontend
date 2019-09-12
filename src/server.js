@@ -8,9 +8,17 @@ const corePath = path.dirname(require.resolve('@datawrapper/chart-core/package.j
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
+function cookieReduceMiddleware(req, res, next) {
+    let session = false;
+    req.headers['cookie'] = req.headers['cookie']
+        .split(';')
+        .find(s => s.trim().startsWith(API_SESSIONID));
+    next();
+}
+
 async function authMiddleware(req, res, next) {
     let user = undefined;
-
+    req.headers['host'] = `${API_SUBDOMAIN}.${API_DOMAIN}`;
     /**
      * Maybe use the ORM directly in here. Have to consider the trade offs
      * - performance
@@ -23,7 +31,7 @@ async function authMiddleware(req, res, next) {
             headers: req.headers
         });
     } catch (error) {
-        process.stderr.write(error);
+        console.error('\n⚠️ The API server seems to be offline!\n', error.message);
     }
 
     if (userRequest.ok) {
@@ -35,18 +43,28 @@ async function authMiddleware(req, res, next) {
                 headers: req.headers
             });
 
-            res.setHeader('set-cookie', session.headers.get('set-cookie'));
+            if (session.ok) {
+                res.setHeader('set-cookie', session.headers.get('set-cookie'));
 
-            userRequest = await fetch(`${API_BASE_URL}/me`, {
-                headers: {
-                    cookie: session.headers.get('set-cookie').split(';')[0]
-                }
-            });
+                userRequest = await fetch(`${API_BASE_URL}/me`, {
+                    headers: {
+                        cookie: session.headers.get('set-cookie').split(';')[0]
+                    }
+                });
+            } else {
+                console.error(session.url);
+                console.error(session.status, session.statusText);
+            }
 
-            res.setHeader('set-cookie', userRequest.headers.get('set-cookie'));
-            user = await userRequest.json();
+            if (userRequest.ok) {
+                res.setHeader('set-cookie', userRequest.headers.get('set-cookie'));
+                user = await userRequest.json();
+            } else {
+                console.error(userRequest.url);
+                console.error(userRequest.status, userRequest.statusText);
+            }
         } catch (error) {
-            process.stderr.write(error);
+            console.error('\n⚠️ The API server seems to be offline!\n', error.message);
         }
     }
 
@@ -58,10 +76,12 @@ polka()
     .use(
         serveStatic(path.join(corePath, 'dist')),
         serveStatic('static'),
+        cookieReduceMiddleware,
         authMiddleware,
         sapper.middleware({
             session: (req, res) => ({
-                user: req.user
+                user: req.user,
+                headers: req.headers
             })
         })
     )
