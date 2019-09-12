@@ -102,7 +102,7 @@
         </script>
     {/each}
 
-    <script src={`chart/pYQK3/preview/${data.visJSON.id}.js?plugin=${data.visJSON.__plugin}`}>
+    <script src={`${API_BASE_URL}/visualizations/${data.visJSON.id}/script.js`}>
 
     </script>
     <script>
