@@ -47,8 +47,7 @@ export function createAPI(fetch, headers) {
             basemap.meta.keys = keys;
         } else {
             basemap = await api(`/basemaps/${basemapId}`);
-            if (basemap.meta.attribution) {
-                // TO DO: translate default string (currently stored in d3-maps -> footer / map data)
+            /* if (basemap.meta.attribution) {
                 let text = 'Map data';
                 text = get(theme, 'data.options.footer.mapData', text);
 
@@ -56,7 +55,7 @@ export function createAPI(fetch, headers) {
                     caption: basemap.meta.attribution,
                     text
                 };
-            }
+            } */
         }
         basemap.__id = basemapId;
         return basemap;

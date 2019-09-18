@@ -3,8 +3,8 @@
     "version": "0.0.1",
     "description": "TODO",
     "scripts": {
-        "format": "prettier 'src/**/*.{js,html,svelte}' --write",
-        "lint": "prettier --check 'src/**/*.{js,html,svelte}' && eslint 'src/**/*.{js,svelte}'",
+        "format": "prettier --write 'src/**/*.{js,svelte}'",
+        "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'",
         "dev": "sapper dev",
         "build": "sapper build --legacy",
         "export": "sapper export --legacy",
@@ -24,8 +24,14 @@
         "@babel/preset-env": "~7.6.0",
         "@babel/runtime": "~7.6.0",
         "babel-eslint": "~10.0.3",
-        "eslint": "~6.3.0",
-        "eslint-plugin-svelte3": "~2.7.3",
+        "eslint": "6.4.0",
+        "eslint-config-prettier": "6.3.0",
+        "eslint-config-standard": "14.1.0",
+        "eslint-plugin-import": "2.18.2",
+        "eslint-plugin-node": "10.0.0",
+        "eslint-plugin-promise": "4.2.1",
+        "eslint-plugin-standard": "4.0.1",
+        "eslint-plugin-svelte3": "2.7.3",
         "husky": "~3.0.5",
         "lint-staged": "~9.2.5",
         "npm-run-all": "~4.1.5",
@@ -41,32 +47,19 @@
         "sapper": "~0.27.8",
         "svelte": "~3.12.1"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*.{js,svelte}": [
-            "prettier --write",
-            "eslint",
-            "git add"
-        ],
-        "*.html": [
-            "prettier --write",
-            "git add"
-        ]
-    },
-    "prettier": {
-        "tabWidth": 4,
-        "semi": true,
-        "printWidth": 100,
-        "singleQuote": true
-    },
     "eslintIgnore": [
         "src/node_modules"
     ],
+    "prettier": {
+        "tabWidth": 4,
+        "singleQuote": true,
+        "printWidth": 100
+    },
     "eslintConfig": {
+        "env": {
+            "browser": true,
+            "node": true
+        },
         "parser": "babel-eslint",
         "plugins": [
             "svelte3"
@@ -76,26 +69,31 @@
                 "files": [
                     "**/*.svelte"
                 ],
+                "rules": {
+                    "import/first": 0
+                },
                 "processor": "svelte3/svelte3"
             }
         ],
-        "rules": {
-            "no-console": [
-                "error",
-                {
-                    "allow": [
-                        "warn",
-                        "error"
-                    ]
-                }
-            ],
-            "camelcase": [
-                "warn",
-                {
-                    "ignoreDestructuring": true,
-                    "properties": "never"
-                }
-            ]
+        "extends": [
+            "standard",
+            "prettier",
+            "prettier/standard"
+        ],
+        "globals": {
+            "API_BASE_URL": "readonly"
         }
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,svelte}": [
+            "prettier --write",
+            "eslint --fix",
+            "git add"
+        ]
     }
 }

@@ -1,6 +1,5 @@
 <script context="module">
     import { getDependencies } from '@datawrapper/chart-core/lib/get-dependencies.js';
-    import get from '@datawrapper/shared/get';
     import { createAPI } from './_helpers.js';
 
     export async function preload(page, session) {
@@ -21,7 +20,7 @@
             api(`/charts/${chartId}/assets/${chartId}.csv`, { json: false }).then(res => res.text())
         ]);
 
-        let css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
+        const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
             json: false
         }).then(res => res.text());
 
@@ -66,9 +65,6 @@
             typographyJSON: theme.data.typography,
             templateJS: false
         };
-
-        const isMinimapEnabled = get(chart, 'metadata.visualize.miniMap.enabled', false);
-        const isHighlightEnabled = get(chart, 'metadata.visualize.miniMap.enabled', false);
 
         const isD3Map = vis.id === 'd3-maps-choropleth' || vis.id === 'd3-maps-symbols';
         const basemap = isD3Map ? await getBasemap(chart) : null;

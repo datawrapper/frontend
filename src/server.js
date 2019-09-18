@@ -1,3 +1,4 @@
+/* globals API_SESSIONID, API_SUBDOMAIN, API_DOMAIN, API_BASE_URL */
 import path from 'path';
 import polka from 'polka';
 import * as sapper from '@sapper/server';
@@ -5,20 +6,18 @@ import fetch from 'node-fetch';
 import serveStatic from 'serve-static';
 
 const corePath = path.dirname(require.resolve('@datawrapper/chart-core/package.json'));
-const { PORT, NODE_ENV } = process.env;
-const dev = NODE_ENV === 'development';
+const { PORT } = process.env;
 
 function cookieReduceMiddleware(req, res, next) {
-    let session = false;
-    req.headers['cookie'] = req.headers['cookie']
+    req.headers.cookie = req.headers.cookie
         .split(';')
         .find(s => s.trim().startsWith(API_SESSIONID));
     next();
 }
 
 async function authMiddleware(req, res, next) {
-    let user = undefined;
-    req.headers['host'] = `${API_SUBDOMAIN}.${API_DOMAIN}`;
+    let user;
+    req.headers.host = `${API_SUBDOMAIN}.${API_DOMAIN}`;
     /**
      * Maybe use the ORM directly in here. Have to consider the trade offs
      * - performance
