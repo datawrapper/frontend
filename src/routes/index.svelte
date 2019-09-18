@@ -77,7 +77,7 @@
 <ul>
     {#each charts.list as chart}
         <li>
-            <a href="./chart/{chart.id}">
+            <a href="./preview/{chart.id}">
                 <code>[{chart.id}]</code>
             </a>
             - {chart.title}
