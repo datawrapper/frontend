@@ -1,5 +1,3 @@
-import path from 'path';
-import fs from 'fs';
 import resolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
@@ -9,10 +7,9 @@ import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
 
-const configPath = [path.join(process.cwd(), 'config.js'), '/etc/datawrapper/config.js'].reduce(
-    (path, test) => path || (fs.existsSync(test) ? test : undefined),
-    ''
-);
+import { findConfigPath } from '@datawrapper/shared/node/findConfig.js';
+const configPath = findConfigPath();
+
 process.stdout.write(`CONFIG_FILE: "${configPath}"\n`);
 
 const DW_CONFIG = require(configPath);
@@ -93,9 +90,7 @@ export default {
             resolve(),
             commonjs()
         ],
-        external: Object.keys(pkg.dependencies).concat(
-            require('module').builtinModules || Object.keys(process.binding('natives'))
-        )
+        external: Object.keys(pkg.dependencies).concat(require('module').builtinModules)
     }
 };
 
@@ -117,7 +112,7 @@ function flatten(data) {
             result[prop.toUpperCase()] = typeof cur === 'string' ? JSON.stringify(cur) : cur;
         } else {
             let isEmpty = true;
-            for (let p in cur) {
+            for (const p in cur) {
                 isEmpty = false;
                 recurse(cur[p], prop ? prop + '_' + p : p);
             }
