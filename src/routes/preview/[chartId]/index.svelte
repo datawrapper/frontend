@@ -20,6 +20,8 @@
             api(`/charts/${chartId}/assets/${chartId}.csv`, { json: false }).then(res => res.text())
         ]);
 
+        theme.less = '';
+
         const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
             json: false
         }).then(res => res.text());
