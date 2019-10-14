@@ -9,7 +9,13 @@ export function createAPI(fetch, headers) {
         });
 
         if (json) {
-            return response.then(res => res.json());
+            const res = await response;
+            if (res.ok) {
+                return res.json();
+            }
+            const error = new TypeError(res.statusText);
+            error.status = res.status;
+            throw error;
         }
         return response;
     }
