@@ -11,8 +11,13 @@
         const { chartId } = page.params;
         const fetch = this.fetch;
         const { api, getBasemap, getLocatorMapData } = createAPI(fetch, session.headers);
+        let chart;
 
-        const chart = await api(`/charts/${chartId}`);
+        try {
+            chart = await api(`/charts/${chartId}`);
+        } catch (error) {
+            return this.error(error.status, error.message);
+        }
 
         const [vis, theme, csv] = await Promise.all([
             api(`/visualizations/${chart.type}`),
