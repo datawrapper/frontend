@@ -9,9 +9,11 @@ const corePath = path.dirname(require.resolve('@datawrapper/chart-core/package.j
 const { PORT } = process.env;
 
 function cookieReduceMiddleware(req, res, next) {
-    req.headers.cookie = req.headers.cookie
-        .split(';')
-        .find(s => s.trim().startsWith(API_SESSIONID));
+    if (req.headers.cookie) {
+        req.headers.cookie = req.headers.cookie
+            .split(';')
+            .find(s => s.trim().startsWith(API_SESSIONID));
+    }
     next();
 }
 
