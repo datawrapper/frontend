@@ -20,11 +20,12 @@ export function createAPI(fetch, headers) {
         return response;
     }
 
-    async function getBasemap(chart) {
+    async function getBasemap(chart, data, theme) {
         // TO DO: set default basemap as fallback
         const basemapId = chart.metadata.visualize.basemap;
 
         let basemap = {};
+        let basemapAttribution = null;
         if (basemapId === 'custom_upload') {
             basemap = {
                 content: await api(`/charts/${chart.id}/assets/${chart.id}.map.json`),
@@ -53,18 +54,18 @@ export function createAPI(fetch, headers) {
             basemap.meta.keys = keys;
         } else {
             basemap = await api(`/basemaps/${basemapId}`);
-            /* if (basemap.meta.attribution) {
-                let text = 'Map data';
+            if (basemap.meta.attribution) {
+                let text = 'footer / map data';
                 text = get(theme, 'data.options.footer.mapData', text);
 
-                data.basemapAttribution = {
+                basemapAttribution = {
                     caption: basemap.meta.attribution,
                     text
                 };
-            } */
+            }
         }
         basemap.__id = basemapId;
-        return basemap;
+        return { basemap, basemapAttribution };
     }
 
     async function getLocatorMapData(chart, visId) {
