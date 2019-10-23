@@ -77,7 +77,18 @@
         const basemap = isD3Map ? await getBasemap(chart) : null;
         const { minimap, highlight } = await getLocatorMapData(chart, vis.id);
 
-        return { data, theme, translations, css, deps, libraries, basemap, minimap, highlight };
+        return {
+            data,
+            theme,
+            translations,
+            css,
+            deps,
+            libraries,
+            basemap,
+            minimap,
+            highlight,
+            query: page.query
+        };
     }
 </script>
 
@@ -93,13 +104,20 @@
     export let basemap;
     export let minimap;
     export let highlight;
+    export let query;
 </script>
 
 <svelte:head>
     {@html `<${'style'}>${css}</style>`}
 </svelte:head>
 <div class="dw-chart chart">
-    <Chart {data} {theme} {translations} />
+    <Chart
+        {data}
+        {theme}
+        {translations}
+        isStylePlain={query.plain === '1'}
+        isStyleFullscreen={query.fs === '1'}
+        isStyleNoPointer={query.nopointer === '1'} />
     {#each libraries as lib}
         <script src={lib}>
 
