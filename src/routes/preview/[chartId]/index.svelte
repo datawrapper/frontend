@@ -94,6 +94,8 @@
 
 <script>
     import Chart from '@datawrapper/chart-core/lib/Chart.svelte';
+    import get from '@datawrapper/shared/get';
+    import SocialButtons from 'social-sharing/SocialButtons.svelte';
 
     export let data;
     export let theme;
@@ -105,6 +107,12 @@
     export let minimap;
     export let highlight;
     export let query;
+
+    const afterBodyComponents = [];
+
+    if (get(data, 'chartJSON.metadata.visualize.sharing.enabled')) {
+        afterBodyComponents.push(SocialButtons);
+    }
 </script>
 
 <svelte:head>
@@ -117,7 +125,8 @@
         {translations}
         isStylePlain={query.plain === '1'}
         isStyleFullscreen={query.fs === '1'}
-        isStyleNoPointer={query.nopointer === '1'} />
+        isStyleNoPointer={query.nopointer === '1'}
+        {afterBodyComponents} />
     {#each libraries as lib}
         <script src={lib}>
 

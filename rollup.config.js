@@ -18,10 +18,17 @@ const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
-const { api, frontend } = DW_CONFIG;
+const { general, api, frontend } = DW_CONFIG;
 const API_BASE_URL = dev
     ? JSON.stringify(`http${api.https ? 's' : ''}://${api.domain}:${api.port}/v3`)
     : JSON.stringify(`http${api.https ? 's' : ''}://${api.subdomain}.${api.domain}/v3`);
+
+const nodeResolve = () =>
+    resolve({
+        customResolveOptions: {
+            paths: [general.localPluginRoot]
+        }
+    });
 
 export default {
     client: {
@@ -39,7 +46,7 @@ export default {
                 hydratable: true,
                 emitCss: true
             }),
-            resolve(),
+            nodeResolve(),
             commonjs(),
 
             legacy &&
@@ -87,7 +94,7 @@ export default {
                 generate: 'ssr',
                 dev
             }),
-            resolve(),
+            nodeResolve(),
             commonjs()
         ],
         external: Object.keys(pkg.dependencies).concat(require('module').builtinModules)
