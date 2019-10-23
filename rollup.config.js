@@ -1,4 +1,5 @@
 import resolve from 'rollup-plugin-node-resolve';
+import path from 'path';
 import replace from 'rollup-plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
 import svelte from 'rollup-plugin-svelte';
@@ -26,7 +27,11 @@ const API_BASE_URL = dev
 const nodeResolve = () =>
     resolve({
         customResolveOptions: {
-            paths: [general.localPluginRoot]
+            paths: [general.localPluginRoot],
+            moduleDirectory: [
+                path.join(__dirname, 'node_modules'),
+                path.join(__dirname, 'src', 'node_modules')
+            ]
         }
     });
 
