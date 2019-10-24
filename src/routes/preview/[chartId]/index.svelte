@@ -98,7 +98,7 @@
 <script>
     import Chart from '@datawrapper/chart-core/lib/Chart.svelte';
     import get from '@datawrapper/shared/get';
-    import SocialButtons from 'social-sharing/SocialButtons.svelte';
+    import components from '@datawrapper/chart-core/lib/AfterBodyComponents.js';
 
     export let data;
     export let theme;
@@ -111,11 +111,9 @@
     export let highlight;
     export let query;
 
-    const afterBodyComponents = [];
-
-    if (get(data, 'chartJSON.metadata.visualize.sharing.enabled')) {
-        afterBodyComponents.push(SocialButtons);
-    }
+    const afterBodyComponents = components
+        .filter(([, key]) => get(data, `chartJSON.${key}`))
+        .map(([comp]) => comp);
 </script>
 
 <svelte:head>
