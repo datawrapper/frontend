@@ -69,12 +69,14 @@ export function createAPI(fetch, headers) {
     }
 
     async function getLocatorMapData(chart) {
-        const isMinimapEnabled = get(chart, 'metadata.visualize.miniMap.enabled', false);
+        const isMinimapBoundaryEnabled =
+            get(chart, 'metadata.visualize.miniMap.enabled', false) &&
+            get(chart, 'metadata.visualize.miniMap.opt') === 'boundary';
         const isHighlightEnabled = get(chart, 'metadata.visualize.highlight.enabled', false);
 
         let minimap, highlight;
 
-        if (isMinimapEnabled) {
+        if (isMinimapBoundaryEnabled) {
             minimap = await api(`/charts/${chart.id}/assets/${chart.id}.minimap.json`, {
                 json: false
             }).then(res => res.text());
