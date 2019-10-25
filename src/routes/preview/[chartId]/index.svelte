@@ -76,8 +76,8 @@
         const isD3Map = vis.id === 'd3-maps-choropleth' || vis.id === 'd3-maps-symbols';
         const { basemap, basemapAttribution } = isD3Map ? await getBasemap(chart, data, theme) : {};
 
-        const idLocatorMap = vis.id === 'locator-map';
-        const { minimap, highlight } = idLocatorMap ? await getLocatorMapData(chart) : {};
+        const isLocatorMap = vis.id === 'locator-map';
+        const { minimap, highlight } = isLocatorMap ? await getLocatorMapData(chart) : {};
 
         if (basemapAttribution) {
             data.basemapAttribution = basemapAttribution;
