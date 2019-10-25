@@ -70,19 +70,20 @@ export function createAPI(fetch, headers) {
 
     async function getLocatorMapData(chart) {
         const isMinimapEnabled = get(chart, 'metadata.visualize.miniMap.enabled', false);
-        const isHighlightEnabled = get(chart, 'metadata.visualize.miniMap.enabled', false);
+        const isHighlightEnabled = get(chart, 'metadata.visualize.highlight.enabled', false);
 
         let minimap, highlight;
+
         if (isMinimapEnabled) {
             minimap = await api(`/charts/${chart.id}/assets/${chart.id}.minimap.json`, {
                 json: false
             }).then(res => res.text());
+        }
 
-            if (isHighlightEnabled) {
-                highlight = await api(`/charts/${chart.id}/assets/${chart.id}.highlight.json`, {
-                    json: false
-                }).then(res => res.text());
-            }
+        if (isHighlightEnabled) {
+            highlight = await api(`/charts/${chart.id}/assets/${chart.id}.highlight.json`, {
+                json: false
+            }).then(res => res.text());
         }
 
         return { minimap, highlight };
