@@ -83,35 +83,6 @@
             data.basemapAttribution = basemapAttribution;
         }
 
-        if (chart.isFork) {
-            const forkedFromId = chart.forkedFrom;
-            const forkedFromChart = await api(`/charts/${forkedFromId}`);
-            const basedOnBylineText = forkedFromChart.metadata.describe.byline;
-
-            let basedOnUrl = '';
-
-            // TO DO: check if source chart has a defined url
-            // (currently stored in river_chart table)
-            const sourceUrl = null;
-            if (sourceUrl) basedOnUrl = sourceUrl;
-            else {
-                // TO DO: get alias and bucket
-                // (currently stored in config in
-                // https://github.com/datawrapper/plugin-chart-display)
-                const alias = null;
-                const bucket = 'www.datawrapper.local';
-                if (alias || bucket) {
-                    basedOnUrl += alias || `http${API_HTTPS ? 's' : ''}://${bucket}`;
-                    basedOnUrl += `/_/${forkedFromId}/`;
-                }
-            }
-
-            data.basedOnByline =
-                basedOnUrl && basedOnBylineText
-                    ? `<a href="${basedOnUrl}" target="_blank">${basedOnBylineText}</a>`
-                    : basedOnBylineText;
-        }
-
         return {
             data,
             theme,
