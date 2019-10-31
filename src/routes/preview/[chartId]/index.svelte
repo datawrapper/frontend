@@ -114,6 +114,7 @@
     export let highlight;
     export let query;
 
+    const visHeightClass = `vis-height-${get(data, 'visJSON.height', 'fit')}`;
     const afterBodyComponents = components
         .filter(([, key]) => get(data, `chartJSON.${key}`))
         .map(([comp]) => comp);
@@ -122,7 +123,7 @@
 <svelte:head>
     {@html `<${'style'}>${css}</style>`}
 </svelte:head>
-<div class="dw-chart chart">
+<div class="dw-chart chart {visHeightClass}">
     <Chart
         {data}
         {theme}
