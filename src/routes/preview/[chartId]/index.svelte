@@ -114,9 +114,11 @@
     export let highlight;
     export let query;
 
-    const visHeightClass = `vis-height-${get(data, 'visJSON.height', 'fit')}`;
-    const themeClass = `theme-${get(theme, 'id')}`;
-    const visClass = `vis-${get(data, 'visJSON.id')}`;
+    const dwChartClasses = [
+        `vis-height-${get(data, 'visJSON.height', 'fit')}`,
+        `theme-${get(theme, 'id')}`,
+        `vis-${get(data, 'visJSON.id')}`
+    ]
 
     const afterBodyComponents = components
         .filter(([, key]) => get(data, `chartJSON.${key}`))
@@ -126,7 +128,7 @@
 <svelte:head>
     {@html `<${'style'}>${css}</style>`}
 </svelte:head>
-<div class="dw-chart chart {visHeightClass} {themeClass} {visClass}">
+<div class="dw-chart chart {dwChartClasses.join(' ')}">
     <Chart
         {data}
         {theme}
