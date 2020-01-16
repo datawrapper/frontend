@@ -19,7 +19,7 @@ function cookieReduceMiddleware(req, res, next) {
 
 async function authMiddleware(req, res, next) {
     let user;
-    req.headers.host = `${API_SUBDOMAIN}.${API_DOMAIN}`;
+    req.headers.host = `${API_DOMAIN}`;
     /**
      * Maybe use the ORM directly in here. Have to consider the trade offs
      * - performance

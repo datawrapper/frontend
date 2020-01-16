@@ -19,11 +19,25 @@ const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
-const { general, api, frontend } = DW_CONFIG;
-const API_BASE_URL = dev
-    ? JSON.stringify(`http${api.https ? 's' : ''}://${api.domain}:${api.port}/v3`)
-    : JSON.stringify(`http${api.https ? 's' : ''}://${api.subdomain}.${api.domain}/v3`);
+const { general, api, frontend, plugins } = DW_CONFIG;
+const API_BASE_URL = JSON.stringify(`http${api.https ? 's' : ''}://${api.domain}/v3`);
 
+console.log(
+    Object.entries(plugins)
+        .map(entry => {
+            try {
+                const frontendConfig = require(`${general.localPluginRoot}/${entry[0]}/frontend.js`);
+                frontendConfig.path = `${general.localPluginRoot}/${entry[0]}`;
+                frontendConfig.name = entry[0];
+                return frontendConfig;
+            } catch (error) {
+                return false;
+            }
+        })
+        .filter(Boolean)
+);
+
+process.exit();
 const nodeResolve = () =>
     resolve({
         customResolveOptions: {
@@ -38,7 +52,11 @@ const nodeResolve = () =>
 export default {
     client: {
         input: config.client.input(),
-        output: config.client.output(),
+        output: {
+            ...config.client.output(),
+            format: legacy ? 'iife' : 'esm'
+        },
+        inlineDynamicImports: legacy,
         plugins: [
             replace({
                 'process.browser': true,
