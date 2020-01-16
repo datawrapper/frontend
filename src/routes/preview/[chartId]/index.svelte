@@ -7,10 +7,12 @@
             this.error('403', 'Forbidden');
             return;
         }
-
+        console.log(session.headers);
         const { chartId } = page.params;
         const fetch = this.fetch;
-        const { api, getBasemap, getLocatorMapData } = createAPI(fetch, session.headers);
+        const { api, getBasemap, getLocatorMapData } = createAPI(fetch, {
+            cookie: session.headers.cookie
+        });
         let chart;
 
         try {
@@ -26,6 +28,10 @@
         ]);
 
         theme.less = '';
+
+        const { default: SocialButtons } = await import(
+            '/plugins/social-sharing/SocialButtons.svelte'
+        );
 
         const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
             json: false
@@ -43,13 +49,14 @@
             dependencies: vis.dependencies
         });
 
+        console.log(deps);
         const libraries = vis.libraries.map(lib => lib.cdn);
 
         let translations = {};
         try {
-            translations = await fetch(`core/locale/${chartLocale.replace('_', '-')}.json`).then(
-                r => r.json()
-            );
+            translations = await fetch(
+                `core/locale/${chartLocale.replace('_', '-')}.json`
+            ).then(r => r.json());
         } catch (error) {
             console.error(`No locales found for [${chartLocale}]`);
         }
@@ -93,7 +100,8 @@
             basemap,
             minimap,
             highlight,
-            query: page.query
+            query: page.query,
+            afterBodyComponents: [SocialButtons]
         };
     }
 </script>
@@ -101,7 +109,6 @@
 <script>
     import Chart from '@datawrapper/chart-core/lib/Chart.svelte';
     import get from '@datawrapper/shared/get';
-    import components from '@datawrapper/chart-core/lib/AfterBodyComponents.js';
 
     export let data;
     export let theme;
@@ -113,16 +120,17 @@
     export let minimap;
     export let highlight;
     export let query;
+    export let afterBodyComponents;
 
     const dwChartClasses = [
         `vis-height-${get(data, 'visJSON.height', 'fit')}`,
         `theme-${get(theme, 'id')}`,
         `vis-${get(data, 'visJSON.id')}`
-    ]
+    ];
 
-    const afterBodyComponents = components
+    /* const afterBodyComponents = components
         .filter(([, key]) => get(data, `chartJSON.${key}`))
-        .map(([comp]) => comp);
+        .map(([comp]) => comp); */
 </script>
 
 <svelte:head>
