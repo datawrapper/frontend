@@ -7,7 +7,7 @@
             this.error('403', 'Forbidden');
             return;
         }
-        console.log(session.headers);
+
         const { chartId } = page.params;
         const fetch = this.fetch;
         const { api, getBasemap, getLocatorMapData } = createAPI(fetch, {
@@ -29,9 +29,9 @@
 
         theme.less = '';
 
-        const { default: SocialButtons } = await import(
-            '/plugins/social-sharing/SocialButtons.svelte'
-        );
+        /* const { default: SocialButtons } = await import(
+            '/plugins/social-sharing/SocialButtons.svelte' // eslint-disable-line
+        ); */
 
         const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
             json: false
@@ -49,14 +49,13 @@
             dependencies: vis.dependencies
         });
 
-        console.log(deps);
         const libraries = vis.libraries.map(lib => lib.cdn);
 
         let translations = {};
         try {
-            translations = await fetch(
-                `core/locale/${chartLocale.replace('_', '-')}.json`
-            ).then(r => r.json());
+            translations = await fetch(`core/locale/${chartLocale.replace('_', '-')}.json`).then(
+                r => r.json()
+            );
         } catch (error) {
             console.error(`No locales found for [${chartLocale}]`);
         }
@@ -101,7 +100,9 @@
             minimap,
             highlight,
             query: page.query,
-            afterBodyComponents: [SocialButtons]
+            afterBodyComponents: [
+                /* SocialButtons */
+            ]
         };
     }
 </script>
