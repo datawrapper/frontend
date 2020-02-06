@@ -53,7 +53,7 @@ export function createAPI(fetch, headers) {
             const keys = keyIds.map(key => ({ value: key, label: key }));
             basemap.meta.keys = keys;
         } else {
-            basemap = await api(`/basemaps/${basemapId}`);
+            basemap = await api(`/basemaps/${chart.id}/${basemapId}`);
             if (basemap.meta.attribution) {
                 let text = 'footer / map data';
                 text = get(theme, 'data.options.footer.mapData', text);
