@@ -12,7 +12,7 @@
         "start": "node __sapper__/build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "4.2.1",
+        "@datawrapper/chart-core": "4.3.0",
         "@datawrapper/shared": "0.21.0",
         "node-fetch": "2.6.0",
         "polka": "0.5.2",
