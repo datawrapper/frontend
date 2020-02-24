@@ -21,9 +21,11 @@
             return this.error(error.status, error.message);
         }
 
+        const themeName = page.query.theme || chart.theme;
+
         const [vis, theme, csv] = await Promise.all([
             api(`/visualizations/${chart.type}`),
-            api(`/themes/${chart.theme}?extend=true`),
+            api(`/themes/${themeName}?extend=true`),
             api(`/charts/${chartId}/assets/${chartId}.csv`, { json: false }).then(res => res.text())
         ]);
 
@@ -49,13 +51,17 @@
             dependencies: vis.dependencies
         });
 
-        const libraries = vis.libraries.map(lib => lib.cdn);
+        /*
+        @todo: get the correct asset from local or cdn
+        http://app.datawrapper.local/static/plugins/locator-maps/vendor/mapbox-gl.min.js
+        */
+        const libraries = vis.libraries.map(lib => `/static/plugins/${vis.__plugin}/${lib.local}`);
 
         let translations = {};
         try {
-            translations = await fetch(`core/locale/${chartLocale.replace('_', '-')}.json`).then(
-                r => r.json()
-            );
+            translations = await fetch(
+                `core/locale/${chartLocale.replace('_', '-')}.json`
+            ).then(r => r.json());
         } catch (error) {
             console.error(`No locales found for [${chartLocale}]`);
         }
