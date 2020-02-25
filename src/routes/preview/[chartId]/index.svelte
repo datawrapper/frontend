@@ -10,23 +10,24 @@
 
         const { chartId } = page.params;
         const fetch = this.fetch;
-        const { api, getBasemap, getLocatorMapData } = createAPI(fetch, {
+        const { api, getBasemap } = createAPI(fetch, {
             cookie: session.headers.cookie
         });
-        let chart;
 
+        let chart;
+        let csv;
         try {
-            chart = await api(`/charts/${chartId}`);
+            chart = await api(`/charts/${chartId}?withData=true`);
+            csv = chart.data.chart;
         } catch (error) {
             return this.error(error.status, error.message);
         }
 
         const themeName = page.query.theme || chart.theme;
 
-        const [vis, theme, csv] = await Promise.all([
+        const [vis, theme] = await Promise.all([
             api(`/visualizations/${chart.type}`),
-            api(`/themes/${themeName}?extend=true`),
-            api(`/charts/${chartId}/assets/${chartId}.csv`, { json: false }).then(res => res.text())
+            api(`/themes/${themeName}?extend=true`)
         ]);
 
         theme.less = '';
@@ -89,7 +90,6 @@
         const { basemap, basemapAttribution } = isD3Map ? await getBasemap(chart, data, theme) : {};
 
         const isLocatorMap = vis.id === 'locator-map';
-        const { minimap, highlight } = isLocatorMap ? await getLocatorMapData(chart) : {};
 
         if (basemapAttribution) {
             data.basemapAttribution = basemapAttribution;
@@ -103,8 +103,6 @@
             deps,
             libraries,
             basemap,
-            minimap,
-            highlight,
             query: page.query,
             afterBodyComponents: [
                 /* SocialButtons */
@@ -124,8 +122,6 @@
     export let deps;
     export let libraries;
     export let basemap;
-    export let minimap;
-    export let highlight;
     export let query;
     export let afterBodyComponents;
 
@@ -134,6 +130,9 @@
         `theme-${get(theme, 'id')}`,
         `vis-${get(data, 'visJSON.id')}`
     ];
+
+    const minimap = get(data, 'chartJSON.data.minimap');
+    const highlight = get(data, 'chartJSON.data.highlight');
 
     /* const afterBodyComponents = components
         .filter(([, key]) => get(data, `chartJSON.${key}`))
@@ -175,7 +174,7 @@
             __dwParams.d3maps_basemap['${basemap.__id}'] = ${JSON.stringify(basemap)};
         </script>`}
     {/if}
-    {#if minimap}
+    {#if minimap || highlight}
         {@html `<${'script'}>
             __dwParams.locatorMap = {};
             __dwParams.locatorMap.minimapGeom = ${minimap};
