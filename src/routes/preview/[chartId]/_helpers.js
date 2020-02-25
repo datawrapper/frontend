@@ -68,32 +68,8 @@ export function createAPI(fetch, headers) {
         return { basemap, basemapAttribution };
     }
 
-    async function getLocatorMapData(chart) {
-        const isMinimapBoundaryEnabled =
-            get(chart, 'metadata.visualize.miniMap.enabled', false) &&
-            get(chart, 'metadata.visualize.miniMap.opt') === 'boundary';
-        const isHighlightEnabled = get(chart, 'metadata.visualize.highlight.enabled', false);
-
-        let minimap, highlight;
-
-        if (isMinimapBoundaryEnabled) {
-            minimap = await api(`/charts/${chart.id}/assets/${chart.id}.minimap.json`, {
-                json: false
-            }).then(res => res.text());
-        }
-
-        if (isHighlightEnabled) {
-            highlight = await api(`/charts/${chart.id}/assets/${chart.id}.highlight.json`, {
-                json: false
-            }).then(res => res.text());
-        }
-
-        return { minimap, highlight };
-    }
-
     return {
         api,
-        getBasemap,
-        getLocatorMapData
+        getBasemap
     };
 }
