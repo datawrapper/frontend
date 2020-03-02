@@ -10,14 +10,17 @@
 
         const { chartId } = page.params;
         const fetch = this.fetch;
-        const { api, getBasemap } = createAPI(fetch, {
+        const { api } = createAPI(fetch, {
             cookie: session.headers.cookie
         });
 
         let chart;
         let csv;
         try {
-            chart = await api(`/charts/${chartId}?withData=true`);
+            const url = page.query.ott
+                ? `/charts/${chartId}/${page.query.ott}?withData=true`
+                : `/charts/${chartId}?withData=true`;
+            chart = await api(url);
             csv = chart.data.chart;
         } catch (error) {
             return this.error(error.status, error.message);
@@ -87,13 +90,10 @@
         };
 
         const isD3Map = vis.id === 'd3-maps-choropleth' || vis.id === 'd3-maps-symbols';
-        const { basemap, basemapAttribution } = isD3Map ? await getBasemap(chart, data, theme) : {};
 
         const isLocatorMap = vis.id === 'locator-map';
 
-        if (basemapAttribution) {
-            data.basemapAttribution = basemapAttribution;
-        }
+        /* add basemap attribution again */
 
         return {
             data,
@@ -102,7 +102,7 @@
             css,
             deps,
             libraries,
-            basemap,
+            basemap: chart.data.basemap,
             query: page.query,
             afterBodyComponents: [
                 /* SocialButtons */
