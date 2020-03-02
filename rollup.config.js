@@ -20,7 +20,7 @@ const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 const { general, api, frontend } = DW_CONFIG;
-const API_BASE_URL = JSON.stringify(`http${api.https ? 's' : ''}://${api.domain}/v3`);
+const API_BASE_URL = JSON.stringify(`http${api.https ? 's' : ''}://${api.subdomain}.${api.domain}/v3`);
 
 const nodeResolve = () =>
     resolve({
