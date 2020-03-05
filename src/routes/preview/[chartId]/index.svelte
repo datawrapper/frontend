@@ -35,10 +35,6 @@
 
         theme.less = '';
 
-        /* const { default: SocialButtons } = await import(
-            '/plugins/social-sharing/SocialButtons.svelte' // eslint-disable-line
-        ); */
-
         const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
             json: false
         }).then(res => res.text());
@@ -103,10 +99,7 @@
             deps,
             libraries,
             basemap: chart.data.basemap,
-            query: page.query,
-            afterBodyComponents: [
-                /* SocialButtons */
-            ]
+            query: page.query
         };
     }
 </script>
@@ -123,7 +116,6 @@
     export let libraries;
     export let basemap;
     export let query;
-    export let afterBodyComponents;
 
     const dwChartClasses = [
         `vis-height-${get(data, 'visJSON.height', 'fit')}`,
@@ -133,15 +125,16 @@
 
     const minimap = get(data, 'chartJSON.data.minimap');
     const highlight = get(data, 'chartJSON.data.highlight');
-
-    /* const afterBodyComponents = components
-        .filter(([, key]) => get(data, `chartJSON.${key}`))
-        .map(([comp]) => comp); */
 </script>
 
 <svelte:head>
     {@html `<${'style'}>${css}</style>`}
 </svelte:head>
+{#each deps as script}
+    <script src={`core/${script}`}>
+
+    </script>
+{/each}
 <div class="dw-chart chart {dwChartClasses.join(' ')}">
     <Chart
         {data}
@@ -149,15 +142,9 @@
         {translations}
         isStylePlain={query.plain === '1'}
         isStyleFullscreen={query.fs === '1'}
-        isStyleNoPointer={query.nopointer === '1'}
-        {afterBodyComponents} />
+        isStyleNoPointer={query.nopointer === '1'} />
     {#each libraries as lib}
         <script src={lib}>
-
-        </script>
-    {/each}
-    {#each deps as script}
-        <script src={`core/${script}`}>
 
         </script>
     {/each}
