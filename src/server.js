@@ -1,11 +1,10 @@
 /* globals API_SESSIONID, API_SUBDOMAIN, API_DOMAIN, API_BASE_URL */
-import path from 'path';
 import polka from 'polka';
 import * as sapper from '@sapper/server';
 import fetch from 'node-fetch';
 import serveStatic from 'serve-static';
 
-const corePath = path.dirname(require.resolve('@datawrapper/chart-core/package.json'));
+const chartCore = require('@datawrapper/chart-core');
 const { PORT } = process.env;
 
 function cookieReduceMiddleware(req, res, next) {
@@ -75,7 +74,7 @@ async function authMiddleware(req, res, next) {
 
 polka()
     .use(
-        serveStatic(path.join(corePath, 'dist')),
+        serveStatic(chartCore.path.dist),
         serveStatic('static'),
         cookieReduceMiddleware,
         authMiddleware,

@@ -28,21 +28,22 @@
 
         const themeName = page.query.theme || chart.theme;
 
-        const [vis, theme] = await Promise.all([
-            api(`/visualizations/${chart.type}`),
-            api(`/themes/${themeName}?extend=true`)
-        ]);
-
-        theme.less = '';
+        let vis, theme;
+        try {
+            const results = await Promise.all([
+                api(`/visualizations/${chart.type}`),
+                api(`/themes/${themeName}?extend=true`)
+            ]);
+            vis = results[0];
+            theme = results[1];
+            theme.less = '';
+        } catch (error) {
+            return this.error(error.status, error.message);
+        }
 
         const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
             json: false
         }).then(res => res.text());
-
-        const fonts = Object.entries(theme.assets).reduce((fonts, [key, value]) => {
-            if (theme.assets[key].type === 'font') fonts[key] = value;
-            return fonts;
-        }, {});
 
         const chartLocale = chart.language;
 
@@ -65,9 +66,10 @@
         } catch (error) {
             console.error(`No locales found for [${chartLocale}]`);
         }
+
         if (vis.locale) {
-            Object.keys(vis.locale).map(key => {
-                vis.locale[key] = vis.locale[key][chartLocale];
+            Object.entries(vis.locale).map(([key, value]) => {
+                vis.locale[key] = value[chart.language];
             });
         }
 
@@ -77,10 +79,10 @@
             chartData: csv,
             isPreview: true,
             chartLocale,
-            locales: {},
-            metricPrefix: {},
+            locales: {} /* NOTE: What about this? */,
+            metricPrefix: {} /* NOTE: What about this? */,
             themeId: theme.id,
-            fontsJSON: fonts,
+            fontsJSON: theme.fonts,
             typographyJSON: theme.data.typography,
             templateJS: false
         };
