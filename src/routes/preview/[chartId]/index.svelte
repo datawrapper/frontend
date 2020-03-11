@@ -16,10 +16,11 @@
 
         let chart;
         let csv;
+
         try {
-            const url = page.query.ott
-                ? `/charts/${chartId}/${page.query.ott}?withData=true`
-                : `/charts/${chartId}?withData=true`;
+            const { theme, ...query } = page.query;
+            const chartQueryParams = new URLSearchParams({ ...query, withData: true });
+            const url = `/charts/${chartId}?${chartQueryParams}`;
             chart = await api(url);
             csv = chart.data.chart;
         } catch (error) {
