@@ -119,6 +119,13 @@
         `theme-${get(theme, 'id')}`,
         `vis-${get(data, 'visJSON.id')}`
     ];
+
+    if (typeof window !== 'undefined') {
+        window.__dwUpdate = ({ chart }) => {
+            data.chartJSON = chart;
+            data = data; // to force re-rendering
+        };
+    }
 </script>
 
 <svelte:head>
