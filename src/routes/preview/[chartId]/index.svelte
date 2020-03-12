@@ -18,16 +18,22 @@
         let csv;
 
         try {
-            const { theme, ...query } = page.query;
-            const chartQueryParams = new URLSearchParams({ ...query, withData: true });
-            const url = `/charts/${chartId}?${chartQueryParams}`;
+            const queryString = Object.entries({
+                published: page.query.published,
+                withData: true
+            })
+                .filter(([, value]) => Boolean(value))
+                .map(([key, value]) => `${key}=${value}`)
+                .join('&');
+
+            const url = `/charts/${chartId}?${queryString}`;
             chart = await api(url);
             csv = chart.data.chart;
         } catch (error) {
             return this.error(error.status, error.message);
         }
 
-        const themeName = page.query.theme || chart.theme;
+        const themeName = page.query.published ? chart.theme : page.query.theme || chart.theme;
 
         let vis, theme;
         try {
