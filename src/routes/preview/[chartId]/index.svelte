@@ -3,6 +3,8 @@
     import { createAPI } from './_helpers.js';
 
     export async function preload(page, session) {
+        const { Theme } = require('@datawrapper/orm/models');
+
         if (!session.user) {
             this.error('403', 'Forbidden');
             return;
@@ -33,17 +35,26 @@
             return this.error(error.status, error.message);
         }
 
+
         const themeName = page.query.published ? chart.theme : page.query.theme || chart.theme;
 
-        let vis, theme;
+        let theme = await Theme.findByPk(themeName);
+        if (!theme) {
+            theme = await Theme.findByPk('default');
+        }
+        theme = {
+            ...theme.toJSON(),
+            data: await theme.getMergedData(),
+            assets: await theme.getMergedAssets(),
+            less: ''
+        };
+
+        let vis;
         try {
             const results = await Promise.all([
-                api(`/visualizations/${chart.type}`),
-                api(`/themes/${themeName}?extend=true`)
+                api(`/visualizations/${chart.type}`)
             ]);
             vis = results[0];
-            theme = results[1];
-            theme.less = '';
         } catch (error) {
             return this.error(error.status, error.message);
         }
