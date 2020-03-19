@@ -1,90 +1,97 @@
-/* globals API_SESSIONID, API_SUBDOMAIN, API_DOMAIN, API_BASE_URL */
 import polka from 'polka';
 import * as sapper from '@sapper/server';
-import fetch from 'node-fetch';
 import serveStatic from 'serve-static';
+import generate from 'nanoid/generate';
+
+const ORM = require('@datawrapper/orm');
+const { requireConfig } = require('@datawrapper/shared/node/findConfig');
 
 const chartCore = require('@datawrapper/chart-core');
 const { PORT } = process.env;
+
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+const config = requireConfig();
+
+function generateToken(length = 25) {
+    return generate(alphabet, length);
+}
 
 function cookieReduceMiddleware(req, res, next) {
     if (req.headers.cookie) {
         req.headers.cookie = req.headers.cookie
             .split(';')
-            .find(s => s.trim().startsWith(API_SESSIONID));
+            .find(s => s.trim().startsWith(config.api.sessionID));
     }
     next();
 }
 
 async function authMiddleware(req, res, next) {
-    let user;
-    req.headers.host = `${API_SUBDOMAIN}.${API_DOMAIN}`;
-    /**
-     * Maybe use the ORM directly in here. Have to consider the trade offs
-     * - performance
-     * - duplicated logic here and in API server
-     * - server side only configuration (making sure secrets don't leak into the frontend etc.)
-     */
-    let userRequest = { ok: false };
-    try {
-        userRequest = await fetch(`${API_BASE_URL}/me`, {
-            headers: req.headers
-        });
-    } catch (error) {
-        console.error('\n⚠️ The API server seems to be offline!\n', error.message);
+    const { Session, User } = require('@datawrapper/orm/models');
+    req.headers.host = `${config.api.subdomain}.${config.api.domain}`;
+
+    let session;
+    if (req.headers.cookie) {
+        const sessionId = req.headers.cookie.split('=')[1];
+        // check session in DB
+        session = await Session.findByPk(sessionId);
     }
 
-    if (userRequest.ok) {
-        user = await userRequest.json();
+    if (session && session.user_id) {
+        // it's a user session, so find user
+        req.user = (await User.findByPk(session.user_id)).toJSON();
     } else {
-        try {
-            const session = await fetch(`${API_BASE_URL}/auth/session`, {
-                method: 'POST',
-                headers: req.headers
+        if (!session) {
+            // no cookie or session expired, let's create a new session
+            const sessionId = generateToken();
+            await Session.create({
+                id: sessionId,
+                user_id: null,
+                persistent: false,
+                data: {
+                    'dw-user-id': null,
+                    persistent: false,
+                    last_action_time: Math.floor(Date.now() / 1000)
+                }
             });
-
-            if (session.ok) {
-                res.setHeader('set-cookie', session.headers.get('set-cookie'));
-
-                userRequest = await fetch(`${API_BASE_URL}/me`, {
-                    headers: {
-                        cookie: session.headers.get('set-cookie').split(';')[0]
-                    }
-                });
-            } else {
-                console.error(session.url);
-                console.error(session.status, session.statusText);
-            }
-
-            if (userRequest.ok) {
-                res.setHeader('set-cookie', userRequest.headers.get('set-cookie'));
-                user = await userRequest.json();
-            } else {
-                console.error(userRequest.url);
-                console.error(userRequest.status, userRequest.statusText);
-            }
-        } catch (error) {
-            console.error('\n⚠️ The API server seems to be offline!\n', error.message);
+            // have to rely on config.api.domain because config.frontend.domain includes the subdomain!
+            res.setHeader(
+                'set-cookie',
+                [
+                    `${config.api.sessionID}=${sessionId}`,
+                    'path=/',
+                    `domain=.${config.api.domain}`,
+                    'HttpOnly',
+                    ...(config.frontend.https ? ['Secure'] : [])
+                ].join('; ')
+            );
         }
+        req.user = {
+            role: 'guest'
+        };
     }
-
-    req.user = user;
     next();
 }
 
-polka()
-    .use(
-        serveStatic(chartCore.path.dist),
-        serveStatic('static'),
-        cookieReduceMiddleware,
-        authMiddleware,
-        sapper.middleware({
-            session: (req, res) => ({
-                user: req.user,
-                headers: req.headers
+async function main() {
+    await ORM.init(config);
+
+    polka()
+        .use(
+            serveStatic(chartCore.path.dist),
+            serveStatic('static'),
+            cookieReduceMiddleware,
+            authMiddleware,
+            sapper.middleware({
+                session: (req, res) => ({
+                    user: req.user,
+                    headers: req.headers
+                })
             })
-        })
-    )
-    .listen(PORT, err => {
-        if (err) process.stdout.write('error', err);
-    });
+        )
+        .listen(PORT, err => {
+            if (err) process.stdout.write('error', err);
+        });
+}
+
+main();
