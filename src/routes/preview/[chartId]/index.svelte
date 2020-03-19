@@ -91,7 +91,8 @@
             themeId: theme.id,
             fontsJSON: theme.fonts,
             typographyJSON: theme.data.typography,
-            templateJS: false
+            templateJS: false,
+            polyfillUri: `//${GENERAL_CHART_DOMAIN}/lib/vendor`
         };
 
         /* add basemap attribution again */
