@@ -11,8 +11,7 @@ const { PORT } = process.env;
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-const configPath = findConfigPath();
-const config = require(configPath);
+const config = requireConfig();
 
 function generateToken(length = 25) {
     return generate(alphabet, length);
