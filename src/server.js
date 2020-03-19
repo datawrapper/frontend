@@ -57,7 +57,13 @@ async function authMiddleware(req, res, next) {
             // have to rely on config.api.domain because config.frontend.domain includes the subdomain!
             res.setHeader(
                 'set-cookie',
-                `${config.api.sessionID}=${sessionId}; path=/; domain=.${config.api.domain}`
+                [
+                    `${config.api.sessionID}=${sessionId}`,
+                    'path=/',
+                    `domain=.${config.api.domain}`,
+                    'HttpOnly',
+                    ...(config.frontend.https ? ['Secure'] : [])
+                ].join('; ')
             );
         }
         req.user = {
