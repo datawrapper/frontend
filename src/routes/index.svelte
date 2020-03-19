@@ -1,6 +1,6 @@
 <script context="module">
     export async function preload(page, session) {
-        if (!session.user || session.user.role === 'anonymous') {
+        if (!session.user || session.user.role === 'guest') {
             /* https://stackoverflow.com/a/2839594 */
             this.redirect(302, '/login');
             return { user: session.user, charts: {} };
