@@ -4,7 +4,7 @@ import serveStatic from 'serve-static';
 import generate from 'nanoid/generate';
 
 const ORM = require('@datawrapper/orm');
-const { findConfigPath } = require('@datawrapper/shared/node/findConfig');
+const { requireConfig } = require('@datawrapper/shared/node/findConfig');
 
 const chartCore = require('@datawrapper/chart-core');
 const { PORT } = process.env;
