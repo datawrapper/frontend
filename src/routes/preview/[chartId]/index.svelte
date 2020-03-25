@@ -15,12 +15,12 @@
         });
 
         let chart;
-        let csv;
+        let publishData;
 
+        // load chart
         try {
             const queryString = Object.entries({
-                published: page.query.published,
-                withData: true
+                published: page.query.published
             })
                 .filter(([, value]) => Boolean(value))
                 .map(([key, value]) => `${key}=${value}`)
@@ -28,10 +28,19 @@
 
             const url = `/charts/${chartId}?${queryString}`;
             chart = await api(url);
-            csv = chart.data.chart;
         } catch (error) {
             return this.error(error.status, error.message);
         }
+
+        // load publish data
+        try {
+            const url = `/charts/${chartId}/publish/data`;
+            publishData = await api(url);
+        } catch (error) {
+            return this.error(error.status, error.message);
+        }
+        const csv = publishData.chart;
+        delete publishData.chart;
 
         const themeName = page.query.published ? chart.theme : page.query.theme || chart.theme;
 
@@ -83,6 +92,7 @@
         const data = {
             visJSON: vis,
             chartJSON: chart,
+            publishData,
             chartData: csv,
             isPreview: true,
             chartLocale,
@@ -143,6 +153,7 @@
     </script>
 {/each}
 <div class="dw-chart chart {dwChartClasses.join(' ')}">
+
     <Chart
         {data}
         {theme}
