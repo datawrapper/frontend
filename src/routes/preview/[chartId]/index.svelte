@@ -57,6 +57,9 @@
             return this.error(error.status, error.message);
         }
 
+        vis.locale = publishData.locales;
+        delete publishData.locales;
+
         const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
             json: false
         }).then(res => res.text());
