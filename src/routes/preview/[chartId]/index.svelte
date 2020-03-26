@@ -77,8 +77,6 @@
         */
         const libraries = vis.libraries.map(lib => lib.uri);
 
-        const translations = vis.locale;
-
         const data = {
             visJSON: vis,
             chartJSON: chart,
@@ -100,7 +98,6 @@
         return {
             data,
             theme,
-            translations,
             css,
             deps,
             libraries,
@@ -115,7 +112,6 @@
 
     export let data;
     export let theme;
-    export let translations;
     export let css;
     export let deps;
     export let libraries;
@@ -148,7 +144,6 @@
     <Chart
         {data}
         {theme}
-        {translations}
         isStylePlain={query.plain === '1'}
         isStyleFullscreen={query.fs === '1'}
         isStyleNoPointer={query.nopointer === '1'} />
