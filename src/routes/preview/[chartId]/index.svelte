@@ -86,12 +86,6 @@
             console.error(`No locales found for [${chartLocale}]`);
         }
 
-        if (vis.locale) {
-            Object.entries(vis.locale).map(([key, value]) => {
-                vis.locale[key] = value[chart.language];
-            });
-        }
-
         const data = {
             visJSON: vis,
             chartJSON: chart,
