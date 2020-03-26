@@ -77,14 +77,7 @@
         */
         const libraries = vis.libraries.map(lib => lib.uri);
 
-        let translations = {};
-        try {
-            translations = await fetch(
-                `core/locale/${chartLocale.replace('_', '-')}.json`
-            ).then(r => r.json());
-        } catch (error) {
-            console.error(`No locales found for [${chartLocale}]`);
-        }
+        const translations = vis.locale;
 
         const data = {
             visJSON: vis,
