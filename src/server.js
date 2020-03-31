@@ -2,6 +2,7 @@ import polka from 'polka';
 import * as sapper from '@sapper/server';
 import serveStatic from 'serve-static';
 import generate from 'nanoid/generate';
+import { preloadLocales } from './routes/preview/[chartId]/locale-[locale].json.js';
 
 const ORM = require('@datawrapper/orm');
 const { requireConfig } = require('@datawrapper/shared/node/findConfig');
@@ -75,6 +76,7 @@ async function authMiddleware(req, res, next) {
 
 async function main() {
     await ORM.init(config);
+    await preloadLocales();
 
     polka()
         .use(

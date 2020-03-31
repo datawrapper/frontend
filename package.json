@@ -12,9 +12,11 @@
         "start": "node __sapper__/build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "8.0.0",
+        "@datawrapper/chart-core": "8.1.0",
+        "@datawrapper/locales": "1.0.0",
         "@datawrapper/orm": "^3.10.1",
         "@datawrapper/shared": "0.23.0",
+        "fs-extra": "^9.0.0",
         "nanoid": "^2.1.11",
         "node-fetch": "2.6.0",
         "polka": "0.5.2",
