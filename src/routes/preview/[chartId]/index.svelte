@@ -71,6 +71,15 @@
             dependencies: vis.dependencies
         });
 
+        // load vendor locales
+        let locales = {};
+        try {
+            const res = await fetch(`/preview/${chart.id}/locale-${chart.language}.json`);
+            locales = await res.json();
+        } catch (e) {
+            this.error(500, 'error loading locales');
+        }
+
         /*
         @todo: get the correct asset from local or cdn
         http://app.datawrapper.local/static/plugins/locator-maps/vendor/mapbox-gl.min.js
@@ -84,7 +93,7 @@
             chartData: csv,
             isPreview: true,
             chartLocale,
-            locales: {} /* NOTE: What about this? */,
+            locales,
             metricPrefix: {} /* NOTE: What about this? */,
             themeId: theme.id,
             fontsJSON: theme.fonts,
