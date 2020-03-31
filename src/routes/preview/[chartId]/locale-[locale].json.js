@@ -10,7 +10,7 @@ export async function get(req, res, next) {
 
     const locales = {};
     for (var i = 0; i < VENDORS.length; i++) {
-        locales[VENDORS[i]] = await loadVendorLocale(VENDORS[i], locale);
+        locales[VENDORS[i]] = loadVendorLocale(VENDORS[i], locale);
     }
 
     res.setHeader('Content-Type', 'application/json');
