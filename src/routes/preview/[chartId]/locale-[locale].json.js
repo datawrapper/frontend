@@ -3,6 +3,7 @@ import fs from 'fs-extra';
 
 const VENDORS = ['dayjs', 'numeral'];
 const LOCALES = {};
+let localesPreloadedAt;
 
 export async function get(req, res, next) {
     const { locale } = req.params;
@@ -13,6 +14,9 @@ export async function get(req, res, next) {
     }
 
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Last-Modified', localesPreloadedAt);
+    res.setHeader('Cache-Control', 'public');
+    res.setHeader('Cache-Control', 'max-age=3600');
     res.end(JSON.stringify(locales));
 }
 
@@ -50,4 +54,5 @@ export async function preloadLocales() {
             }
         }
     }
+    localesPreloadedAt = (new Date()).toGMTString();
 }
