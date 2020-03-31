@@ -20,7 +20,7 @@ export async function get(req, res, next) {
     res.end(JSON.stringify(locales));
 }
 
-async function loadVendorLocale(vendor, locale) {
+function loadVendorLocale(vendor, locale) {
     const culture = locale.replace('_', '-').toLowerCase();
     const tryLocales = [culture];
     if (culture.length > 2) {
