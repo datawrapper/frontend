@@ -17,30 +17,26 @@
         let chart;
         let publishData;
 
+        const queryString = Object.entries({
+            published: page.query.published,
+            ott: page.query.ott
+        })
+            .filter(([, value]) => Boolean(value))
+            .map(([key, value]) => `${key}=${value}`)
+            .join('&');
+
         // load chart
         try {
-            const queryString = Object.entries({
-                published: page.query.published
-            })
-                .filter(([, value]) => Boolean(value))
-                .map(([key, value]) => `${key}=${value}`)
-                .join('&');
-
-            const url = `/charts/${chartId}?${queryString}`;
-            chart = await api(url);
-        } catch (error) {
-            return this.error(error.status, error.message);
-        }
-
-        // load publish data
-        try {
-            const url = `/charts/${chartId}/publish/data`;
+            const url = `/charts/${chartId}/publish/data?${queryString}`;
             publishData = await api(url);
+            chart = publishData.chart;
+            publishData.chart = undefined;
         } catch (error) {
             return this.error(error.status, error.message);
         }
-        const csv = publishData.chart;
-        delete publishData.chart;
+
+        const csv = publishData.data;
+        delete publishData.data;
 
         const themeName = page.query.published ? chart.theme : page.query.theme || chart.theme;
 
