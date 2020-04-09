@@ -32,7 +32,7 @@
             chart = publishData.chart;
             publishData.chart = undefined;
         } catch (error) {
-            return this.error(error.status, error.message);
+            return this.error(error.status, error);
         }
 
         const csv = publishData.data;
@@ -50,7 +50,7 @@
             theme = results[1];
             theme.less = '';
         } catch (error) {
-            return this.error(error.status, error.message);
+            return this.error(error.status, error);
         }
 
         vis.locale = publishData.locales;
