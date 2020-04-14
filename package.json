@@ -12,7 +12,7 @@
         "start": "node __sapper__/build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "8.2.3",
+        "@datawrapper/chart-core": "8.3.0",
         "@datawrapper/locales": "1.0.0",
         "@datawrapper/orm": "^3.10.1",
         "@datawrapper/shared": "0.23.0",
