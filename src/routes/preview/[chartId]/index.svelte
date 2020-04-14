@@ -149,9 +149,7 @@
         {data}
         {theme}
         isStylePlain={query.plain === '1'}
-        isStyleStatic={query.static === '1'}
-        isStyleFullscreen={query.fs === '1'}
-        isStyleNoPointer={query.nopointer === '1'} />
+        isStyleStatic={query.static === '1'} />
     {#each libraries as lib}
         <script src={lib}>
 
