@@ -129,7 +129,7 @@
 
     if (typeof window !== 'undefined') {
         window.__dwUpdate = ({ chart }) => {
-            data.chartJSON = chart;
+            Object.assign(data.chartJSON, chart);
             data = data; // to force re-rendering
         };
     }
