@@ -101,6 +101,7 @@
 
         return {
             data,
+            chart,
             theme,
             css,
             deps,
@@ -115,6 +116,7 @@
     import get from '@datawrapper/shared/get';
 
     export let data;
+    export let chart;
     export let theme;
     export let css;
     export let deps;
@@ -137,6 +139,7 @@
 
 <svelte:head>
     {@html `<${'style'}>${css}</style>`}
+    <title>{chart.title}</title>
 </svelte:head>
 {#each deps as script}
     <script src={`core/${script}`}>
