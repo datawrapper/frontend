@@ -143,7 +143,7 @@
     <title>{chart.title}</title>
 </svelte:head>
 {#each deps as script}
-    <script src={`lib/chart-core/core/${script}`}>
+    <script src={`lib/chart-core/${script}`}>
 
     </script>
 {/each}
