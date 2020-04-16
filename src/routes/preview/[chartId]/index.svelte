@@ -1,4 +1,5 @@
 <script context="module">
+    /* global GENERAL_CHART_DOMAIN */
     import { getDependencies } from '@datawrapper/chart-core/lib/get-dependencies.js';
     import { createAPI } from './_helpers.js';
 
@@ -142,17 +143,13 @@
     <title>{chart.title}</title>
 </svelte:head>
 {#each deps as script}
-    <script src={`core/${script}`}>
+    <script src={`lib/chart-core/core/${script}`}>
 
     </script>
 {/each}
 <div class="dw-chart chart {dwChartClasses.join(' ')}">
 
-    <Chart
-        {data}
-        {theme}
-        isStylePlain={query.plain === '1'}
-        isStyleStatic={query.static === '1'} />
+    <Chart {data} {theme} isStylePlain={query.plain === '1'} isStyleStatic={query.static === '1'} />
     {#each libraries as lib}
         <script src={lib}>
 
