@@ -78,10 +78,24 @@ async function main() {
     await ORM.init(config);
     await preloadLocales();
 
+    const libs = {
+        'chart-core': serveStatic(chartCore.path.dist)
+    };
+
+    const serveLibraries = (req, res, next) => {
+        for (const lib in libs) {
+            if (req.url.startsWith(`/lib/${lib}/`)) {
+                req.url = req.url.substr(5 + lib.length);
+                return libs[lib](req, res, next);
+            }
+        }
+        return next();
+    };
+
     polka()
         .use(
-            serveStatic(chartCore.path.dist),
             serveStatic('static'),
+            serveLibraries,
             cookieReduceMiddleware,
             authMiddleware,
             sapper.middleware({
