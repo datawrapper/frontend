@@ -1,7 +1,7 @@
-import resolve from 'rollup-plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import path from 'path';
-import replace from 'rollup-plugin-replace';
-import commonjs from 'rollup-plugin-commonjs';
+import replace from '@rollup/plugin-replace';
+import commonjs from '@rollup/plugin-commonjs';
 import svelte from 'rollup-plugin-svelte';
 import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
@@ -20,7 +20,14 @@ const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 const { general, api, frontend } = DW_CONFIG;
-const API_BASE_URL = JSON.stringify(`http${api.https ? 's' : ''}://${api.subdomain}.${api.domain}/v3`);
+const API_BASE_URL = JSON.stringify(
+    `http${api.https ? 's' : ''}://${api.subdomain}.${api.domain}/v3`
+);
+
+function onwarn(warning, warn) {
+    if (warning.code === 'EVAL') return;
+    warn(warning);
+}
 
 const nodeResolve = () =>
     resolve({
@@ -41,6 +48,7 @@ export default {
             format: legacy ? 'iife' : 'esm'
         },
         inlineDynamicImports: legacy,
+        onwarn,
         plugins: [
             replace({
                 'process.browser': true,
@@ -90,6 +98,7 @@ export default {
     server: {
         input: config.server.input(),
         output: config.server.output(),
+        onwarn,
         plugins: [
             replace({
                 'process.browser': false,
