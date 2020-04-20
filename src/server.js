@@ -63,6 +63,7 @@ async function authMiddleware(req, res, next) {
                     'path=/',
                     `domain=.${config.api.domain}`,
                     'HttpOnly',
+                    'SameSite=Lax',
                     ...(config.frontend.https ? ['Secure'] : [])
                 ].join('; ')
             );
