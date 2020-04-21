@@ -19,10 +19,7 @@ const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
-const { general, api, frontend } = DW_CONFIG;
-const API_BASE_URL = JSON.stringify(
-    `http${api.https ? 's' : ''}://${api.subdomain}.${api.domain}/v3`
-);
+const { general } = DW_CONFIG;
 
 function onwarn(warning, warn) {
     if (warning.code === 'EVAL') return;
@@ -52,9 +49,7 @@ export default {
         plugins: [
             replace({
                 'process.browser': true,
-                'process.env.NODE_ENV': JSON.stringify(mode),
-                API_BASE_URL: API_BASE_URL,
-                ...flatten({ api, frontend })
+                'process.env.NODE_ENV': JSON.stringify(mode)
             }),
             svelte({
                 dev,
@@ -102,9 +97,7 @@ export default {
         plugins: [
             replace({
                 'process.browser': false,
-                'process.env.NODE_ENV': JSON.stringify(mode),
-                API_BASE_URL: API_BASE_URL,
-                ...flatten(DW_CONFIG)
+                'process.env.NODE_ENV': JSON.stringify(mode)
             }),
             svelte({
                 generate: 'ssr',
@@ -116,32 +109,3 @@ export default {
         external: Object.keys(pkg.dependencies).concat(require('module').builtinModules)
     }
 };
-
-/**
- * Slightly modified version of https://stackoverflow.com/a/19101235 to flatten a deep object.
- * Deep keys are getting concatenated with an underscore.
- *
- * @example
- * flatten({ foo: { bar: 'baz' } })
- * // -> { FOO_BAR: 'baz' }
- *
- * @param {Object} data - deep nested object
- * @returns {Object} - flat object
- */
-function flatten(data) {
-    const result = {};
-    function recurse(cur, prop) {
-        if (Object(cur) !== cur) {
-            result[prop.toUpperCase()] = typeof cur === 'string' ? JSON.stringify(cur) : cur;
-        } else {
-            let isEmpty = true;
-            for (const p in cur) {
-                isEmpty = false;
-                recurse(cur[p], prop ? prop + '_' + p : p);
-            }
-            if (isEmpty && prop) result[prop.toUpperCase()] = {};
-        }
-    }
-    recurse(data, '');
-    return result;
-}

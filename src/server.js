@@ -1,4 +1,3 @@
-import path from 'path';
 import polka from 'polka';
 import * as sapper from '@sapper/server';
 import serveStatic from 'serve-static';
@@ -79,14 +78,8 @@ async function main() {
     await ORM.init(config);
     await preloadLocales();
 
-    const polyfillDir = path.join(
-        path.dirname(require.resolve('@datawrapper/polyfills/package.json')),
-        'polyfills'
-    )
-
     const libs = {
-        'chart-core': serveStatic(chartCore.path.dist),
-        'polyfills': serveStatic(polyfillDir)
+        'chart-core': serveStatic(chartCore.path.dist)
     };
 
     const serveLibraries = (req, res, next) => {
@@ -108,7 +101,12 @@ async function main() {
             sapper.middleware({
                 session: (req, res) => ({
                     user: req.user,
-                    headers: req.headers
+                    headers: req.headers,
+                    config: {
+                        apiDomain: `http${config.api.https ? 's' : ''}://${config.api.subdomain}.${
+                            config.api.domain
+                        }/v3`
+                    }
                 })
             })
         )
