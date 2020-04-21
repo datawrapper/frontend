@@ -9,7 +9,8 @@
         "build": "sapper build --legacy",
         "export": "sapper export --legacy",
         "frontend": "node __sapper__/build",
-        "start": "node __sapper__/build"
+        "start": "node __sapper__/build",
+        "prepare": "npm run build"
     },
     "dependencies": {
         "@datawrapper/chart-core": "8.5.0",
