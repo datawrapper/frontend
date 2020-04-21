@@ -85,10 +85,7 @@
             "standard",
             "prettier",
             "prettier/standard"
-        ],
-        "globals": {
-            "API_BASE_URL": "readonly"
-        }
+        ]
     },
     "husky": {
         "hooks": {

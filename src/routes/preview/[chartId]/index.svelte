@@ -107,6 +107,7 @@
             css,
             deps,
             libraries,
+            config,
             query: page.query
         };
     }
@@ -123,6 +124,7 @@
     export let deps;
     export let libraries;
     export let query;
+    export let config;
 
     const dwChartClasses = [
         `vis-height-${get(data, 'visJSON.height', 'fit')}`,
@@ -156,7 +158,7 @@
         </script>
     {/each}
 
-    <script src={`${API_BASE_URL}/visualizations/${data.visJSON.id}/script.js`}>
+    <script src={`${config.apiDomain}/visualizations/${data.visJSON.id}/script.js`}>
 
     </script>
 </div>
