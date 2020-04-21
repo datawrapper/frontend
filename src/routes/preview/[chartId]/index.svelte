@@ -1,5 +1,4 @@
 <script context="module">
-    /* global GENERAL_CHART_DOMAIN */
     import { getDependencies } from '@datawrapper/chart-core/lib/get-dependencies.js';
     import { createAPI } from './_helpers.js';
 
@@ -95,7 +94,7 @@
             themeId: theme.id,
             fontsJSON: theme.fonts,
             typographyJSON: theme.data.typography,
-            polyfillUri: `//${GENERAL_CHART_DOMAIN}/lib/vendor`
+            polyfillUri: `/lib/polyfills`
         };
 
         /* add basemap attribution again */
