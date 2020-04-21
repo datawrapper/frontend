@@ -82,11 +82,11 @@ async function main() {
     const polyfillDir = path.join(
         path.dirname(require.resolve('@datawrapper/polyfills/package.json')),
         'polyfills'
-    )
+    );
 
     const libs = {
         'chart-core': serveStatic(chartCore.path.dist),
-        'polyfills': serveStatic(polyfillDir)
+        polyfills: serveStatic(polyfillDir)
     };
 
     const serveLibraries = (req, res, next) => {
@@ -108,7 +108,12 @@ async function main() {
             sapper.middleware({
                 session: (req, res) => ({
                     user: req.user,
-                    headers: req.headers
+                    headers: req.headers,
+                    config: {
+                        apiDomain: `http${config.api.https ? 's' : ''}://${config.api.subdomain}.${
+                            config.api.domain
+                        }/v3`
+                    }
                 })
             })
         )
