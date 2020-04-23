@@ -41,7 +41,13 @@ async function authMiddleware(req, res, next) {
 
     if (session && session.user_id) {
         // it's a user session, so find user
-        req.user = (await User.findByPk(session.user_id)).toJSON();
+        const user = (await User.findByPk(session.user_id)).toJSON();
+
+        req.user = {
+            id: user.id,
+            email: user.email,
+            language: user.language
+        };
     } else {
         if (!session) {
             // no cookie or session expired, let's create a new session
