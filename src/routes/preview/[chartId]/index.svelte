@@ -11,9 +11,7 @@
         const { config } = session;
         const { chartId } = page.params;
         const fetch = this.fetch;
-        const { api } = createAPI(fetch, config.apiDomain, {
-            cookie: session.headers.cookie
-        });
+        const { api } = createAPI(fetch, config.apiDomain);
 
         let chart;
         let publishData;

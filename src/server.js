@@ -138,7 +138,6 @@ async function main() {
             sapper.middleware({
                 session: (req, res) => ({
                     user: req.user,
-                    headers: req.headers,
                     config: {
                         apiDomain: `http${config.api.https ? 's' : ''}://${config.api.subdomain}.${
                             config.api.domain
