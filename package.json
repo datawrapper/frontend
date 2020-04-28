@@ -13,7 +13,7 @@
         "prepare": "npm run build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "8.7.1",
+        "@datawrapper/chart-core": "8.8.0",
         "@datawrapper/locales": "1.0.0",
         "@datawrapper/orm": "3.13.0",
         "@datawrapper/shared": "0.25.1",
