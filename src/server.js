@@ -46,7 +46,6 @@ function overrideSetHeader(req, res, next) {
     const origSetHeader = res.setHeader;
     res.setHeader = function(key, value) {
         if (key === 'Cache-Control') {
-            console.log(key, value);
             if (value === 'max-age=600') {
                 // HTML files
                 return origSetHeader.apply(this, ['Cache-Control', 'public, no-cache']);
