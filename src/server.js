@@ -28,6 +28,36 @@ function cookieReduceMiddleware(req, res, next) {
     next();
 }
 
+/**
+ * Code in Sapper:
+ * https://github.com/sveltejs/sapper/blob/master/runtime/src/server/middleware/get_page_handler.ts#L57
+ *
+ * Issue:
+ * https://github.com/sveltejs/sapper/issues/567
+ *
+ * Sapper currently set's a hard coded max-age directive as Cache-Control header.
+ * There is an open issue on Github with a discussion to remove that or make it configurable.
+ *
+ * This middleware is copied from that issue and only a workaround.
+ * Thanks Nolan!
+ *
+ */
+function overrideSetHeader(req, res, next) {
+    const origSetHeader = res.setHeader;
+    res.setHeader = function(key, value) {
+        if (key === 'Cache-Control') {
+            console.log(key, value);
+            if (value === 'max-age=600') {
+                // HTML files
+                return origSetHeader.apply(this, ['Cache-Control', 'public, no-cache']);
+            }
+        }
+
+        return origSetHeader.apply(this, arguments);
+    };
+    return next();
+}
+
 async function authMiddleware(req, res, next) {
     const { Session, User } = require('@datawrapper/orm/models');
     req.headers.host = `${config.api.subdomain}.${config.api.domain}`;
@@ -105,6 +135,7 @@ async function main() {
             serveLibraries,
             cookieReduceMiddleware,
             authMiddleware,
+            overrideSetHeader,
             sapper.middleware({
                 session: (req, res) => ({
                     user: req.user,
