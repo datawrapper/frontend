@@ -9,6 +9,9 @@
 
         <link rel="stylesheet" href="static_sapper/global.css" />
 
+        <!-- nomodule causes modern browsers to ignore this script -->
+        <script nomodule src="lib/polyfills/all.js"></script>
+
         <!-- Sapper generates a <style> tag containing critical CSS
 	     for the current page. CSS for the rest of the app is
 	     lazily loaded when it precaches secondary pages -->
