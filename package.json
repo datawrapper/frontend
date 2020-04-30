@@ -1,7 +1,7 @@
 {
     "name": "@datawrapper/frontend",
-    "version": "0.0.1",
-    "description": "TODO",
+    "version": "1.0.0",
+    "description": "The new Datawrapper frontend app",
     "scripts": {
         "format": "prettier --write 'src/**/*.{js,svelte}'",
         "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'",
