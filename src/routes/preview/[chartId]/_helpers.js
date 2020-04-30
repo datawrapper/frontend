@@ -2,8 +2,7 @@ export function createAPI(fetch, baseUrl, headers) {
     async function api(path, { json = true } = {}) {
         const response = fetch(`${baseUrl}${path}`, {
             credentials: 'include',
-            mode: 'cors',
-            headers
+            mode: 'cors'
         });
 
         if (json) {
