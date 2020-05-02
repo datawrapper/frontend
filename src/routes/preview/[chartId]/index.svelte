@@ -71,7 +71,7 @@
         // load vendor locales
         let locales = {};
         try {
-            const res = await fetch(`/preview/${chart.id}/locale-${chart.language}.json`);
+            const res = await fetch(`/preview/${chart.id}/locale-${chart.language || 'en-US'}.json`);
             locales = await res.json();
         } catch (e) {
             this.error(500, 'error loading locales');
