@@ -59,7 +59,7 @@
             json: false
         }).then(res => res.text());
 
-        const chartLocale = chart.language;
+        const chartLocale = chart.language || 'en-US';
 
         const deps = getDependencies({
             locale: chartLocale,
@@ -69,7 +69,7 @@
         // load vendor locales
         let locales = {};
         try {
-            const res = await fetch(`/preview/${chart.id}/locale-${chart.language || 'en-US'}.json`);
+            const res = await fetch(`/preview/${chart.id}/locale-${chartLocale}.json`);
             locales = await res.json();
         } catch (e) {
             this.error(500, 'error loading locales');
