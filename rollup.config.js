@@ -83,6 +83,20 @@ export default {
                     ]
                 }),
 
+            /* from https://github.com/antony/sapper-ie
+               we need to include these babel transformations
+               in the non-legacy build for ms edge to work properly */
+            !legacy &&
+                babel({
+                    extensions: ['.js', '.mjs', '.html', '.svelte'],
+                    runtimeHelpers: true,
+                    exclude: ['node_modules/@babel/**'],
+                    plugins: [
+                        '@babel/plugin-syntax-dynamic-import',
+                        '@babel/plugin-proposal-object-rest-spread'
+                    ]
+                }),
+
             !dev &&
                 terser({
                     module: true
