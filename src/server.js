@@ -128,7 +128,7 @@ async function main() {
         return next();
     };
 
-    polka()
+    const app = polka()
         .use(
             serveStatic('static'),
             serveLibraries,
@@ -148,6 +148,18 @@ async function main() {
         )
         .listen(PORT, err => {
             if (err) process.stdout.write('error', err);
+            else {
+                // graceful start and stop
+                process.send('ready');
+
+                process.on('SIGINT', async function() {
+                    console.log('received SIGINT, closing connections...');
+                    app.server.close(() => {
+                        console.log('server has stopped');
+                        process.exit(0);
+                    });
+                });
+            }
         });
 }
 
