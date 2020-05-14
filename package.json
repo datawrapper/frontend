@@ -13,10 +13,10 @@
         "prepare": "npm run build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "^8.11.1",
+        "@datawrapper/chart-core": "^8.11.3",
         "@datawrapper/locales": "1.0.0",
         "@datawrapper/orm": "3.13.0",
-        "@datawrapper/shared": "^0.25.3",
+        "@datawrapper/shared": "^0.25.4",
         "fs-extra": "9.0.0",
         "nanoid": "2.1.11",
         "node-fetch": "2.6.0",
