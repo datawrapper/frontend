@@ -37,7 +37,7 @@
         const csv = publishData.data;
         delete publishData.data;
 
-        const themeName = page.query.published ? chart.theme : page.query.theme || chart.theme;
+        const themeName = page.query.theme || chart.theme;
 
         let vis, theme;
         try {
