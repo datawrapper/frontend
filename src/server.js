@@ -149,8 +149,10 @@ async function main() {
         .listen(PORT, err => {
             if (err) process.stdout.write('error', err);
             else {
-                // graceful start and stop
-                process.send('ready');
+                if (process.send) {
+                    // graceful start and stop
+                    process.send('ready');
+                }
 
                 process.on('SIGINT', async function() {
                     console.log('received SIGINT, closing connections...');
