@@ -49,10 +49,10 @@ export async function preloadLocales() {
         for (let i = files.length - 1; i >= 0; i--) {
             const file = files[i];
             if (/.*\.js/.test(file)) {
-                const content = await fs.readFile(path.join(basePath, file), 'utf-8')
+                const content = await fs.readFile(path.join(basePath, file), 'utf-8');
                 LOCALES[vendor].set(path.basename(file, '.js'), content);
             }
         }
     }
-    localesPreloadedAt = (new Date()).toGMTString();
+    localesPreloadedAt = new Date().toGMTString();
 }

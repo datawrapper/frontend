@@ -1,6 +1,6 @@
 <script context="module">
     import { getDependencies } from '@datawrapper/chart-core/lib/get-dependencies.js';
-    import { createAPI } from './_helpers.js';
+    import httpReq from '@datawrapper/shared/httpReq';
 
     export async function preload(page, session) {
         if (!session.user) {
@@ -10,8 +10,10 @@
 
         const { config } = session;
         const { chartId } = page.params;
-        const fetch = this.fetch;
-        const { api } = createAPI(fetch, config.apiDomain);
+
+        function api(url) {
+            return httpReq.get('/v3' + url, { baseUrl: config.apiDomain });
+        }
 
         let chart;
         let publishData;
@@ -55,9 +57,7 @@
         vis.locale = publishData.locales;
         delete publishData.locales;
 
-        const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`, {
-            json: false
-        }).then(res => res.text());
+        const css = await api(`/visualizations/${vis.id}/styles.css?theme=${theme.id}`);
 
         const chartLocale = chart.language || 'en-US';
 
