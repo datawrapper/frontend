@@ -10,9 +10,10 @@
 
         const { config } = session;
         const { chartId } = page.params;
+        const fetch = this.fetch;
 
         function api(url) {
-            return httpReq.get('/v3' + url, { baseUrl: config.apiDomain });
+            return httpReq.get(url, { fetch, baseUrl: config.apiDomain });
         }
 
         let chart;
