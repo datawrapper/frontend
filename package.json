@@ -13,10 +13,10 @@
         "prepare": "npm run build"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "^8.15.2",
+        "@datawrapper/chart-core": "git+https://github.com/datawrapper/chart-core.git#v8.18.0",
         "@datawrapper/locales": "1.0.2",
-        "@datawrapper/orm": "3.13.0",
-        "@datawrapper/shared": "^0.25.4",
+        "@datawrapper/orm": "git+https://github.com/datawrapper/orm.git#v3.18.0",
+        "@datawrapper/shared": "git+https://github.com/datawrapper/shared.git#v0.27.0",
         "fs-extra": "9.0.0",
         "nanoid": "2.1.11",
         "node-fetch": "2.6.0",
