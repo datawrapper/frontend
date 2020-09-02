@@ -5,8 +5,7 @@ module.exports = {
     name: 'routes/lib',
     version: '1.0.0',
     register: async (server, options) => {
-        server.route([
-            {
+        server.route([{
                 path: '/chart-core/{file*}',
                 method: 'GET',
                 config: {
@@ -17,7 +16,17 @@ module.exports = {
                         path: chartCore.path.dist
                     }
                 }
+        }, {
+            path: '/polyfills/{file*}',
+            method: 'GET',
+            config: {
+                auth: false
+            },
+            handler: {
+                directory: {
+                    path: path.resolve(path.dirname(require.resolve('@datawrapper/polyfills/package.json')), 'polyfills')
+                }
             }
-        ]);
+        }]);
     }
 };
