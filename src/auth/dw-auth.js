@@ -1,7 +1,5 @@
 const Boom = require('@hapi/boom');
 const get = require('lodash/get');
-const getUser = require('./get-user');
-const authUtils = require('./utils.js');
 const generate = require('nanoid/generate');
 const { User, Session, ChartAccessToken, AccessToken } = require('@datawrapper/orm/models');
 
@@ -193,7 +191,11 @@ function getStateOpts(
     };
 }
 
-function getUser(userId, { credentials, strategy, logger } = {}) {
+function cookieTTL(days) {
+    return 1000 * 3600 * 24 * days; // 1000ms = 1s -> 3600s = 1h -> 24h = 1d
+}
+
+async function getUser(userId, { credentials, strategy, logger } = {}) {
     let user = await User.findByPk(userId, {
         attributes: [
             'id',

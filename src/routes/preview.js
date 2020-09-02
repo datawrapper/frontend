@@ -109,7 +109,7 @@ module.exports = {
                     chart = publishData.chart;
                     publishData.chart = undefined;
                 } catch (error) {
-                    return Boom.badImplementation();
+                    return Boom.unauthorized();
                 }
 
                 const csv = publishData.data;
@@ -160,8 +160,8 @@ module.exports = {
                         isPreview: true,
                         chartLocale,
                         locales: {
-                            dayjs: loadVendorLocale(locales, 'dayjs', locale),
-                            numeral: loadVendorLocale(locales, 'numeral', locale)
+                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
+                            numeral: loadVendorLocale(locales, 'numeral', chartLocale)
                         },
                         metricPrefix: {} /* NOTE: What about this? */,
                         themeId: theme.id,
