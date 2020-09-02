@@ -1,5 +1,5 @@
 const Hapi = require('@hapi/hapi');
-const Vision = require('@hapi/vision')
+const Vision = require('@hapi/vision');
 const Inert = require('@hapi/inert');
 const ORM = require('@datawrapper/orm');
 const Pug = require('pug');

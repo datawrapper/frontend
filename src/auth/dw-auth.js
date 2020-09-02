@@ -74,11 +74,12 @@ function cookieAuthScheme(server, options) {
                     session,
                     getStateOpts(server, 90, sessionType === 'token' ? 'None' : sameSite)
                 );
-                console.log({isValid, credentials, artifacts});
+                console.log({ isValid, credentials, artifacts });
                 return h.authenticated({ credentials, artifacts });
             } else {
-                function generateToken (length = 25) {
-                    const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                function generateToken(length = 25) {
+                    const alphabet =
+                        '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
                     return generate(alphabet, length);
                 }
 
@@ -118,7 +119,6 @@ function cookieAuthScheme(server, options) {
 
     return scheme;
 }
-
 
 async function cookieValidation(request, session, h) {
     let row = await Session.findByPk(session);
@@ -165,9 +165,7 @@ function dwAuth(server, options = {}) {
                 credentials = cookie.credentials;
                 artifacts = cookie.artifacts;
             } catch (error) {
-                throw Boom.unauthorized('Invalid authentication credentials', [
-                    'Session'
-                ]);
+                throw Boom.unauthorized('Invalid authentication credentials', ['Session']);
             }
 
             if (options.validate) {

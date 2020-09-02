@@ -26,10 +26,16 @@ module.exports = {
                 const { auth, params } = request;
                 const { chartId } = params;
                 const config = server.methods.config();
-                const apiBase = `${config.api.https?'https':'http'}://${config.api.subdomain}.${config.api.domain}/v3`;
+                const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
+                    config.api.domain
+                }/v3`;
 
                 console.log(auth.credentials);
-                const { api } = createAPI(apiBase, config.api.sessionID, auth.credentials && auth.credentials.data ? auth.credentials.data.id : '');
+                const { api } = createAPI(
+                    apiBase,
+                    config.api.sessionID,
+                    auth.credentials && auth.credentials.data ? auth.credentials.data.id : ''
+                );
 
                 let chart;
                 let publishData;
@@ -164,21 +170,23 @@ async function loadLocales() {
         for (let i = files.length - 1; i >= 0; i--) {
             const file = files[i];
             if (/.*\.js/.test(file)) {
-                const content = await fs.readFile(path.join(basePath, file), 'utf-8')
+                const content = await fs.readFile(path.join(basePath, file), 'utf-8');
                 locales[vendor].set(path.basename(file, '.js'), content);
             }
         }
     }
-    localesPreloadedAt = (new Date()).toGMTString();
+    localesPreloadedAt = new Date().toGMTString();
     return locales;
 }
 
 function createAPI(baseUrl, sessionID, session) {
     async function api(path, { json = true } = {}) {
         const response = await got(`${baseUrl}${path}`, {
-            headers: session ? {
-                Cookie: `${sessionID}=${session}`
-            } : undefined
+            headers: session
+                ? {
+                      Cookie: `${sessionID}=${session}`
+                  }
+                : undefined
         });
 
         if (json) {
@@ -199,4 +207,4 @@ function stringify(obj) {
         json: true,
         wrap: true
     });
-};
+}
