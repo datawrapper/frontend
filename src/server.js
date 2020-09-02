@@ -8,8 +8,6 @@ const configPath = findConfigPath();
 const config = require(configPath);
 const path = require('path');
 
-const DW_DEV_MODE = JSON.parse(process.env.DW_DEV_MODE || 'false');
-
 const start = async () => {
     const server = Hapi.Server({
         port: 3000,
@@ -22,18 +20,10 @@ const start = async () => {
     await ORM.init(config);
     await ORM.registerPlugins();
 
-    server.app.scopes = new Set();
-    server.app.adminScopes = new Set();
-
-    server.method('config', key => (key ? config[key] : config));
-    server.method('getScopes', (admin = false) => {
-        return admin
-            ? [...server.app.scopes, ...server.app.adminScopes]
-            : Array.from(server.app.scopes);
-    });
-
     await server.register(Vision);
     await server.register(Inert);
+
+    server.method('config', key => (key ? config[key] : config));
 
     server.views({
         engines: {
@@ -49,8 +39,6 @@ const start = async () => {
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
     await server.start();
-
-    console.log('Server is running at ' + server.info.uri);
 };
 
 start();

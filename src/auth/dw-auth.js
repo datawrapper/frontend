@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const get = require('lodash/get');
 const generate = require('nanoid/generate');
-const { User, Session, ChartAccessToken, AccessToken } = require('@datawrapper/orm/models');
+const { User, Session } = require('@datawrapper/orm/models');
 
 const DWAuth = {
     name: 'dw-auth',
@@ -56,13 +56,11 @@ function cookieAuthScheme(server, options) {
                 session = session[0];
             }
 
-            const {
-                isValid,
-                credentials,
-                artifacts,
-                sessionType,
-                message = Boom.unauthorized(null, 'Session')
-            } = await options.validate(request, session, h);
+            const { isValid, credentials, artifacts, sessionType } = await options.validate(
+                request,
+                session,
+                h
+            );
 
             if (isValid) {
                 const sameSite = process.env.NODE_ENV === 'development' ? 'None' : 'Lax';
@@ -74,12 +72,6 @@ function cookieAuthScheme(server, options) {
 
                 return h.authenticated({ credentials, artifacts });
             } else {
-                function generateToken(length = 25) {
-                    const alphabet =
-                        '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-                    return generate(alphabet, length);
-                }
-
                 // no cookie or session expired, let's create a new session
                 const sessionId = generateToken();
 
@@ -110,7 +102,10 @@ function cookieAuthScheme(server, options) {
                 return h.authenticated(auth);
             }
 
-            return message;
+            function generateToken(length = 25) {
+                const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                return generate(alphabet, length);
+            }
         }
     };
 
@@ -137,8 +132,6 @@ async function cookieValidation(request, session, h) {
     });
 
     if (auth.isValid) {
-        // add all scopes to cookie session
-        auth.credentials.scope = request.server.methods.getScopes(auth.artifacts.isAdmin());
         auth.sessionType = row.data.type;
     }
 
@@ -233,6 +226,6 @@ async function getUser(userId, { credentials, strategy, logger } = {}) {
     }
 
     return { isValid: true, credentials, artifacts: user };
-};
+}
 
 module.exports = DWAuth;
