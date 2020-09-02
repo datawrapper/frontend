@@ -1,7 +1,7 @@
 {
     "name": "@datawrapper/frontend",
     "version": "2.0.0",
-    "description": "The new Datawrapper frontend service usin hapi.js",
+    "description": "The new Datawrapper frontend service using hapi",
     "scripts": {
         "format": "prettier --write 'src/**/*.{js,svelte}'",
         "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'"
