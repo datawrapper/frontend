@@ -2,9 +2,8 @@ const Boom = require('@hapi/boom');
 const get = require('lodash/get');
 const getUser = require('./get-user');
 const authUtils = require('./utils.js');
-const { Session, ChartAccessToken, AccessToken } = require('@datawrapper/orm/models');
 const generate = require('nanoid/generate');
-const { getStateOpts } = require('./utils');
+const { User, Session, ChartAccessToken, AccessToken } = require('@datawrapper/orm/models');
 
 const DWAuth = {
     name: 'dw-auth',
@@ -74,7 +73,7 @@ function cookieAuthScheme(server, options) {
                     session,
                     getStateOpts(server, 90, sessionType === 'token' ? 'None' : sameSite)
                 );
-                console.log({ isValid, credentials, artifacts });
+
                 return h.authenticated({ credentials, artifacts });
             } else {
                 function generateToken(length = 25) {
@@ -178,5 +177,60 @@ function dwAuth(server, options = {}) {
 
     return scheme;
 }
+
+function getStateOpts(
+    server,
+    ttl,
+    sameSite = process.env.NODE_ENV === 'development' ? 'None' : 'Lax'
+) {
+    return {
+        isSecure: server.methods.config('frontend').https,
+        strictHeader: false,
+        domain: `.${server.methods.config('api').domain}`,
+        isSameSite: sameSite,
+        path: '/',
+        ttl: cookieTTL(ttl)
+    };
+}
+
+function getUser(userId, { credentials, strategy, logger } = {}) {
+    let user = await User.findByPk(userId, {
+        attributes: [
+            'id',
+            'email',
+            'role',
+            'language',
+            'activate_token',
+            'reset_password_token',
+            'deleted'
+        ]
+    });
+
+    if (user && user.deleted) {
+        return { isValid: false, message: Boom.unauthorized('User not found', strategy) };
+    }
+
+    if (!user && credentials.session) {
+        const notSupported = name => {
+            return () => {
+                logger && logger.warn(`user.${name} is not supported for guests`);
+                return false;
+            };
+        };
+        // use non-persistant User model instance
+        user = User.build({
+            role: 'guest',
+            id: undefined,
+            language: 'en-US'
+        });
+        // make sure it never ends up in our DB
+        user.save = notSupported('save');
+        user.update = notSupported('update');
+        user.destroy = notSupported('destroy');
+        user.reload = notSupported('reload');
+    }
+
+    return { isValid: true, credentials, artifacts: user };
+};
 
 module.exports = DWAuth;

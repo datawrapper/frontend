@@ -1,5 +1,6 @@
 const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
 const chartCore = require('@datawrapper/chart-core');
+const Boom = require('@hapi/boom')
 const got = require('got');
 const jsesc = require('jsesc');
 const get = require('lodash/get');
@@ -12,11 +13,65 @@ module.exports = {
     register: async (server, options) => {
         const locales = await loadLocales();
 
-        function getLocale(locale) {
-            return {
-                dayjs: loadVendorLocale(locales, 'dayjs', locale),
-                numeral: loadVendorLocale(locales, 'numeral', locale)
-            };
+        async function loadLocales() {
+            const VENDORS = ['dayjs', 'numeral'];
+            const locales = [];
+
+            for (var i = 0; i < VENDORS.length; i++) {
+                const vendor = VENDORS[i];
+                locales[vendor] = new Map();
+                const basePath = path.resolve(
+                    __dirname,
+                    '../../node_modules/@datawrapper/locales/locales/',
+                    vendor
+                );
+                const files = await fs.readdir(basePath);
+                for (let i = files.length - 1; i >= 0; i--) {
+                    const file = files[i];
+                    if (/.*\.js/.test(file)) {
+                        const content = await fs.readFile(path.join(basePath, file), 'utf-8');
+                        locales[vendor].set(path.basename(file, '.js'), content);
+                    }
+                }
+            }
+            localesPreloadedAt = new Date().toGMTString();
+            return locales;
+        }
+
+        function loadVendorLocale(locales, vendor, locale) {
+            const culture = locale.replace('_', '-').toLowerCase();
+            const tryLocales = [culture];
+            if (culture.length > 2) {
+                // also try just language as fallback
+                tryLocales.push(culture.split('-')[0]);
+            }
+            for (let i = 0; i < tryLocales.length; i++) {
+                if (locales[vendor].has(tryLocales[i])) {
+                    return locales[vendor].get(tryLocales[i]);
+                }
+            }
+            // no locale found at all
+            return 'null';
+        }
+
+        function createAPI(baseUrl, sessionID, session) {
+            async function api(path, { json = true } = {}) {
+                const response = await got(`${baseUrl}${path}`, {
+                    headers: session
+                        ? {
+                              Cookie: `${sessionID}=${session}`
+                          }
+                        : undefined
+                });
+
+                if (json) {
+                    return JSON.parse(response.body);
+                } else {
+                    return response.body;
+                }
+            }
+
+            return api;
         }
 
         server.route({
@@ -30,8 +85,7 @@ module.exports = {
                     config.api.domain
                 }/v3`;
 
-                console.log(auth.credentials);
-                const { api } = createAPI(
+                const api = createAPI(
                     apiBase,
                     config.api.sessionID,
                     auth.credentials && auth.credentials.data ? auth.credentials.data.id : ''
@@ -55,8 +109,7 @@ module.exports = {
                     chart = publishData.chart;
                     publishData.chart = undefined;
                 } catch (error) {
-                    console.log(error);
-                    return this.error(error.status, error);
+                    return Boom.badImplementation();
                 }
 
                 const csv = publishData.data;
@@ -65,6 +118,7 @@ module.exports = {
                 const themeName = request.query.theme || chart.theme;
 
                 let vis, theme;
+
                 try {
                     const results = await Promise.all([
                         api(`/visualizations/${chart.type}`),
@@ -74,7 +128,7 @@ module.exports = {
                     theme = results[1];
                     theme.less = '';
                 } catch (error) {
-                    return this.error(error.status, error);
+                    return Boom.badImplementation();
                 }
 
                 vis.locale = publishData.locales;
@@ -105,7 +159,10 @@ module.exports = {
                         chartData: csv,
                         isPreview: true,
                         chartLocale,
-                        locales: getLocale(chartLocale),
+                        locales: {
+                            dayjs: loadVendorLocale(locales, 'dayjs', locale),
+                            numeral: loadVendorLocale(locales, 'numeral', locale)
+                        },
                         metricPrefix: {} /* NOTE: What about this? */,
                         themeId: theme.id,
                         fontsJSON: theme.fonts,
@@ -119,7 +176,11 @@ module.exports = {
                 const { html, head } = chartCore.svelte.render(props);
 
                 return h.view('preview', {
-                    __DW_SVELTE_PROPS__: stringify(props),
+                    __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
+                        isScriptContext: true,
+                        json: true,
+                        wrap: true
+                    }),
                     CHART_HTML: html,
                     CHART_HEAD: head,
                     VIS_SCRIPT: `${apiBase}/visualizations/${props.data.visJSON.id}/script.js`,
@@ -137,74 +198,3 @@ module.exports = {
         });
     }
 };
-
-function loadVendorLocale(locales, vendor, locale) {
-    const culture = locale.replace('_', '-').toLowerCase();
-    const tryLocales = [culture];
-    if (culture.length > 2) {
-        // also try just language as fallback
-        tryLocales.push(culture.split('-')[0]);
-    }
-    for (let i = 0; i < tryLocales.length; i++) {
-        if (locales[vendor].has(tryLocales[i])) {
-            return locales[vendor].get(tryLocales[i]);
-        }
-    }
-    // no locale found at all
-    return 'null';
-}
-
-async function loadLocales() {
-    const VENDORS = ['dayjs', 'numeral'];
-    const locales = [];
-
-    for (var i = 0; i < VENDORS.length; i++) {
-        const vendor = VENDORS[i];
-        locales[vendor] = new Map();
-        const basePath = path.resolve(
-            __dirname,
-            '../../node_modules/@datawrapper/locales/locales/',
-            vendor
-        );
-        const files = await fs.readdir(basePath);
-        for (let i = files.length - 1; i >= 0; i--) {
-            const file = files[i];
-            if (/.*\.js/.test(file)) {
-                const content = await fs.readFile(path.join(basePath, file), 'utf-8');
-                locales[vendor].set(path.basename(file, '.js'), content);
-            }
-        }
-    }
-    localesPreloadedAt = new Date().toGMTString();
-    return locales;
-}
-
-function createAPI(baseUrl, sessionID, session) {
-    async function api(path, { json = true } = {}) {
-        const response = await got(`${baseUrl}${path}`, {
-            headers: session
-                ? {
-                      Cookie: `${sessionID}=${session}`
-                  }
-                : undefined
-        });
-
-        if (json) {
-            return JSON.parse(response.body);
-        } else {
-            return response.body;
-        }
-    }
-
-    return {
-        api
-    };
-}
-
-function stringify(obj) {
-    return jsesc(JSON.stringify(obj), {
-        isScriptContext: true,
-        json: true,
-        wrap: true
-    });
-}
