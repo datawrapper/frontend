@@ -34,7 +34,8 @@ const nodeResolve = () =>
                 path.join(__dirname, 'node_modules'),
                 path.join(__dirname, 'src', 'node_modules')
             ]
-        }
+        },
+        browser: true
     });
 
 export default {
