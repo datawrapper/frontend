@@ -2,7 +2,7 @@ import path from 'path';
 import polka from 'polka';
 import * as sapper from '@sapper/server';
 import serveStatic from 'serve-static';
-import generate from 'nanoid/generate';
+import { customAlphabet } from 'nanoid';
 import { preloadLocales } from './routes/preview/[chartId]/locale-[locale].json.js';
 
 const ORM = require('@datawrapper/orm');
@@ -11,13 +11,12 @@ const { requireConfig } = require('@datawrapper/shared/node/findConfig');
 const chartCore = require('@datawrapper/chart-core');
 const { PORT } = process.env;
 
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const generateToken = customAlphabet(
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    25
+);
 
 const config = requireConfig();
-
-function generateToken(length = 25) {
-    return generate(alphabet, length);
-}
 
 function cookieReduceMiddleware(req, res, next) {
     if (req.headers.cookie) {
@@ -155,9 +154,9 @@ async function main() {
                 }
 
                 process.on('SIGINT', async function() {
-                    console.log('received SIGINT, closing connections...');
+                    console.log('received SIGINT, closing connections...'); // eslint-disable-line
                     app.server.close(() => {
-                        console.log('server has stopped');
+                        console.log('server has stopped'); // eslint-disable-line
                         process.exit(0);
                     });
                 });
