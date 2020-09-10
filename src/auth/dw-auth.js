@@ -1,8 +1,8 @@
 const Boom = require('@hapi/boom');
 const get = require('lodash/get');
 const { User, Session } = require('@datawrapper/orm/models');
-const { cookieValidation, adminValidation, getUser, getCookieAuthScheme } = require('@datawrapper/shared/node/auth');
-const cookieAuthScheme = getCookieAuthScheme(true);
+const { cookieValidation, adminValidation, getUser, createCookieAuthScheme } = require('@datawrapper/shared/node/auth')(require('@datawrapper/orm/models'));
+const cookieAuthScheme = createCookieAuthScheme(true);
 
 const DWAuth = {
     name: 'dw-auth',
