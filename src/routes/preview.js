@@ -143,10 +143,6 @@ module.exports = {
                     dependencies: vis.dependencies
                 });
 
-                /*
-                @todo: get the correct asset from local or cdn
-                http://app.datawrapper.local/static/plugins/locator-maps/vendor/mapbox-gl.min.js
-                */
                 const libraries = vis.libraries.map(lib => lib.uri);
 
                 const props = {
