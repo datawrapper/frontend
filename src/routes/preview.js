@@ -34,7 +34,6 @@ module.exports = {
                     }
                 }
             }
-            localesPreloadedAt = new Date().toGMTString();
             return locales;
         }
 
