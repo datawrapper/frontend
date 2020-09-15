@@ -4,9 +4,8 @@ const Inert = require('@hapi/inert');
 const Pino = require('hapi-pino');
 const ORM = require('@datawrapper/orm');
 const Pug = require('pug');
-const { findConfigPath } = require('@datawrapper/service-utils/findConfig');
-const configPath = findConfigPath();
-const config = require(configPath);
+const { requireConfig } = require('@datawrapper/service-utils/findConfig');
+const config = requireConfig();
 const path = require('path');
 
 const start = async () => {
