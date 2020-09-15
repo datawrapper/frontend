@@ -17,8 +17,7 @@ module.exports = {
             const VENDORS = ['dayjs', 'numeral'];
             const locales = [];
 
-            for (var i = 0; i < VENDORS.length; i++) {
-                const vendor = VENDORS[i];
+            for (const vendor of VENDORS) {
                 locales[vendor] = new Map();
                 const basePath = path.resolve(
                     __dirname,
