@@ -1,168 +1,69 @@
-import path from 'path';
-import polka from 'polka';
-import * as sapper from '@sapper/server';
-import serveStatic from 'serve-static';
-import generate from 'nanoid/generate';
-import { preloadLocales } from './routes/preview/[chartId]/locale-[locale].json.js';
-
+const Hapi = require('@hapi/hapi');
+const Vision = require('@hapi/vision');
+const Inert = require('@hapi/inert');
+const Pino = require('hapi-pino');
 const ORM = require('@datawrapper/orm');
-const { requireConfig } = require('@datawrapper/shared/node/findConfig');
-
-const chartCore = require('@datawrapper/chart-core');
-const { PORT } = process.env;
-
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
+const Pug = require('pug');
+const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
+const path = require('path');
 
-function generateToken(length = 25) {
-    return generate(alphabet, length);
-}
+const start = async () => {
+    const server = Hapi.Server({
+        port: 3000,
+        host: 'localhost',
+        address: '0.0.0.0',
+        tls: false,
+        router: { stripTrailingSlash: true }
+    });
 
-function cookieReduceMiddleware(req, res, next) {
-    if (req.headers.cookie) {
-        req.headers.cookie = req.headers.cookie
-            .split(';')
-            .find(s => s.trim().startsWith(config.api.sessionID));
-    }
-    next();
-}
-
-/**
- * Code in Sapper:
- * https://github.com/sveltejs/sapper/blob/master/runtime/src/server/middleware/get_page_handler.ts#L57
- *
- * Issue:
- * https://github.com/sveltejs/sapper/issues/567
- *
- * Sapper currently set's a hard coded max-age directive as Cache-Control header.
- * There is an open issue on Github with a discussion to remove that or make it configurable.
- *
- * This middleware is copied from that issue and only a workaround.
- * Thanks Nolan!
- *
- */
-function overrideSetHeader(req, res, next) {
-    const origSetHeader = res.setHeader;
-    res.setHeader = function(key, value) {
-        if (key === 'Cache-Control') {
-            if (value === 'max-age=600') {
-                // HTML files
-                return origSetHeader.apply(this, ['Cache-Control', 'public, no-cache']);
-            }
-        }
-
-        return origSetHeader.apply(this, arguments);
-    };
-    return next();
-}
-
-async function authMiddleware(req, res, next) {
-    const { Session, User } = require('@datawrapper/orm/models');
-    req.headers.host = `${config.api.subdomain}.${config.api.domain}`;
-
-    let session;
-    if (req.headers.cookie) {
-        const sessionId = req.headers.cookie.split('=')[1];
-        // check session in DB
-        session = await Session.findByPk(sessionId);
-    }
-
-    if (session && session.user_id) {
-        // it's a user session, so find user
-        req.user = (await User.findByPk(session.user_id)).serialize();
-    } else {
-        if (!session) {
-            // no cookie or session expired, let's create a new session
-            const sessionId = generateToken();
-            await Session.create({
-                id: sessionId,
-                user_id: null,
-                persistent: false,
-                data: {
-                    'dw-user-id': null,
-                    persistent: false,
-                    last_action_time: Math.floor(Date.now() / 1000)
-                }
-            });
-            // have to rely on config.api.domain because config.frontend.domain includes the subdomain!
-            res.setHeader(
-                'set-cookie',
-                [
-                    `${config.api.sessionID}=${sessionId}`,
-                    'path=/',
-                    `domain=.${config.api.domain}`,
-                    'HttpOnly',
-                    ...(config.frontend.https ? ['Secure'] : [])
-                ].join('; ')
-            );
-        }
-        req.user = {
-            role: 'guest'
-        };
-    }
-    next();
-}
-
-async function main() {
     await ORM.init(config);
-    await preloadLocales();
+    await ORM.registerPlugins();
 
-    const polyfillDir = path.join(
-        path.dirname(require.resolve('@datawrapper/polyfills/package.json')),
-        'polyfills'
-    );
-
-    const libs = {
-        'chart-core': serveStatic(chartCore.path.dist),
-        polyfills: serveStatic(polyfillDir)
-    };
-
-    const serveLibraries = (req, res, next) => {
-        for (const lib in libs) {
-            if (req.url.startsWith(`/lib/${lib}/`)) {
-                req.url = req.url.substr(5 + lib.length);
-                return libs[lib](req, res, next);
-            }
+    await server.register(Vision);
+    await server.register(Inert);
+    await server.register({
+        plugin: Pino,
+        options: {
+            prettyPrint: true,
+            timestamp: () => `,"time":"${new Date().toISOString()}"`,
+            logEvents: ['request', 'log', 'onPostStart', 'onPostStop', 'request-error'],
+            level: process.env.DW_DEV_MODE ? 'debug' : (process.env.NODE_ENV == 'test' ? 'error' : 'info'),
+            base: { name: process.env.COMMIT || require('../package.json').version },
+            redact: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]']
         }
-        return next();
-    };
+    });
 
-    const app = polka()
-        .use(
-            serveStatic('static'),
-            serveLibraries,
-            cookieReduceMiddleware,
-            authMiddleware,
-            overrideSetHeader,
-            sapper.middleware({
-                session: (req, res) => ({
-                    user: req.user,
-                    config: {
-                        apiDomain: `http${config.api.https ? 's' : ''}://${config.api.subdomain}.${
-                            config.api.domain
-                        }/v3`
-                    }
-                })
-            })
-        )
-        .listen(PORT, err => {
-            if (err) process.stdout.write('error', err);
-            else {
-                if (process.send) {
-                    // graceful start and stop
-                    process.send('ready');
-                }
+    server.method('config', key => (key ? config[key] : config));
 
-                process.on('SIGINT', async function() {
-                    console.log('received SIGINT, closing connections...');
-                    app.server.close(() => {
-                        console.log('server has stopped');
-                        process.exit(0);
-                    });
-                });
-            }
-        });
-}
+    server.views({
+        engines: {
+            pug: Pug
+        },
+        relativeTo: __dirname,
+        compileOptions: {
+            basedir: path.join(__dirname, 'views')
+        },
+        path: 'views'
+    });
 
-main();
+    await server.register(require('./auth/dw-auth'));
+    await server.register([require('./routes')]);
+    await server.start();
+
+    setTimeout(() => {
+        if (process.send) {
+            server.logger.info('sending READY signal to pm2');
+            process.send('ready');
+        }
+    }, 100);
+
+    process.on('SIGINT', async function () {
+        server.logger.info('received SIGINT signal, closing all connections...');
+        await server.stop();
+        server.logger.info('server has stopped');
+        process.exit(0);
+    });
+};
+
+start();
