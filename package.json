@@ -7,7 +7,7 @@
         "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "^8.18.7",
+        "@datawrapper/chart-core": "^8.18.8",
         "@datawrapper/locales": "^1.0.3",
         "@datawrapper/orm": "^3.17.2",
         "@datawrapper/service-utils": "0.1.0",
@@ -20,7 +20,6 @@
         "hapi-pino": "^8.3.0",
         "jsesc": "^3.0.1",
         "lodash": "^4.17.20",
-        "nanoid": "2.1.11",
         "pug": "^3.0.0"
     },
     "devDependencies": {},
