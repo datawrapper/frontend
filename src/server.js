@@ -4,16 +4,53 @@ const Inert = require('@hapi/inert');
 const Pino = require('hapi-pino');
 const ORM = require('@datawrapper/orm');
 const Pug = require('pug');
+const {
+    validateAPI,
+    validateORM,
+    validateFrontend,
+    validateRedis
+} = require('@datawrapper/schemas/config');
 const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
 
 const start = async () => {
+    validateAPI(config.api);
+    validateORM(config.orm);
+    validateFrontend(config.frontend);
+
+    let useRedis = !!config.redis;
+
+    if (useRedis) {
+        try {
+            validateRedis(config.redis);
+        } catch (error) {
+            useRedis = false;
+            console.warn('[Cache] Invalid Redis configuration, falling back to in memory cache.');
+        }
+    }
+
     const server = Hapi.Server({
         port: process.env.PORT || 3000,
         host: 'localhost',
         address: '0.0.0.0',
         tls: false,
+        cache: {
+            provider: useRedis
+                ? {
+                    constructor: require('@hapi/catbox-redis'),
+                    options: {
+                        ...config.redis,
+                        partition: 'api'
+                    }
+                }
+                : {
+                    constructor: require('@hapi/catbox-memory'),
+                    options: {
+                        maxByteSize: 52480000
+                    }
+                }
+        },
         router: { stripTrailingSlash: true }
     });
 
