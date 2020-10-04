@@ -10,7 +10,7 @@ module.exports = {
         for (var provider in oauth) {
             server.route({
                 method: ['GET', 'POST'],
-                path: `/signin/${provider}`,
+                path: `/${provider}`,
                 options: {
                     auth: {
                         mode: 'try',
@@ -22,6 +22,8 @@ module.exports = {
                         };
 
                         const { profile } = request.auth.credentials;
+
+                        request.logger().info(profile);
 
                         const oAuthSignin = `${provider}::${profile.id}`;
                         const name = profile.displayName;
