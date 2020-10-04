@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const Bell = require('@hapi/bell');
 const get = require('lodash/get');
-const { User, Session } = require('@datawrapper/orm/models');
+const { User } = require('@datawrapper/orm/models');
 const { cookieValidation, adminValidation, getUser, createCookieAuthScheme } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 const cookieAuthScheme = createCookieAuthScheme(true);
 
@@ -41,32 +41,11 @@ const DWAuth = {
                 password: 'cookie_encryption_password_secure',
                 clientId: p.id,
                 clientSecret: p.secret,
-                isSecure: server.methods.config('frontend.https')
-            });
 
-            server.route({
-                method: ['GET', 'POST'],    // Must handle both GET and POST
-                path: `/oauth/${provider}`,             // The callback endpoint registered with the provider
-                options: {
-                    auth: {
-                        mode: 'try',
-                        strategy: provider
-                    },
-                    handler: function (request, h) {
-                        if (!request.auth.isAuthenticated) {
-                            return `Authentication failed due to: ${request.auth.error.message}`;
-                        }
-
-                        console.log(request.auth.credentials);
-
-                        // Perform any account lookup or registration, setup local session,
-                        // and redirect to the application. The third-party credentials are
-                        // stored in request.auth.credentials. Any query parameters from
-                        // the initial request are passed back via request.auth.credentials.query.
-
-                        return h.redirect('/home');
-                    }
-                }
+                /* this combination of settings is necessary because the node process
+                 * speaks HTTP internally, but externally HTTPS through nginx */
+                isSecure: false,
+                forceHttps: true
             });
         }
     }
