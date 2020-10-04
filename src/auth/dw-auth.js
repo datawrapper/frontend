@@ -1,7 +1,6 @@
 const Boom = require('@hapi/boom');
 const Bell = require('@hapi/bell');
 const get = require('lodash/get');
-const { User } = require('@datawrapper/orm/models');
 const { cookieValidation, adminValidation, getUser, createCookieAuthScheme } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 const cookieAuthScheme = createCookieAuthScheme(true);
 
