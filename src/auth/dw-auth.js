@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const Bell = require('@hapi/bell');
 const get = require('lodash/get');
-const { cookieValidation, adminValidation, getUser, createCookieAuthScheme } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
+const { cookieValidation, adminValidation, generateToken, createCookieAuthScheme } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 const cookieAuthScheme = createCookieAuthScheme(true);
 
 const DWAuth = {
@@ -37,7 +37,7 @@ const DWAuth = {
 
             server.auth.strategy(provider, 'bell', {
                 provider: provider,
-                password: 'cookie_encryption_password_secure',
+                password: generateToken(),
                 clientId: p.id,
                 clientSecret: p.secret,
 
