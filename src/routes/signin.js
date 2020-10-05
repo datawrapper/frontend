@@ -1,5 +1,6 @@
 const Boom = require('@hapi/boom')
 const { User } = require('@datawrapper/orm/models');
+const { login } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 
 module.exports = {
     name: 'routes/signin',
@@ -23,20 +24,60 @@ module.exports = {
 
                         const { profile } = request.auth.credentials;
 
-                        request.logger().info(profile);
-
                         const oAuthSignin = `${provider}::${profile.id}`;
                         const name = profile.displayName;
+                        const email = profile.email;
 
-                        const user = await User.find({ where: { oauth_signin: oAuthSignin } });
+                        // check if we already have this user id in our database
+                        let user = await User.find({ where: { oauth_signin: oAuthSignin } });
 
-                        if (user) {
-                            // login user
+                        if (!user && email) {
+                            // if not, check if that email is already registered
+                            user = await User.find({ where: { email } });
+
+                            if (user) {
+                                // that email already exists, but it is activated?
+                                if (user.role !== 'pending') {
+                                    // yes, user exists and was activated
+                                    user.name = name;
+                                    user.oauth_signin = oAuthSignin;
+                                } else {
+                                    // this was never activated, so ANYONE could have created
+                                    // the account. since we now know the real owner, let's
+                                    // reset the password to be save that whoever created
+                                    // the account in the first place, but didn't activate the
+                                    // email, no longer has access!
+                                    user.password = '';
+                                }
+                            }
                         } else {
-                            // create user
+                            if (user.deleted || user.email === 'DELETED') {
+                                user.email = email;
+                                user.deleted = false;
+                            }
                         }
 
-                        return h.redirect('/');
+                        if (user) {
+                            await user.save();
+                        } else {
+                            // create new user
+
+                            user = await User.create({
+                                role: 'pending',
+                                name,
+                                email,
+                                oauth_signin: oAuthSignin
+                            });
+                        }
+
+                        const session = await login(user, request.auth.credentials, true);
+                        await request.server.methods.logAction(userId, `login/${provider}`);
+
+                        return h
+                            .response({
+                                [api.sessionID]: session.id
+                            })
+                            .state(api.sessionID, session.id, getStateOpts(request.server, 90)).redirect('/');
                     }
                 }
             });
