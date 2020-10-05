@@ -22,7 +22,9 @@ module.exports = {
                             throw Boom.unauthorized();
                         };
 
+                        const { config, comparePassword } = request.server.methods;
                         const { profile } = request.auth.credentials;
+                        const api = config('api');
 
                         const oAuthSignin = `${provider}::${profile.id}`;
                         const name = profile.displayName;
@@ -70,8 +72,8 @@ module.exports = {
                             });
                         }
 
-                        const session = await login(user, request.auth.credentials, true);
-                        await request.server.methods.logAction(userId, `login/${provider}`);
+                        const session = await login(user.id, request.auth.credentials, true);
+                        await request.server.methods.logAction(user.id, `login/${provider}`);
 
                         return h
                             .response({
