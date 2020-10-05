@@ -63,7 +63,7 @@ module.exports = {
                             // create new user
 
                             user = await User.create({
-                                role: 'pending',
+                                role: 'editor',
                                 name,
                                 email,
                                 oauth_signin: oAuthSignin
