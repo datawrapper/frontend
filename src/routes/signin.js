@@ -56,7 +56,7 @@ module.exports = {
                                     user.pwd = '';
                                 }
                             }
-                        } else {
+                        } else if (user) {
                             if (user.deleted || user.email === 'DELETED') {
                                 user.email = email;
                                 user.deleted = false;
