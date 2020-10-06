@@ -26,7 +26,7 @@ module.exports = {
                             throw Boom.unauthorized();
                         }
 
-                        const { config, comparePassword } = request.server.methods;
+                        const { config } = request.server.methods;
                         const { profile } = request.auth.credentials;
                         const api = config('api');
 
@@ -53,7 +53,7 @@ module.exports = {
                                     // reset the password to be save that whoever created
                                     // the account in the first place, but didn't activate the
                                     // email, no longer has access!
-                                    user.password = '';
+                                    user.pwd = '';
                                 }
                             }
                         } else {
@@ -71,7 +71,8 @@ module.exports = {
                             user = await User.create({
                                 role: 'editor',
                                 name,
-                                email,
+                                email: email || '',
+                                pwd: '',
                                 oauth_signin: oAuthSignin
                             });
                         }
