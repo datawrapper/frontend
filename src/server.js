@@ -14,6 +14,9 @@ const start = async () => {
         host: 'localhost',
         address: '0.0.0.0',
         tls: false,
+        state: {
+            isSameSite: 'Lax'
+        },
         router: { stripTrailingSlash: true }
     });
 
