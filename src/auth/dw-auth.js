@@ -1,13 +1,20 @@
 const Boom = require('@hapi/boom');
+const Bell = require('@hapi/bell');
 const get = require('lodash/get');
-const { User, Session } = require('@datawrapper/orm/models');
-const { cookieValidation, adminValidation, getUser, createCookieAuthScheme } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
+const {
+    cookieValidation,
+    adminValidation,
+    generateToken,
+    createCookieAuthScheme
+} = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 const cookieAuthScheme = createCookieAuthScheme(true);
 
 const DWAuth = {
     name: 'dw-auth',
     version: '1.0.0',
     register: async (server, options) => {
+        const oauth = server.methods.config('general').oauth;
+
         function isAdmin(request, { throwError = false } = {}) {
             const check = get(request, ['auth', 'artifacts', 'role'], '') === 'admin';
 
@@ -20,6 +27,7 @@ const DWAuth = {
 
         server.method('isAdmin', isAdmin);
 
+        await server.register(Bell);
         server.auth.scheme('cookie-auth', cookieAuthScheme);
         server.auth.scheme('dw-auth', dwAuth);
 
@@ -28,6 +36,31 @@ const DWAuth = {
         server.auth.strategy('simple', 'dw-auth');
 
         server.auth.default('simple');
+
+        for (var provider in oauth) {
+            if (!Object.keys(Bell.providers).includes(provider)) {
+                server.logger.warn(
+                    `Could not configure oAuth provider ${provider}, as it's not supported by @hapi/bell.`
+                );
+                continue;
+            }
+
+            const p = oauth[provider];
+
+            server.auth.strategy(provider, 'bell', {
+                provider: provider,
+                password: generateToken(),
+                clientId: p.id,
+                clientSecret: p.secret,
+
+                /* this combination of settings is necessary because the node process
+                 * speaks HTTP internally, but externally HTTPS through nginx */
+                isSecure: false,
+                forceHttps: true
+            });
+
+            server.logger.info(`Registered oAuth provider ${provider}`);
+        }
     }
 };
 
