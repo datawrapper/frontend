@@ -1,13 +1,17 @@
 const Boom = require('@hapi/boom');
 const Bell = require('@hapi/bell');
 const get = require('lodash/get');
+const { customAlphabet } = require('nanoid');
 const {
     cookieValidation,
     adminValidation,
-    generateToken,
     createCookieAuthScheme
 } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 const cookieAuthScheme = createCookieAuthScheme(true);
+const generateToken = customAlphabet(
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    32
+);
 
 const DWAuth = {
     name: 'dw-auth',
