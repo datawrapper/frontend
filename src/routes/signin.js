@@ -1,5 +1,7 @@
 const Boom = require('@hapi/boom');
+const Bell = require('@hapi/bell');
 const { User } = require('@datawrapper/orm/models');
+
 const { login } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 
 module.exports = {
@@ -9,6 +11,8 @@ module.exports = {
         const oauth = server.methods.config('general').oauth;
 
         for (var provider in oauth) {
+            if (!Object.keys(Bell.providers).includes(provider)) continue;
+
             server.route({
                 method: ['GET', 'POST'],
                 path: `/${provider}`,
