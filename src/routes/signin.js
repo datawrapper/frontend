@@ -35,11 +35,11 @@ module.exports = {
                         const email = profile.email;
 
                         // check if we already have this user id in our database
-                        let user = await User.find({ where: { oauth_signin: oAuthSignin } });
+                        let user = await User.findOne({ where: { oauth_signin: oAuthSignin } });
 
                         if (!user && email) {
                             // if not, check if that email is already registered
-                            user = await User.find({ where: { email } });
+                            user = await User.findOne({ where: { email } });
 
                             if (user) {
                                 // that email already exists, but it is activated?
