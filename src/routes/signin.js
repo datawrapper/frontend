@@ -1,4 +1,4 @@
-const Boom = require('@hapi/boom')
+const Boom = require('@hapi/boom');
 const { User } = require('@datawrapper/orm/models');
 const { login } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 
@@ -6,7 +6,7 @@ module.exports = {
     name: 'routes/signin',
     version: '1.0.0',
     register: async (server, options) => {
-        const oauth = server.methods.config('oauth');
+        const oauth = server.methods.config('general').oauth;
 
         for (var provider in oauth) {
             server.route({
@@ -17,10 +17,10 @@ module.exports = {
                         mode: 'try',
                         strategy: provider
                     },
-                    handler: async function (request, h) {
+                    handler: async function(request, h) {
                         if (!request.auth.isAuthenticated) {
                             throw Boom.unauthorized();
-                        };
+                        }
 
                         const { config, comparePassword } = request.server.methods;
                         const { profile } = request.auth.credentials;
@@ -79,7 +79,8 @@ module.exports = {
                             .response({
                                 [api.sessionID]: session.id
                             })
-                            .state(api.sessionID, session.id, getStateOpts(request.server, 90)).redirect('/');
+                            .state(api.sessionID, session.id, getStateOpts(request.server, 90))
+                            .redirect('/');
                     }
                 }
             });

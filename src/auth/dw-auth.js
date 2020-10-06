@@ -1,14 +1,19 @@
 const Boom = require('@hapi/boom');
 const Bell = require('@hapi/bell');
 const get = require('lodash/get');
-const { cookieValidation, adminValidation, generateToken, createCookieAuthScheme } = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
+const {
+    cookieValidation,
+    adminValidation,
+    generateToken,
+    createCookieAuthScheme
+} = require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'));
 const cookieAuthScheme = createCookieAuthScheme(true);
 
 const DWAuth = {
     name: 'dw-auth',
     version: '1.0.0',
     register: async (server, options) => {
-        const oauth = server.methods.config('oauth');
+        const oauth = server.methods.config('general').oauth;
 
         function isAdmin(request, { throwError = false } = {}) {
             const check = get(request, ['auth', 'artifacts', 'role'], '') === 'admin';
@@ -33,6 +38,13 @@ const DWAuth = {
         server.auth.default('simple');
 
         for (var provider in oauth) {
+            if (!Object.keys(Bell.providers).includes(provider)) {
+                server.logger.warn(
+                    `Could not configure oAuth provider ${provider}, as it's not supported by @hapi/bell.`
+                );
+                continue;
+            }
+
             const p = oauth[provider];
 
             server.auth.strategy(provider, 'bell', {
@@ -46,6 +58,8 @@ const DWAuth = {
                 isSecure: false,
                 forceHttps: true
             });
+
+            server.logger.info(`Registered oAuth provider ${provider}`);
         }
     }
 };
