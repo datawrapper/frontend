@@ -48,8 +48,8 @@ module.exports = {
             const response = await got(`${baseUrl}${path}`, {
                 headers: session
                     ? {
-                        Cookie: `${sessionID}=${session}`
-                    }
+                          Cookie: `${sessionID}=${session}`
+                      }
                     : undefined
             });
 
@@ -86,7 +86,7 @@ module.exports = {
 
         return {
             async getStyles(api, visId, themeId) {
-                if (get(config), 'cache.styles') {
+                if (get(config, 'general.cache.styles')) {
                     const cachedCSS = await styleCache.get(`${themeId}__${visId}`);
                     if (cachedCSS) return cachedCSS;
                 }
@@ -97,14 +97,14 @@ module.exports = {
             },
 
             async getVis(api, visId) {
-                if (get(config), 'cache.visualizations') {
+                if (get(config, 'general.cache.visualizations')) {
                     const cachedVis = await visCache.get(visId);
                     if (cachedVis) return cachedVis;
                 }
 
                 const vis = await api(`/visualizations/${visId}`);
 
-                if (get(config), 'cache.visualizations') {
+                if (get(config, 'general.cache.visualizations')) {
                     await visCache.set(visId, vis);
                 }
 
@@ -112,14 +112,14 @@ module.exports = {
             },
 
             async getTheme(api, themeId) {
-                if (get(config), 'cache.themes') {
+                if (get(config, 'general.cache.themes')) {
                     const cachedTheme = await themeCache.get(themeId);
                     if (cachedTheme) return cachedTheme;
                 }
 
                 const theme = await api(`/themes/${themeId}?extend=true`);
 
-                if (get(config), 'cache.themes') {
+                if (get(config, 'general.cache.themes')) {
                     await themeCache.set(themeId, theme);
                 }
 
@@ -127,5 +127,4 @@ module.exports = {
             }
         };
     }
-
 };
