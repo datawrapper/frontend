@@ -65,13 +65,18 @@ const start = async () => {
             prettyPrint: true,
             timestamp: () => `,"time":"${new Date().toISOString()}"`,
             logEvents: ['request', 'log', 'onPostStart', 'onPostStop', 'request-error'],
-            level: process.env.DW_DEV_MODE ? 'debug' : (process.env.NODE_ENV == 'test' ? 'error' : 'info'),
+            level: process.env.DW_DEV_MODE
+                ? 'debug'
+                : process.env.NODE_ENV == 'test'
+                ? 'error'
+                : 'info',
             base: { name: process.env.COMMIT || require('../package.json').version },
             redact: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]']
         }
     });
 
     server.method('config', key => (key ? config[key] : config));
+    server.method('logAction', require('@datawrapper/orm/utils/action').logAction);
 
     server.views({
         engines: {
@@ -95,7 +100,7 @@ const start = async () => {
         }
     }, 100);
 
-    process.on('SIGINT', async function () {
+    process.on('SIGINT', async function() {
         server.logger.info('received SIGINT signal, closing all connections...');
         await server.stop();
         server.logger.info('server has stopped');
