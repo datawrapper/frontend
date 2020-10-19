@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 const createChart = require('@datawrapper/service-utils/createChart');
-const { includes } = require('lodash');
+const { Chart, Folder, Team } = require('@datawrapper/orm');
 
 module.exports = {
     name: 'routes/create',
