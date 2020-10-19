@@ -15,6 +15,12 @@ module.exports = {
             }
         });
 
+        await server.register(require('./create/index.js'), {
+            routes: {
+                prefix: '/create'
+            }
+        });
+
         await server.register(require('./lib'), {
             routes: {
                 prefix: '/lib'
