@@ -22,6 +22,8 @@ html(lang="en")
     script.
       window.parent.postMessage('datawrapper:vis:reload', '*');
 
+    script(src=POLYFILL_SCRIPT)
+
     each src in LIBRARIES
       script(src=src)
 
