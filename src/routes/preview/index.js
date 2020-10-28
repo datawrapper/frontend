@@ -115,6 +115,7 @@ module.exports = {
                     CHART_HEAD: head,
                     VIS_SCRIPT: `${apiBase}/visualizations/${props.data.visJSON.id}/script.js`,
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
+                    POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
                     DEPS: deps.map(el => `/lib/chart-core/${el}`),
                     LIBRARIES: libraries,
                     CSS: css,
