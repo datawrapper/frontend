@@ -7,10 +7,10 @@
         "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "^8.21.6",
+        "@datawrapper/chart-core": "^8.22.0",
         "@datawrapper/locales": "^1.0.7",
         "@datawrapper/orm": "^3.20.0",
-        "@datawrapper/schemas": "^1.6.0",
+        "@datawrapper/schemas": "^1.8.0",
         "@datawrapper/service-utils": "^0.2.1",
         "@hapi/bell": "^12.1.1",
         "@hapi/catbox-memory": "^5.0.0",
