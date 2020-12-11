@@ -20,5 +20,11 @@ module.exports = {
                 prefix: '/lib'
             }
         });
+
+        await server.register(require('./template'), {
+            routes: {
+                prefix: '/template'
+            }
+        });
     }
 };
