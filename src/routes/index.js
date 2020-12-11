@@ -27,5 +27,11 @@ module.exports = {
                 }
             });
         }
+
+        await server.register(require('./template'), {
+            routes: {
+                prefix: '/template'
+            }
+        });
     }
 };
