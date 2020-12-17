@@ -28,8 +28,7 @@ module.exports = {
                         plain: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
                         fitchart: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
                         transparent: Joi.boolean().optional(),
-                        ott: Joi.string().optional(),
-
+                        ott: Joi.string().optional()
                     })
                 }
             },
