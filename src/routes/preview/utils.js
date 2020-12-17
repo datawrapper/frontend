@@ -85,13 +85,13 @@ module.exports = {
         });
 
         return {
-            async getStyles(api, visId, themeId) {
-                if (get(config, 'general.cache.styles')) {
+            async getStyles(api, visId, themeId, transparent) {
+                if (get(config, 'general.cache.styles') && !transparent) {
                     const cachedCSS = await styleCache.get(`${themeId}__${visId}`);
                     if (cachedCSS) return cachedCSS;
                 }
 
-                return api(`/visualizations/${visId}/styles.css?theme=${themeId}`, {
+                return api(`/visualizations/${visId}/styles.css?theme=${themeId}${transparent ? '&transparent=true' : ''}`, {
                     json: false
                 });
             },

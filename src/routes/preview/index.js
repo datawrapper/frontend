@@ -57,7 +57,7 @@ module.exports = {
                     const results = await Promise.all([
                         getVis(api, chart.type),
                         getTheme(api, themeName),
-                        getStyles(api, chart.type, themeName)
+                        getStyles(api, chart.type, themeName, !!request.query.transparent)
                     ]);
 
                     vis = results[0];
