@@ -27,6 +27,8 @@ module.exports = {
                         static: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
                         plain: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
                         fitchart: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
+                        svgonly: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
+                        map2svg: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
                         transparent: Joi.boolean().optional(),
                         ott: Joi.string().optional()
                     })
