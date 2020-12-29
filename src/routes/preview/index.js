@@ -79,7 +79,7 @@ module.exports = {
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
                     DEPS: deps.map(el => `/lib/chart-core/${el}`),
                     LIBRARIES: libraries,
-                    CSS: props.styles,
+                    CSS: `${props.styles.fonts}\n${props.styles.css}`,
                     CHART_CLASS: [
                         `vis-height-${get(props.visualization, 'height', 'fit')}`,
                         `theme-${get(props.theme, 'id')}`,
