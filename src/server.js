@@ -13,6 +13,8 @@ const {
 const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
+const Svelte = require('hapi-svelte-views');
+
 
 const start = async () => {
     validateAPI(config.api);
@@ -56,9 +58,9 @@ const start = async () => {
 
     await ORM.init(config);
     await ORM.registerPlugins();
-
     await server.register(Vision);
     await server.register(Inert);
+
     await server.register({
         plugin: Pino,
         options: {
@@ -80,7 +82,8 @@ const start = async () => {
 
     server.views({
         engines: {
-            pug: Pug
+            pug: Pug,
+            svelte: Svelte
         },
         relativeTo: __dirname,
         compileOptions: {
