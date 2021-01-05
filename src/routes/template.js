@@ -13,10 +13,6 @@ module.exports = {
                 auth: false
             },
             async handler(request, h) {
-                console.log('POST', request.payload)
-                // if (!request.auth.isAuthenticated) {
-                //     throw Boom.unauthorized();
-                // }
                 const { payload } = request;
                 if (!payload) throw Boom.badRequest('you need to send form-encoded data');
 
