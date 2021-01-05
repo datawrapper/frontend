@@ -27,10 +27,8 @@ module.exports = {
                 };
                 const dataset = payload.data || '';
                 const { config } = request.server.methods;
-                const api = config('api');
-                const { domain, subdomain } = api;
 
-                const props = { chartData, dataset, apiDomain: `${subdomain}.${domain}` };
+                const props = { chartData, dataset };
                 const layout = 'SignInPageLayout';
                 return h.view('EditInDatawrapper.svelte', { layout, props });
             }
