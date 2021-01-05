@@ -124,7 +124,7 @@ module.exports = {
 
                 const { html, head } = chartCore.svelte.render(props);
 
-                return h.view('preview', {
+                return h.view('preview.pug', {
                     __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
                         isScriptContext: true,
                         json: true,
