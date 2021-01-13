@@ -1,4 +1,5 @@
 const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
+const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
 const chartCore = require('@datawrapper/chart-core');
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
@@ -23,14 +24,15 @@ module.exports = {
                 validate: {
                     query: Joi.object({
                         theme: Joi.string().optional(),
-                        published: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
-                        static: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
-                        plain: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
-                        fitchart: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
-                        svgonly: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
-                        map2svg: Joi.alternatives().try(Joi.boolean(), Joi.number().valid(0,1)).optional(),
-                        transparent: Joi.boolean().optional(),
-                        ott: Joi.string().optional()
+                        ott: Joi.string().optional(),
+                        published: fakeBoolean,
+                        static: fakeBoolean,
+                        plain: fakeBoolean,
+                        fitchart: fakeBoolean,
+                        fitheight: fakeBoolean,
+                        svgonly: fakeBoolean,
+                        map2svg: fakeBoolean,
+                        transparent: fakeBoolean
                     })
                 }
             },
