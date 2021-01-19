@@ -18,6 +18,7 @@ module.exports = {
             }
         });
         server.methods.prepareView('Test.svelte');
+        server.methods.prepareView('EditInDatawrapper.svelte');
         server.route({
             path: '/',
             method: 'POST',
