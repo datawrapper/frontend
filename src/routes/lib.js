@@ -39,7 +39,7 @@ module.exports = {
                 if (!file.endsWith('.svelte.js') && !file.endsWith('.svelte.ie.js')) return Boom.notFound();
                 const IE = file.endsWith('.svelte.ie.js');
                 const page = file.replace(IE ? '.svelte.ie.js' : '.svelte.js', '.svelte');
-                const { ssr, csr, csrIE, error } = await server.methods.getView(page);
+                const { csr, error } = await server.methods.getView(page);
                 if (error) {
                     return Boom.notImplemented(error.message);
                 }
