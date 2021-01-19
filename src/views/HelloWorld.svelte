@@ -7,8 +7,8 @@
     }
 </script>
 
-<MainLayout title="Fooo">
+<MainLayout title="Hello world" {dev}>
 	<div class="container">
-	    <h1 style="color:red" on:click={foo}>Hello {name}</h1>
+	    <h1 style="color:red" on:click={foo}>Hello {name}, click me!</h1>
 	</div>
 </MainLayout>
