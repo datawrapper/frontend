@@ -1,15 +1,21 @@
 <script>
-    import DatawrapperLogo from './DatawrapperLogo.svelte';
+
 </script>
 
-<header>
-    <div class="container">
-        <DatawrapperLogo height="35" />
-    </div>
-</header>
+<nav>
+	<ul>
+		<li>Start creating</li>
+		<li>My Charts</li>
+	</ul>
+</nav>
 
 <style>
-	header {
-		margin: 4ex 0
+	nav ul {
+		margin: 0;
+		display: flex;
+		column-gap: 2ex;
+	}
+	nav ul li {
+		list-style: none;
 	}
 </style>
