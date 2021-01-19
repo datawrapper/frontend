@@ -38,7 +38,10 @@
     </p>
 
     {#if chartData.forked_from}
-        <img alt="preview of chart" src="https://img.datawrapper.de/{chartData.forked_from}/full.png" />
+        <img
+            alt="preview of chart"
+            src="https://img.datawrapper.de/{chartData.forked_from}/full.png"
+        />
     {:else}
         <table>
             {#if chartData.title}
