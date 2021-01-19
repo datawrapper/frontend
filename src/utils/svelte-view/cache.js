@@ -4,7 +4,7 @@ const build = require('./rollup-runtime')
 
 const cache = new Map();
 let templateQueue = [];
-let compileInProgress = false;
+let compilePromise = false;
 
 module.exports = {
     async getView(page) {
@@ -15,23 +15,26 @@ module.exports = {
     },
     prepareView(page) {
         templateQueue.push(page);
-        if (!compileInProgress) {
-            prepareNext();
+        if (!compilePromise) {
+            compilePromise = prepareNext();
         }
+    },
+    prepareAllViews() {
+        return compilePromise;
     }
 }
 
 async function prepareNext() {
     const page = templateQueue.shift();
-    compileInProgress = true;
     await compile(page);
     if (templateQueue.length > 0) {
         return prepareNext();
     }
-    compileInProgress = false;
+    compilePromise = false;
 }
 
 async function compile(page) {
+    console.log('Compiling view '+page);
     if (cache.get(page)) return;
     try {
         const ssrCode = await build(page, true);
