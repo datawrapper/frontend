@@ -7,3 +7,9 @@
         <DatawrapperLogo height="35" />
     </div>
 </header>
+
+<style>
+	header {
+		margin: 4ex 0
+	}
+</style>

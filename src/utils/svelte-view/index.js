@@ -1,7 +1,7 @@
 'use strict';
 
 const Hoek = require('@hapi/hoek');
-const { join, dirname, relative } = require('path');
+const { join, relative } = require('path');
 const { readFile } = require('fs').promises;
 const { getView } = require('./cache');
 
@@ -18,7 +18,7 @@ exports.compile = function compile(t, compileOpts) {
             template = await readFile(join(baseViewDir, 'template.html'), 'utf8');
         }
 
-        const { ssr, csr, error } = await getView(page);
+        const { ssr, error } = await getView(page);
         if (error) {
             // @todo: show a nicer error message on production
             return `

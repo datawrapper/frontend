@@ -16,6 +16,7 @@
     footer {
         border-top: 1px solid #ccc;
         padding-top: 2ex;
+        margin-top: 2ex;
     }
     nav ul {
         margin: 0;
