@@ -13,9 +13,6 @@
 		/>
 		<link rel="icon" type="image/png" href="favicon.png" />
 
-		<!-- Sapper generates a <style> tag containing critical CSS
-	     for the current page. CSS for the rest of the app is
-	     lazily loaded when it precaches secondary pages -->
 		<style type="text/css">
 		%SSR_CSS%
 		</style>
@@ -46,7 +43,7 @@
 	     because `src/client.js` references it -->
 		%SSR_HTML%
 
-		<!-- Sapper creates a <script> tag containing `src/client.js`
+		<!-- Creates a <script> tag containing `src/client.js`
 	     and anything else it needs to hydrate the app and
 	     initialise the router -->
 		%SCRIPTS%

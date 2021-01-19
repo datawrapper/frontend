@@ -13,10 +13,10 @@ module.exports = {
             },
             async handler(request, h) {
                 const props = { name: 'Gregor' };
-                return h.view('Test.svelte', { props });
+                return h.view('HelloWorld.svelte', { props });
             }
         });
-        server.methods.prepareView('Test.svelte');
+        server.methods.prepareView('HelloWorld.svelte');
         server.methods.prepareView('EditInDatawrapper.svelte');
         server.route({
             path: '/',
