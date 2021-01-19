@@ -25,6 +25,7 @@
         "@rollup/plugin-node-resolve": "^11.1.0",
         "@rollup/plugin-replace": "^2.3.4",
         "babel-plugin-transform-async-to-promises": "^0.8.15",
+        "eslint-plugin-svelte3": "^3.0.0",
         "fs-extra": "^9.0.1",
         "got": "^11.5.2",
         "hapi-pino": "^8.3.0",
@@ -36,6 +37,8 @@
         "svelte": "^3.31.2"
     },
     "devDependencies": {
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.18.0",
         "prettier": "^2.2.1",
         "prettier-plugin-svelte": "^2.1.0"
     },
@@ -51,10 +54,6 @@
         "trailingComma": "none"
     },
     "eslintConfig": {
-        "env": {
-            "browser": true,
-            "node": true
-        },
         "parser": "babel-eslint",
         "plugins": [
             "svelte3"
@@ -64,17 +63,27 @@
                 "files": [
                     "**/*.svelte"
                 ],
-                "rules": {
-                    "import/first": 0
-                },
                 "processor": "svelte3/svelte3"
             }
         ],
-        "extends": [
-            "standard",
-            "prettier",
-            "prettier/standard"
-        ]
+        "rules": {
+            "no-console": [
+                "error",
+                {
+                    "allow": [
+                        "warn",
+                        "error"
+                    ]
+                }
+            ],
+            "camelcase": [
+                "warn",
+                {
+                    "ignoreDestructuring": true,
+                    "properties": "never"
+                }
+            ]
+        }
     },
     "husky": {
         "hooks": {
