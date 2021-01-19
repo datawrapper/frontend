@@ -1,8 +1,9 @@
 <script>
-	export let dataset;
-	export let chartData;
+	export let dataset = '';
+	export let chartData = {};
 
 	import httpReq from '@datawrapper/shared/httpReq';
+	import SignInPageLayout from './layout/SignInPageLayout.svelte';
 
 	function openInDatawrapper() {
 		httpReq.post('/v3/charts', {
@@ -70,25 +71,27 @@
 	}
 </style>
 
- <h1>Edit Visualization in Datawrapper</h1>
-<p>Datawrapper lets you create and publish charts, maps & tables for free. If you don't have an account yet, you can try out our tool and sign up later.</p>
+<SignInPageLayout title="Edit Visualization in Datawrapper">
+ 	<h1>Edit Visualization in Datawrapper</h1>
+	<p>Datawrapper lets you create and publish charts, maps & tables for free. If you don't have an account yet, you can try out our tool and sign up later.</p>
 
-{#if chartData.forked_from}
-<img src="https://img.datawrapper.de/{chartData.forked_from}/full.png" />
-{:else}
-<table>
-	{#if chartData.title}
-	<tr><th>Title</th><td>{chartData.title}</td></tr>
+	{#if chartData.forked_from}
+	<img src="https://img.datawrapper.de/{chartData.forked_from}/full.png" />
+	{:else}
+	<table>
+		{#if chartData.title}
+		<tr><th>Title</th><td>{chartData.title}</td></tr>
+		{/if}
+		{#if chartData.type}
+		<tr><th>Type</th><td>{chartData.type}</td></tr>
+		{/if}
+		<tr><th>Dataset</th><td><pre>
+	{dataset}
+	</pre></td></tr>
+	</table>
 	{/if}
-	{#if chartData.type}
-	<tr><th>Type</th><td>{chartData.type}</td></tr>
-	{/if}
-	<tr><th>Dataset</th><td><pre>
-{dataset}
-</pre></td></tr>
-</table>
-{/if}
 
-<p>Confirm that you want to copy this visualization:</p>
-<button class="btn btn-primary" on:click="{openInDatawrapper}">Yes, edit in Datawrapper</button>
-<button class="btn" on:click=''>No</button>
+	<p>Confirm that you want to copy this visualization:</p>
+	<button class="btn btn-primary" on:click="{openInDatawrapper}">Yes, edit in Datawrapper</button>
+	<button class="btn" on:click=''>No</button>
+</SignInPageLayout>
