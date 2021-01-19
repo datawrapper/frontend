@@ -1,5 +1,5 @@
 <script>
-    import NavBar from './partials/NavBar.svelte';
+    import PageHeader from './partials/PageHeader.svelte';
     import PageFooter from './partials/PageFooter.svelte';
 
     export let title;
@@ -10,7 +10,7 @@
 </svelte:head>
 
 <div class="container">
-    <NavBar />
+    <PageHeader />
 </div>
 
 <slot />
@@ -33,5 +33,26 @@
     :global(.container) {
         max-width: 1200px;
         margin: 0 auto 4ex;
+    }
+
+    :global(.flex) {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    @media (max-width: 1220px) {
+        :global(.container) {
+            margin-left: 3ex;
+            margin-right: 3ex;
+        }
+    }
+
+    :global(a) {
+        color: #1d81a2;
+        text-decoration: none;
+    }
+    :global(a:hover) {
+        text-decoration: underline;
+        color: #15607a;
     }
 </style>
