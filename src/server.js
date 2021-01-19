@@ -14,7 +14,7 @@ const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
 const SvelteView = require('./utils/svelte-view');
-const { prepareView, prepareAllViews } = require('./utils/svelte-view/cache');
+const { getView, prepareView, prepareAllViews, transpileView } = require('./utils/svelte-view/cache');
 
 
 const start = async () => {
@@ -93,7 +93,9 @@ const start = async () => {
         path: 'views'
     });
 
+    server.method('getView', getView);
     server.method('prepareView', prepareView);
+    server.method('transpileView', transpileView);
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
