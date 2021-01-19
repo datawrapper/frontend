@@ -1,5 +1,5 @@
 <script>
-    import DatawrapperLogo from './shared/DatawrapperLogo.svelte';
+    import DatawrapperLogo from './partials/DatawrapperLogo.svelte';
 
     export let title;
 </script>
