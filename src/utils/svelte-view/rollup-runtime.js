@@ -18,23 +18,23 @@ module.exports = async function build(page, ssr) {
                 compilerOptions: {
                     dev: !production,
                     generate: ssr ? 'ssr' : 'csr',
-                    hydratable: true,
+                    hydratable: true
                 },
-                emitCss: false,
+                emitCss: false
             }),
             resolve({
                 browser: true,
-                dedupe: ['svelte'],
+                dedupe: ['svelte']
             }),
-            commonjs(),
-        ],
+            commonjs()
+        ]
     });
 
     const { output } = await bundle.generate({
         sourcemap: true,
         format: 'iife',
         name: 'App',
-        file: 'public/build/bundle.js',
+        file: 'public/build/bundle.js'
     });
 
     return output[0].code;
