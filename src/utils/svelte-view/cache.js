@@ -4,7 +4,7 @@ const build = require('./rollup-runtime');
 const babel = require('@babel/core');
 
 const cache = new Map();
-let templateQueue = [];
+const templateQueue = [];
 let compilePromise = false;
 
 module.exports = {
@@ -36,7 +36,8 @@ module.exports = {
 };
 
 async function getView(page) {
-    if (!cache.has(page)) {
+    console.log('getView', page)
+    if (!cache.has(page) || process.env.DW_DEV_MODE) {
         await compile(page);
     }
     return cache.get(page);
@@ -53,7 +54,6 @@ async function prepareNext() {
 
 async function compile(page) {
     // console.log('Compiling view ' + page);
-    if (cache.get(page)) return;
     try {
         const ssrCode = await build(page, true);
         cache.set(page, {
