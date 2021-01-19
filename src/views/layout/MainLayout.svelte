@@ -1,8 +1,8 @@
 <script>
-	import NavBar from './partials/NavBar.svelte';
-	import PageFooter from './partials/PageFooter.svelte';
+    import NavBar from './partials/NavBar.svelte';
+    import PageFooter from './partials/PageFooter.svelte';
 
-	export let title;
+    export let title;
 </script>
 
 <svelte:head>
@@ -10,28 +10,28 @@
 </svelte:head>
 
 <div class="container">
-	<NavBar />
+    <NavBar />
 </div>
 
 <slot />
 
 <div class="container">
-	<PageFooter />
+    <PageFooter />
 </div>
 
 <style type="text/css">
-	:global(body) {
-		font-family: 'Roboto', Helvetica, sans-serif;
-		line-height: 20px;
-		font-size: 14px;
-		color: #333;
-		background: #f9f9f9;
-		position: relative;
-		margin: 0;
-	}
+    :global(body) {
+        font-family: 'Roboto', Helvetica, sans-serif;
+        line-height: 20px;
+        font-size: 14px;
+        color: #333;
+        background: #f9f9f9;
+        position: relative;
+        margin: 0;
+    }
 
-	:global(.container) {
-		max-width: 1200px;
-		margin: 0 auto 4ex;
-	}
+    :global(.container) {
+        max-width: 1200px;
+        margin: 0 auto 4ex;
+    }
 </style>

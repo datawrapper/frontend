@@ -38,13 +38,16 @@ exports.compile = function compile(t, compileOpts) {
             .replace('%SSR_HEAD%', head)
             .replace('%SSR_CSS%', css.code)
             .replace('%SSR_HTML%', html)
-            .replace('%SCRIPTS%', `
+            .replace(
+                '%SCRIPTS%',
+                `
     <script>window.__DW_SVELTE_PROPS__ = { data: '/lib/polyfills' }</script>
     <script src="/lib/chart-core/load-polyfills.js"></script>
     <script>
         document.write('<script type="text/javascript" src="/lib/csr/${page}.'+(window.document.documentMode ? 'ie.' : '')+'js"></s'+'cript>');
     </script>
-    <script async defer>${js};</script>`);
+    <script async defer>${js};</script>`
+            );
 
         return output;
     };
