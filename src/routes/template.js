@@ -8,6 +8,18 @@ module.exports = {
     async register(server, options) {
         server.route({
             path: '/',
+            method: 'GET',
+            config: {
+                auth: false
+            },
+            async handler(request, h) {
+                const props = { name: 'Gregor' };
+                return h.view('Test.svelte', { props });
+            }
+        });
+        server.methods.prepareView('Test.svelte');
+        server.route({
+            path: '/',
             method: 'POST',
             config: {
                 auth: false
