@@ -13,7 +13,8 @@ const {
 const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
-const Svelte = require('hapi-svelte-views');
+const SvelteView = require('./utils/svelte-view');
+const { prepareView} = require('./utils/svelte-view/cache');
 
 
 const start = async () => {
@@ -83,7 +84,7 @@ const start = async () => {
     server.views({
         engines: {
             pug: Pug,
-            svelte: Svelte
+            svelte: SvelteView
         },
         relativeTo: __dirname,
         compileOptions: {
@@ -91,6 +92,8 @@ const start = async () => {
         },
         path: 'views'
     });
+
+    server.method('prepareView', prepareView);
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);

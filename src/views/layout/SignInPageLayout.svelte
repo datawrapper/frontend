@@ -1,9 +1,11 @@
 <script>
 	import DatawrapperLogo from './shared/DatawrapperLogo.svelte';
+
+	export let title;
 </script>
 
 <svelte:head>
-	<title>Datawrapper</title>
+	<title>Datawrapper{title ? ` - ${title}`: ''}</title>
 </svelte:head>
 
 <style>
