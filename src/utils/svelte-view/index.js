@@ -24,8 +24,7 @@ exports.compile = function compile(t, compileOpts) {
             return `
             <h1>Error in template ${error.filename}:${error.start.line}</h1>
             <big>${error.message}</big>
-            <pre>${error.frame}</pre>
-`
+            <pre>${error.frame}</pre>`;
         }
         const { css, html, head } = ssr().render(context.props);
 

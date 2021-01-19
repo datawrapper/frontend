@@ -1,6 +1,6 @@
 'use strict';
 // @todo: would be nice to add a watch-mode for development
-const build = require('./rollup-runtime')
+const build = require('./rollup-runtime');
 
 const cache = new Map();
 let templateQueue = [];
@@ -22,7 +22,7 @@ module.exports = {
     prepareAllViews() {
         return compilePromise;
     }
-}
+};
 
 async function prepareNext() {
     const page = templateQueue.shift();
@@ -34,14 +34,14 @@ async function prepareNext() {
 }
 
 async function compile(page) {
-    console.log('Compiling view '+page);
+    console.log('Compiling view ' + page);
     if (cache.get(page)) return;
     try {
         const ssrCode = await build(page, true);
         cache.set(page, {
-            ssr: new Function(ssrCode+';return App'),
+            ssr: new Function(ssrCode + ';return App'),
             csr: await build(page, false)
-        })
+        });
     } catch (err) {
         console.error(`Error: Svelte compile error in ${page}`);
         cache.set(page, {
