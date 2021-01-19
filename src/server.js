@@ -70,7 +70,7 @@ const start = async () => {
             logEvents: ['request', 'log', 'onPostStart', 'onPostStop', 'request-error'],
             level: process.env.DW_DEV_MODE
                 ? 'debug'
-                : process.env.NODE_ENV == 'test'
+                : process.env.NODE_ENV === 'test'
                 ? 'error'
                 : 'info',
             base: { name: process.env.COMMIT || require('../package.json').version },
@@ -90,7 +90,8 @@ const start = async () => {
         compileOptions: {
             basedir: path.join(__dirname, 'views')
         },
-        path: 'views'
+        path: 'views',
+        isCached: !process.env.DW_DEV_MODE
     });
 
     server.method('getView', getView);

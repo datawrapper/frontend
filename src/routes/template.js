@@ -12,7 +12,7 @@ module.exports = {
                 auth: false
             },
             async handler(request, h) {
-                const props = { name: 'Gregor' };
+                const props = { name: 'Gregor', dev: process.env.DW_DEV_MODE };
                 return h.view('HelloWorld.svelte', { props });
             }
         });
