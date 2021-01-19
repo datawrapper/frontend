@@ -50,11 +50,12 @@ async function prepareNext() {
 }
 
 async function compile(page) {
-    console.log('Compiling view ' + page);
+    // console.log('Compiling view ' + page);
     if (cache.get(page)) return;
     try {
         const ssrCode = await build(page, true);
         cache.set(page, {
+            // eslint-disable-next-line
             ssr: new Function(ssrCode + ';return App'),
             csr: await build(page, false)
         });
