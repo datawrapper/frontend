@@ -34,6 +34,15 @@
 	        }
 		</style>
 
+		<script type="text/javascript" src="/lib/requirejs/require.js"></script>
+		<script type="text/javascript">
+			requirejs.config({
+				paths: {
+					lib: '/lib/csr'
+				}
+			});
+		</script>
+
 		<!-- This contains the contents of the <svelte:head> component, if
 	     the current page has one -->
 		%SSR_HEAD%

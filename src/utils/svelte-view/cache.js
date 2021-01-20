@@ -36,7 +36,6 @@ module.exports = {
 };
 
 async function getView(page) {
-    console.log('getView', page)
     if (!cache.has(page) || process.env.DW_DEV_MODE) {
         await compile(page);
     }
@@ -57,8 +56,7 @@ async function compile(page) {
     try {
         const ssrCode = await build(page, true);
         cache.set(page, {
-            // eslint-disable-next-line
-            ssr: new Function(ssrCode + ';return App'),
+            ssr: ssrCode,
             csr: await build(page, false)
         });
     } catch (err) {

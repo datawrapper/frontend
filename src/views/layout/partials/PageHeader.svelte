@@ -4,14 +4,14 @@
 </script>
 
 <header id="top">
-	<div class="flex">
-    	<DatawrapperLogo height="35" />
-    	<NavBar />
-	</div>
+    <div class="flex">
+        <DatawrapperLogo height="35" />
+        <NavBar />
+    </div>
 </header>
 
 <style>
-	header {
-		margin: 4ex 0
-	}
+    header {
+        margin: 4ex 0;
+    }
 </style>
