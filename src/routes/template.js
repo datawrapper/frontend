@@ -1,5 +1,4 @@
 const Boom = require('@hapi/boom');
-const jsesc = require('jsesc');
 
 module.exports = {
     name: 'routes/template',
@@ -8,11 +7,8 @@ module.exports = {
         server.route({
             path: '/',
             method: 'GET',
-            config: {
-                auth: false
-            },
             async handler(request, h) {
-                const props = { name: 'You', dev: process.env.DW_DEV_MODE };
+                const props = { magicNumber: Math.random() };
                 return h.view('HelloWorld.svelte', { props });
             }
         });
@@ -38,11 +34,9 @@ module.exports = {
                     metadata: payload.metadata ? JSON.parse(payload.metadata) : undefined
                 };
                 const dataset = payload.data || '';
-                const { config } = request.server.methods;
 
                 const props = { chartData, dataset };
-                const layout = 'SignInPageLayout';
-                return h.view('EditInDatawrapper.svelte', { layout, props });
+                return h.view('EditInDatawrapper.svelte', { props });
             }
         });
     }

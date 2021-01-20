@@ -4,7 +4,7 @@ const rollup = require('rollup');
 const svelte = require('rollup-plugin-svelte');
 const { default: resolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
-const replace = require('@rollup/plugin-replace');
+const alias = require('@rollup/plugin-alias');
 
 const { join } = require('path');
 
@@ -13,7 +13,14 @@ const production = process.env.NODE_ENV === 'production';
 module.exports = async function build(page, ssr) {
     const bundle = await rollup.rollup({
         input: join('src/views', page),
+        external: !ssr && ['lib/stores'],
         plugins: [
+            ssr &&
+                alias({
+                    entries: {
+                        'lib/stores': join(__dirname, '../../views/stores')
+                    }
+                }),
             svelte({
                 compilerOptions: {
                     dev: !production,
@@ -32,8 +39,11 @@ module.exports = async function build(page, ssr) {
 
     const { output } = await bundle.generate({
         sourcemap: true,
-        format: 'iife',
+        format: ssr ? 'iife' : 'amd',
         name: 'App',
+        amd: {
+            id: page.endsWith('.svelte') ? 'App' : null // page
+        },
         file: 'public/build/bundle.js'
     });
 

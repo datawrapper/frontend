@@ -14,8 +14,12 @@ const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
 const SvelteView = require('./utils/svelte-view');
-const { getView, prepareView, prepareAllViews, transpileView } = require('./utils/svelte-view/cache');
-
+const {
+    getView,
+    prepareView,
+    prepareAllViews,
+    transpileView
+} = require('./utils/svelte-view/cache');
 
 const start = async () => {
     validateAPI(config.api);
@@ -41,18 +45,18 @@ const start = async () => {
         cache: {
             provider: useRedis
                 ? {
-                    constructor: require('@hapi/catbox-redis'),
-                    options: {
-                        ...config.redis,
-                        partition: 'api'
-                    }
-                }
+                      constructor: require('@hapi/catbox-redis'),
+                      options: {
+                          ...config.redis,
+                          partition: 'api'
+                      }
+                  }
                 : {
-                    constructor: require('@hapi/catbox-memory'),
-                    options: {
-                        maxByteSize: 52480000
-                    }
-                }
+                      constructor: require('@hapi/catbox-memory'),
+                      options: {
+                          maxByteSize: 52480000
+                      }
+                  }
         },
         router: { stripTrailingSlash: true }
     });
@@ -91,6 +95,7 @@ const start = async () => {
             basedir: path.join(__dirname, 'views')
         },
         path: 'views',
+        context: SvelteView.context,
         isCached: !process.env.DW_DEV_MODE
     });
 
@@ -112,7 +117,7 @@ const start = async () => {
         }
     }, 100);
 
-    process.on('SIGINT', async function() {
+    process.on('SIGINT', async function () {
         server.logger.info('received SIGINT signal, closing all connections...');
         await server.stop();
         server.logger.info('server has stopped');
