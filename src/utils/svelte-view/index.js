@@ -4,7 +4,6 @@ const Hoek = require('@hapi/hoek');
 const { join, relative } = require('path');
 const { readFile } = require('fs').promises;
 const { getView } = require('./cache');
-
 let template;
 
 exports.compile = function compile(t, compileOpts) {
@@ -18,7 +17,8 @@ exports.compile = function compile(t, compileOpts) {
             template = await readFile(join(baseViewDir, 'template.html'), 'utf8');
         }
 
-        const { ssr, error } = await getView(page);
+        let { ssr, error } = await getView(page);
+
         if (error) {
             // @todo: show a nicer error message on production
             return `
@@ -26,13 +26,28 @@ exports.compile = function compile(t, compileOpts) {
             <big>${error.message}</big>
             <pre>${error.frame}</pre>`;
         }
-        const { css, html, head } = ssr().render(context.props);
+        // replace placeholder store values
+        const csrStoresInit = [];
+        Object.keys(context.stores).forEach(k => {
+            const value = JSON.stringify(context.stores[k]);
+            // server-side replacement
+            ssr = ssr.replace(`'__${k.toUpperCase()}_STORE__'`, value);
+            // client-side replacement
+            csrStoresInit.push(`stores.${k}.set(${value});`);
+        });
+        // eslint-disable-next-line
+        const ssrFunc = new Function(ssr + ';return App');
+        const { css, html, head } = ssrFunc().render(context.props);
 
-        const js = `window.app = (function() { return new App({
-  target: document.body,
-  props: ${JSON.stringify(context.props)},
-  hydrate: true
-}); })()`;
+        const js = `
+require(['App', 'lib/stores'], function(App, stores) {
+    ${csrStoresInit.join('\n    ')};
+    new App({
+      target: document.body,
+      props: ${JSON.stringify(context.props)},
+      hydrate: true
+    });
+});`;
 
         const output = template
             .replace('%SSR_HEAD%', head)
@@ -52,3 +67,5 @@ exports.compile = function compile(t, compileOpts) {
         return output;
     };
 };
+
+exports.context = require('./context');

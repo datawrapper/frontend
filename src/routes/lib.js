@@ -6,7 +6,8 @@ module.exports = {
     name: 'routes/lib',
     version: '1.0.0',
     register: async (server, options) => {
-        server.route([{
+        server.route([
+            {
                 path: '/chart-core/{file*}',
                 method: 'GET',
                 config: {
@@ -17,34 +18,57 @@ module.exports = {
                         path: chartCore.path.dist
                     }
                 }
-        }, {
-            path: '/polyfills/{file*}',
-            method: 'GET',
-            config: {
-                auth: false
             },
-            handler: {
-                directory: {
-                    path: path.resolve(path.dirname(require.resolve('@datawrapper/polyfills/package.json')), 'polyfills')
+            {
+                path: '/polyfills/{file*}',
+                method: 'GET',
+                config: {
+                    auth: false
+                },
+                handler: {
+                    directory: {
+                        path: path.resolve(
+                            path.dirname(require.resolve('@datawrapper/polyfills/package.json')),
+                            'polyfills'
+                        )
+                    }
+                }
+            },
+            {
+                path: '/requirejs/{file*}',
+                method: 'GET',
+                config: {
+                    auth: false
+                },
+                handler: {
+                    directory: {
+                        path: path.dirname(require.resolve('requirejs/package.json'))
+                    }
+                }
+            },
+            {
+                path: '/csr/{file*}',
+                method: 'GET',
+                config: {
+                    auth: false
+                },
+                async handler(request, h) {
+                    const { file } = request.params;
+                    // if (!file.endsWith('.svelte.js') && !file.endsWith('.svelte.ie.js')) return Boom.notFound();
+                    const isIE = file.endsWith('.svelte.ie.js');
+                    const isJS = file.endsWith('.js');
+                    const page = isJS
+                        ? file.replace(isIE ? '.svelte.ie.js' : '.svelte.js', '.svelte')
+                        : `${file}.js`;
+                    const { csr, error } = await server.methods.getView(page);
+                    if (error) {
+                        return Boom.notImplemented(error.message);
+                    }
+                    return h
+                        .response(isIE ? server.methods.transpileView(page) : csr)
+                        .header('Content-Type', 'application/javascript');
                 }
             }
-        }, {
-            path: '/csr/{file*}',
-            method: 'GET',
-            config: {
-                auth: false
-            },
-            async handler(request, h) {
-                const { file } = request.params;
-                if (!file.endsWith('.svelte.js') && !file.endsWith('.svelte.ie.js')) return Boom.notFound();
-                const IE = file.endsWith('.svelte.ie.js');
-                const page = file.replace(IE ? '.svelte.ie.js' : '.svelte.js', '.svelte');
-                const { csr, error } = await server.methods.getView(page);
-                if (error) {
-                    return Boom.notImplemented(error.message);
-                }
-                return IE ? server.methods.transpileView(page) : csr;
-            }
-        }]);
+        ]);
     }
 };

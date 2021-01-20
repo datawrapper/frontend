@@ -1,4 +1,5 @@
 <script>
+    import { config } from 'lib/stores';
 </script>
 
 <footer>
@@ -13,8 +14,11 @@
             </nav>
         </div>
         <div class="right">
-            <a href="#top">Back to top</a>
-        <div>
+            <a href="#top">Back to top</a><br />
+            {$config.apiDomain} / {$config.dev ? 'dev' : 'prod'}
+            <div />
+        </div>
+    </div>
 </footer>
 
 <style>
