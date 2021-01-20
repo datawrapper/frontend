@@ -2,8 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const models = require('@datawrapper/orm/models');
 const get = require('lodash/get');
-// const { promisify } = require('util');
+const { promisify } = require('util');
 // const { addScope } = require('./utils/l10n');
+const symlink = promisify(fs.symlink);
+const unlink = promisify(fs.unlink);
 // const readFile = promisify(fs.readFile);
 // const readDir = promisify(fs.readdir);
 
@@ -51,6 +53,17 @@ module.exports = {
                 } else {
                     const version = get(plugin, ['pkg', 'version'], plugin.version);
                     server.logger.info(`[Plugin] ${name}@${version}`);
+                    // symlink plugin views
+                    const pluginViews = path.join(root, name, 'src/frontend/views');
+                    if (fs.existsSync(pluginViews)) {
+                        const target = path.join(__dirname, `views/plugins/${name}`);
+                         if (fs.existsSync(target)) {
+                            await unlink(target);
+                        }
+                        await symlink(pluginViews, target);
+                        server.logger.info(`[Plugin] ${name}: created symlink from ${pluginViews} to ${target}`);
+                    }
+
                     // @todo: try to load locales
                     // try {
                     //     const localePath = path.join(root, name, 'locale');

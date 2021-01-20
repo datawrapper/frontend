@@ -3,7 +3,7 @@
     export let chartData = {};
 
     import httpReq from '@datawrapper/shared/httpReq';
-    import SignInPageLayout from './layout/SignInPageLayout.svelte';
+    import SignInPageLayout from 'layout/SignInPageLayout.svelte';
 
     function openInDatawrapper() {
         httpReq
