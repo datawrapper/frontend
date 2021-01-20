@@ -1,5 +1,7 @@
+/*
+ * set values for the global stores, based on request
+ */
 module.exports = function (request) {
-    // @todo: find a better place for this method
     const apiConfig = request.server.methods.config('api');
     const { auth } = request;
     return {
