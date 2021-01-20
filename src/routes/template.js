@@ -1,5 +1,4 @@
 const Boom = require('@hapi/boom');
-const jsesc = require('jsesc');
 
 
 module.exports = {
@@ -9,9 +8,6 @@ module.exports = {
         server.route({
             path: '/',
             method: 'GET',
-            config: {
-                auth: false
-            },
             async handler(request, h) {
                 const props = { name: 'Gregor' };
                 return h.view('HelloWorld.svelte', { props });
