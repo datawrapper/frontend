@@ -15,12 +15,16 @@ module.exports = async function build(page, ssr) {
         input: join('src/views', page),
         external: !ssr && ['lib/stores'],
         plugins: [
-            ssr &&
-                alias({
-                    entries: {
-                        'lib/stores': join(__dirname, '../../views/stores')
-                    }
-                }),
+            alias({
+                entries: ssr
+                    ? {
+                          'lib/stores': join(__dirname, '../../views/stores'),
+                          layout: join(__dirname, '../../views/layout')
+                      }
+                    : {
+                          layout: join(__dirname, '../../views/layout')
+                      }
+            }),
             svelte({
                 compilerOptions: {
                     dev: !production,
