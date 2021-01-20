@@ -1,6 +1,6 @@
 const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
 const chartCore = require('@datawrapper/chart-core');
-const Boom = require('@hapi/boom')
+const Boom = require('@hapi/boom');
 const jsesc = require('jsesc');
 const get = require('lodash/get');
 
@@ -12,8 +12,9 @@ module.exports = {
         const { getStyles, getVis, getTheme } = initCaches(server);
         const locales = await loadLocales();
         const config = server.methods.config();
-        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${config.api.domain
-            }/v3`;
+        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
+            config.api.domain
+        }/v3`;
 
         server.route({
             method: 'GET',
@@ -37,7 +38,6 @@ module.exports = {
                     .filter(([, value]) => Boolean(value))
                     .map(([key, value]) => `${key}=${value}`)
                     .join('&');
-
 
                 let publishData, vis, theme, css, csv;
 
@@ -68,7 +68,9 @@ module.exports = {
                     vis.locale = publishData.locales;
                     delete publishData.locales;
                 } catch (error) {
-                    server.logger.error(`Error fetching information for ${chart.id}: ${error.message}`);
+                    server.logger.error(
+                        `Error fetching information for ${chart.id}: ${error.message}`
+                    );
                     return Boom.badImplementation();
                 }
 
@@ -127,7 +129,5 @@ module.exports = {
                 });
             }
         });
-
-
     }
 };
