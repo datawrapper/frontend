@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    import MainLayout from './layout/MainLayout.svelte';
+    import MainLayout from 'layout/MainLayout.svelte';
     import { config, user } from 'lib/stores';
     import { onMount } from 'svelte';
 
