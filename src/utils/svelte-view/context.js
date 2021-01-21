@@ -1,3 +1,4 @@
+const { allScopes } = require('../l10n');
 /*
  * set values for the global stores, based on request
  */
@@ -22,7 +23,8 @@ module.exports = function (request) {
                       id: -1,
                       isGuest: true,
                       isAdmin: false
-                  }
+                  },
+            messages: allScopes(auth.artifacts.language || 'en-US')
         }
     };
 };

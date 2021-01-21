@@ -3,6 +3,7 @@ const Vision = require('@hapi/vision');
 const Inert = require('@hapi/inert');
 const Pino = require('hapi-pino');
 const ORM = require('@datawrapper/orm');
+const fs = require('fs-extra');
 const Pug = require('pug');
 const {
     validateAPI,
@@ -20,6 +21,7 @@ const {
     prepareAllViews,
     transpileView
 } = require('./utils/svelte-view/cache');
+const { addScope } = require('./utils/l10n');
 
 const start = async () => {
     validateAPI(config.api);
@@ -81,6 +83,22 @@ const start = async () => {
             redact: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]']
         }
     });
+
+    // load translations
+    try {
+        const localePath = path.join(__dirname, '../locale');
+        const localeFiles = await fs.readdir(localePath);
+        const locales = {};
+        for (let i = 0; i < localeFiles.length; i++) {
+            const file = localeFiles[i];
+            if (/[a-z]+_[a-z]+\.json/i.test(file)) {
+                locales[file.split('.')[0]] = JSON.parse(
+                    await fs.readFile(path.join(localePath, file))
+                );
+            }
+        }
+        addScope('core', locales);
+    } catch (e) {}
 
     server.method('config', key => (key ? config[key] : config));
     server.method('logAction', require('@datawrapper/orm/utils/action').logAction);

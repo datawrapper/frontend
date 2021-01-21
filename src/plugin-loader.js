@@ -3,11 +3,11 @@ const path = require('path');
 const models = require('@datawrapper/orm/models');
 const get = require('lodash/get');
 const { promisify } = require('util');
-// const { addScope } = require('./utils/l10n');
+const { addScope } = require('./utils/l10n');
 const symlink = promisify(fs.symlink);
 const unlink = promisify(fs.unlink);
-// const readFile = promisify(fs.readFile);
-// const readDir = promisify(fs.readdir);
+const readFile = promisify(fs.readFile);
+const readDir = promisify(fs.readdir);
 
 module.exports = {
     name: 'plugin-loader',
@@ -65,27 +65,22 @@ module.exports = {
                     }
 
                     // @todo: try to load locales
-                    // try {
-                    //     const localePath = path.join(root, name, 'locale');
-                    //     const locales = await readDir(localePath);
-                    //     options.locales = {};
-                    //     for (let i = 0; i < locales.length; i++) {
-                    //         const file = locales[i];
-                    //         if (file === 'chart-translations.json') {
-                    //             // chart translations are special because they need to be passed
-                    //             // to the chart-core so they are availabe in rendered charts
-                    //             addScope(
-                    //                 'chart',
-                    //                 JSON.parse(await readFile(path.join(localePath, file)))
-                    //             );
-                    //         } else if (/[a-z]+_[a-z]+\.json/i.test(file)) {
-                    //             options.locales[file.split('.')[0]] = JSON.parse(
-                    //                 await readFile(path.join(localePath, file))
-                    //             );
-                    //         }
-                    //     }
-                    //     addScope(name, options.locales);
-                    // } catch (e) {}
+                    try {
+                        const localePath = path.join(root, name, 'locale');
+                        const locales = await readDir(localePath);
+                        options.locales = {};
+                        for (let i = 0; i < locales.length; i++) {
+                            const file = locales[i];
+                            if (file === 'chart-translations.json') {
+                                // ignore chart translations
+                            } else if (/[a-z]+_[a-z]+\.json/i.test(file)) {
+                                options.locales[file.split('.')[0]] = JSON.parse(
+                                    await readFile(path.join(localePath, file))
+                                );
+                            }
+                        }
+                        addScope(name, options.locales);
+                    } catch (e) {}
                     await server.register({ plugin, options }, pluginOptions);
                 }
             }
