@@ -13,12 +13,13 @@ const production = process.env.NODE_ENV === 'production';
 module.exports = async function build(page, ssr) {
     const bundle = await rollup.rollup({
         input: join('src/views', page),
-        external: !ssr && ['lib/stores'],
+        external: !ssr && ['lib/stores', 'lib/translate'],
         plugins: [
             alias({
                 entries: ssr
                     ? {
                           'lib/stores': join(__dirname, '../../views/stores'),
+                          'lib/translate': join(__dirname, '../../views/translate'),
                           layout: join(__dirname, '../../views/layout')
                       }
                     : {
