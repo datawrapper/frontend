@@ -28,13 +28,19 @@ exports.compile = function compile(t, compileOpts) {
         }
         // replace placeholder store values
         const csrStoresInit = [];
-        Object.keys(context.stores).forEach(k => {
-            const value = JSON.stringify(context.stores[k]);
+        const storeKeys = Object.keys(context.stores);
+        for (let i = 0; i < storeKeys.length; i++) {
+            const k = storeKeys[i];
+            const value = await Promise.resolve(context.stores[k]);
+            const jsonValue = JSON.stringify(value);
             // server-side replacement
-            ssr = ssr.replace(`'__${k.toUpperCase()}_STORE__'`, value);
+            ssr = ssr.replace(
+                `'__${k.replace(/([A-Z])/g, '_$1').toUpperCase()}_STORE__'`,
+                jsonValue
+            );
             // client-side replacement
-            csrStoresInit.push(`stores.${k}.set(${value});`);
-        });
+            csrStoresInit.push(`stores.${k}.set(${jsonValue});`);
+        }
         // eslint-disable-next-line
         const ssrFunc = new Function(ssr + ';return App');
         const { css, html, head } = ssrFunc().render(context.props);

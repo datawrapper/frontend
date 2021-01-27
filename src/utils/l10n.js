@@ -49,7 +49,7 @@ function translate(key, { scope = 'core', language = defaultLanguage }) {
 function allScopes(locale = defaultLanguage) {
     const out = {};
     Object.keys(scopes).forEach(scope => {
-        out[scope] = getScope(scope, locale)
+        out[scope] = getScope(scope, locale);
     });
     return out;
 }
