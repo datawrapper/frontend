@@ -18,14 +18,14 @@
 <MainLayout title="Hello world">
     <div class="container">
         <h1 style="color:#d00" on:click={knock}>{message}</h1>
-        <p>{ __('team / invite / intro') }</p>
-        The magic number is <b>{magicNumber}</b>!
+        <p>{__('team / invite / intro')}</p>
+        The magic number is<b>{magicNumber}</b>!
     </div>
 </MainLayout>
 
 <style>
-	p {
-		font-size: 20px;
-		margin-bottom: 2ex;
-	}
+    p {
+        font-size: 20px;
+        margin-bottom: 2ex;
+    }
 </style>

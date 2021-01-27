@@ -15,6 +15,8 @@ const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
 const SvelteView = require('./utils/svelte-view');
+const { FrontendEventEmitter, eventList } = require('./utils/events');
+
 const {
     getView,
     prepareView,
@@ -102,6 +104,10 @@ const start = async () => {
 
     server.method('config', key => (key ? config[key] : config));
     server.method('logAction', require('@datawrapper/orm/utils/action').logAction);
+
+    // hooks
+    server.app.event = eventList;
+    server.app.events = new FrontendEventEmitter({ logger: server.logger });
 
     server.views({
         engines: {
