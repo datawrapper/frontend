@@ -46,7 +46,7 @@ module.exports = {
             for (const [{ plugin, options, error, name }, pluginOptions] of plugins) {
                 if (!fs.existsSync(path.join(root, name, 'frontend.js'))) {
                     // no frontend.js, skipping
-                    continue
+                    continue;
                 }
                 if (error) {
                     server.logger.warn(`[Plugin] ${name}`, logError(root, name, error));
@@ -57,11 +57,13 @@ module.exports = {
                     const pluginViews = path.join(root, name, 'src/frontend/views');
                     if (fs.existsSync(pluginViews)) {
                         const target = path.join(__dirname, `views/plugins/${name}`);
-                         if (fs.existsSync(target)) {
+                        if (fs.existsSync(target)) {
                             await unlink(target);
                         }
                         await symlink(pluginViews, target);
-                        server.logger.info(`[Plugin] ${name}: created symlink from ${pluginViews} to ${target}`);
+                        server.logger.info(
+                            `[Plugin] ${name}: created symlink from ${pluginViews} to ${target}`
+                        );
                     }
 
                     // @todo: try to load locales

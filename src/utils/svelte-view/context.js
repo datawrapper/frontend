@@ -3,13 +3,21 @@ const { allScopes } = require('../l10n');
  * set values for the global stores, based on request
  */
 module.exports = function (request) {
-    const apiConfig = request.server.methods.config('api');
-    const { auth } = request;
+    const { server, auth } = request;
+    const { events, event } = server.app;
+    const apiConfig = server.methods.config('api');
+    const isAdmin = server.methods.isAdmin(request);
     return {
         stores: {
             config: {
                 apiDomain: `${apiConfig.subdomain}.${apiConfig.domain}`,
                 dev: process.env.DW_DEV_MODE
+            },
+            request: {
+                url: request.url,
+                path: request.path,
+                params: request.params,
+                query: request.query
             },
             user: auth.isAuthenticated
                 ? {
@@ -24,7 +32,10 @@ module.exports = function (request) {
                       isGuest: true,
                       isAdmin: false
                   },
-            messages: allScopes(auth.artifacts.language || 'en-US')
+            messages: allScopes(auth.artifacts.language || 'en-US'),
+            adminPages: isAdmin
+                ? events.emit(event.REGISTER_ADMIN_PAGE, { request }, { filter: 'success' })
+                : null
         }
     };
 };
