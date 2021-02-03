@@ -45,14 +45,30 @@ exports.compile = function compile(t, compileOpts) {
         const ssrFunc = new Function(ssr + ';return App');
         const { css, html, head } = ssrFunc().render(context.props);
 
+        const hotreload = process.env.DW_DEV_MODE ? `
+    new WebSocket(location.origin.replace('http', 'ws')+'/ws').onmessage = function(msg) {
+        const { page } = JSON.parse(msg.data);
+        if (page === '${page}') {
+            require(['/lib/csr/${page}.js?anonymous=1&rev='+Math.random()], function(App) {
+                app = new App({
+                    target: document.body,
+                    props: props,
+                    hydrate: true
+                });
+            });
+        }
+    }` : '';
+
         const js = `
 require(['App', 'lib/stores'], function(App, stores) {
     ${csrStoresInit.join('\n    ')};
-    new App({
+    var props = ${JSON.stringify(context.props)};
+    var app = new App({
       target: document.body,
-      props: ${JSON.stringify(context.props)},
+      props: props,
       hydrate: true
     });
+    ${hotreload}
 });`;
 
         const output = template
@@ -67,7 +83,10 @@ require(['App', 'lib/stores'], function(App, stores) {
     <script>
         document.write('<script type="text/javascript" src="/lib/csr/${page}.'+(window.document.documentMode ? 'ie.' : '')+'js"></s'+'cript>');
     </script>
-    <script async defer>${js};</script>`
+    <script async defer>${js};</script>
+    <script>
+
+    </script>`
             );
 
         return output;

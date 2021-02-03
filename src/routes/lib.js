@@ -54,6 +54,7 @@ module.exports = {
                 },
                 async handler(request, h) {
                     const { file } = request.params;
+                    const { anonymous } = request.query;
                     // if (!file.endsWith('.svelte.js') && !file.endsWith('.svelte.ie.js')) return Boom.notFound();
                     const isIE = file.endsWith('.svelte.ie.js');
                     const isJS = file.endsWith('.js');
@@ -65,7 +66,7 @@ module.exports = {
                         return Boom.notImplemented(error.message);
                     }
                     return h
-                        .response(isIE ? server.methods.transpileView(page) : csr)
+                        .response(isIE ? server.methods.transpileView(page) : anonymous ? csr.replace('define(\'App\', [', 'define([') : csr)
                         .header('Content-Type', 'application/javascript');
                 }
             }

@@ -61,7 +61,8 @@ module.exports.watch = async function(page, callback) {
             } else if (code === 'END') {
                 const [csr, ssr] = await Promise.all([readFile(tmpCsr, 'utf-8'), readFile(tmpSsr, 'utf-8')]);
                 callback(null, { csr, ssr });
-                await Promise.all([unlink(tmpCsr, tmpSsr)]);
+                unlink(tmpCsr);
+                unlink(tmpSsr);
             }
         });
     }
