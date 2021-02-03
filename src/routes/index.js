@@ -19,5 +19,11 @@ module.exports = {
                 prefix: '/lib'
             }
         });
+
+        await server.register(require('./vis-template'), {
+            routes: {
+                prefix: '/v2/vis-template'
+            }
+        });
     }
 };
