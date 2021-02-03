@@ -36,7 +36,8 @@
         "requirejs": "^2.3.6",
         "rollup": "^2.36.2",
         "rollup-plugin-svelte": "^7.0.0",
-        "svelte": "^3.31.2"
+        "svelte": "^3.31.2",
+        "tempfile": "^3.0.0"
     },
     "devDependencies": {
         "babel-eslint": "^10.1.0",
