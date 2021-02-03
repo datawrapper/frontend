@@ -2,9 +2,9 @@
 // @todo: would be nice to add a watch-mode for development
 const { build, watch } = require('./rollup-runtime');
 const babel = require('@babel/core');
-
 const cache = new Map();
 const templateQueue = [];
+const wsClients = new Set();
 let compilePromise = false;
 
 module.exports = {
@@ -32,7 +32,8 @@ module.exports = {
             cache.set(page, view);
         }
         return view.csrBabel;
-    }
+    },
+    wsClients
 };
 
 const watchers = new Set();
@@ -50,6 +51,15 @@ async function getView(page) {
                 process.stdout.write(`Updated csr/ssr cache for ${page}\n`);
                 // update cache
                 cache.set(page, { ssr, csr });
+                // notify page
+                console.log(wsClients)
+                if (wsClients) {
+                    wsClients.forEach(ws => {
+                        ws.send(JSON.stringify({
+                            page
+                        }))
+                    })
+                }
             });
         }
     }

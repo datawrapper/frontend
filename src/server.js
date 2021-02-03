@@ -21,7 +21,8 @@ const {
     getView,
     prepareView,
     prepareAllViews,
-    transpileView
+    transpileView,
+    wsClients
 } = require('./utils/svelte-view/cache');
 const { addScope } = require('./utils/l10n');
 
@@ -64,6 +65,35 @@ const start = async () => {
         },
         router: { stripTrailingSlash: true }
     });
+
+    if (process.env.DW_DEV_MODE) {
+        const HAPIWebSocket = require('hapi-plugin-websocket');
+        await server.register(HAPIWebSocket);
+
+        server.route({
+            method: 'POST',
+            path: '/ws',
+            config: {
+                plugins: {
+                    websocket: {
+                        initially: true,
+                        only: true,
+                        connect({ ws }) {
+                            server.logger.info('new websocket client connected\n');
+                            wsClients.add(ws);
+                        },
+                        disconnect({ ws }) {
+                            server.logger.info('websocket client disconnected\n');
+                            wsClients.delete(ws);
+                        }
+                    }
+                }
+            },
+            handler: (request, h) => {
+                return {};
+            }
+        });
+    }
 
     await ORM.init(config);
     await ORM.registerPlugins();
