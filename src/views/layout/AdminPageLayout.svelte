@@ -1,6 +1,5 @@
 <script>
     import MainLayout from 'layout/MainLayout.svelte';
-    import DatawrapperLogo from 'layout/partials/DatawrapperLogo.svelte';
     import { adminPages, request } from 'lib/stores';
     import groupBy from 'underscore/modules/groupBy';
     import pairs from 'underscore/modules/pairs';
@@ -34,11 +33,12 @@
                         {/each}
                     </ul>
                 {/each}
+                <slot name="belowNav" />
             </div>
             <div class="column content">
-                <h1>Admin > {title}</h1>
+                <h1>Admin >> {title}</h1>
                 <slot />
-                <DatawrapperLogo height="30" />
+
             </div>
         </div>
     </div>

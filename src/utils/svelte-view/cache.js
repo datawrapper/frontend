@@ -1,6 +1,6 @@
 'use strict';
 // @todo: would be nice to add a watch-mode for development
-const build = require('./rollup-runtime');
+const { build, watch } = require('./rollup-runtime');
 const babel = require('@babel/core');
 
 const cache = new Map();
@@ -35,8 +35,25 @@ module.exports = {
     }
 };
 
+const watchers = new Set();
+
 async function getView(page) {
-    if (!cache.has(page) || process.env.DW_DEV_MODE) {
+    if (process.env.DW_DEV_MODE) {
+        if (!watchers.has(page)) {
+            // watch
+            watchers.add(page);
+            process.stdout.write(`Starting rollup watch for ${page}\n`);
+            watch(page, (error, { csr, ssr }) => {
+                if (error) {
+                    return console.error(error);
+                }
+                process.stdout.write(`Updated csr/ssr cache for ${page}\n`);
+                // update cache
+                cache.set(page, { ssr, csr });
+            });
+        }
+    }
+    if (!cache.has(page)) {
         await compile(page);
     }
     return cache.get(page);
