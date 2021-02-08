@@ -52,7 +52,6 @@ async function getView(page) {
                 // update cache
                 cache.set(page, { ssr, csr });
                 // notify page
-                console.log(wsClients)
                 if (wsClients) {
                     wsClients.forEach(ws => {
                         ws.send(JSON.stringify({

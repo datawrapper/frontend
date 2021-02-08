@@ -66,7 +66,7 @@ module.exports = {
                         return Boom.notImplemented(error.message);
                     }
                     return h
-                        .response(isIE ? server.methods.transpileView(page) : anonymous ? csr.replace('define(\'App\', [', 'define([') : csr)
+                        .response(isIE ? server.methods.transpileView(page) : anonymous ? csr.replace('define(\'App\',', 'define(') : csr)
                         .header('Content-Type', 'application/javascript');
                 }
             }

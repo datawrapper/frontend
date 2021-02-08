@@ -19,7 +19,7 @@ module.exports = function (request) {
                 params: request.params,
                 query: request.query
             },
-            user: auth.isAuthenticated
+            user: auth.isAuthenticated && auth.artifacts
                 ? {
                       id: auth.artifacts.id,
                       name: auth.artifacts.email,
@@ -30,9 +30,10 @@ module.exports = function (request) {
                 : {
                       id: -1,
                       isGuest: true,
-                      isAdmin: false
+                      isAdmin: false,
+                      language: 'en-US'
                   },
-            messages: allScopes(auth.artifacts.language || 'en-US'),
+            messages: allScopes(auth.artifacts && auth.artifacts.language || 'en-US'),
             adminPages: isAdmin
                 ? events.emit(event.REGISTER_ADMIN_PAGE, { request }, { filter: 'success' })
                 : null
