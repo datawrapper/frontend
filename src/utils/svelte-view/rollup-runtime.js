@@ -5,10 +5,10 @@ const svelte = require('rollup-plugin-svelte');
 const { default: resolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const alias = require('@rollup/plugin-alias');
+const { less } = require('svelte-preprocess-less');
 const { readFile, unlink } = require('fs-extra');
 const { join } = require('path');
 const tempfile = require('tempfile');
-
 const production = process.env.NODE_ENV === 'production';
 
 module.exports.build = async function(page, ssr) {
@@ -90,6 +90,11 @@ function buildOptions(page, ssr) {
                     generate: ssr ? 'ssr' : 'csr',
                     hydratable: true
                 },
+                preprocess: {
+                    style: less({
+                        sourceMap: false
+                    }),
+                },
                 emitCss: false
             }),
             resolve({
@@ -100,3 +105,4 @@ function buildOptions(page, ssr) {
         ]
     };
 }
+

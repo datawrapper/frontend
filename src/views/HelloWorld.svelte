@@ -1,5 +1,6 @@
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
+    import Svelte2Wrapper from 'layout/partials/Svelte2Wrapper.svelte';
     import { config, user } from 'lib/stores';
     import __ from 'lib/translate';
     import { onMount } from 'svelte';
@@ -12,6 +13,12 @@
         knocked = true;
     }
 
+    let data = {
+        settings: {
+            webhook_url: 'test'
+        },
+    };
+
     $: message = knocked ? `Knock, knock. Who's there?` : `Hello ${$user.name}, click me!`;
 </script>
 
@@ -20,6 +27,13 @@
         <h1 style="color:#d00" on:click={knock}>{message}</h1>
         <p>{__('team / invite / intro')}</p>
         The magic number is<b>{magicNumber}</b>!
+        <hr />
+        <h2>Webhook URL: <input bind:value={data.settings.webhook_url} /> (svelte3)</h2>
+        <Svelte2Wrapper
+            id="plugin-team-integrations"
+            js="/static/plugins/team-integrations/team-integrations.js"
+            css="/static/plugins/team-integrations/team-integrations.css"
+            bind:data />
     </div>
 </MainLayout>
 

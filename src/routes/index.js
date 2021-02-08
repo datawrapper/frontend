@@ -19,5 +19,11 @@ module.exports = {
                 prefix: '/lib'
             }
         });
+
+        await server.register(require('./hello'), {
+            routes: {
+                prefix: '/v2/hello'
+            }
+        });
     }
 };
