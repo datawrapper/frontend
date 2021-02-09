@@ -1,6 +1,6 @@
 <script>
 	import { onMount, beforeUpdate } from 'svelte';
-	import { messages } from 'lib/stores';
+	import { messages, config } from 'lib/stores';
 	import isEqual from 'underscore/modules/isEqual';
 	import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
@@ -30,7 +30,8 @@
 		// mimic old dw setup
 		window.dw = {
 			backend: {
-				__messages: $messages
+				__messages: $messages,
+				__api_domain: $config.apiDomain
 			}
 		}
 		require([id], ({ App }) => {
