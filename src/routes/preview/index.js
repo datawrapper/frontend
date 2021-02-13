@@ -33,7 +33,8 @@ module.exports = {
                         fitheight: fakeBoolean,
                         svgonly: fakeBoolean,
                         map2svg: fakeBoolean,
-                        transparent: fakeBoolean
+                        transparent: fakeBoolean,
+                        scheme: Joi.string().optional()
                     })
                 }
             },
