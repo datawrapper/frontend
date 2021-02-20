@@ -7,8 +7,8 @@
         "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'"
     },
     "dependencies": {
-        "@datawrapper/chart-core": "^8.23.2",
-        "@datawrapper/locales": "^1.1.0",
+        "@datawrapper/chart-core": "^8.23.6",
+        "@datawrapper/locales": "^1.1.2",
         "@datawrapper/orm": "^3.20.0",
         "@datawrapper/schemas": "^1.8.0",
         "@datawrapper/service-utils": "^0.2.1",

@@ -1,6 +1,8 @@
 const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
+const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
 const chartCore = require('@datawrapper/chart-core');
-const Boom = require('@hapi/boom')
+const Joi = require('@hapi/joi');
+const Boom = require('@hapi/boom');
 const jsesc = require('jsesc');
 const get = require('lodash/get');
 
@@ -17,6 +19,23 @@ module.exports = {
         server.route({
             method: 'GET',
             path: '/{chartId}',
+            options: {
+                validate: {
+                    query: Joi.object({
+                        theme: Joi.string().optional(),
+                        ott: Joi.string().optional(),
+                        search: Joi.string().optional(),
+                        published: fakeBoolean,
+                        static: fakeBoolean,
+                        plain: fakeBoolean,
+                        fitchart: fakeBoolean,
+                        fitheight: fakeBoolean,
+                        svgonly: fakeBoolean,
+                        map2svg: fakeBoolean,
+                        transparent: fakeBoolean
+                    })
+                }
+            },
             handler: async (request, h) => {
                 const { auth, params } = request;
                 const { chartId } = params;
