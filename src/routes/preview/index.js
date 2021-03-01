@@ -1,4 +1,3 @@
-const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
 const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
 const chartCore = require('@datawrapper/chart-core');
 const Joi = require('@hapi/joi');
@@ -66,12 +65,11 @@ module.exports = {
                     return Boom.unauthorized();
                 }
 
-                const chartLocale = props.chart.language || 'en-US';
+                const chartLocale = props.chartAttrs.language || 'en-US';
 
-                const deps = getDependencies({
-                    locale: props.chart.language,
-                    dependencies: props.visualization.dependencies
-                });
+                const dependencies = [
+                    'dw-2.0.min.js',
+                ];
 
                 props = Object.assign(props, {
                     isIframe: true,
@@ -96,7 +94,7 @@ module.exports = {
                     VIS_SCRIPT: `${apiBase}/visualizations/${props.visualization.id}/script.js`,
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
-                    DEPS: deps.map(el => `/lib/chart-core/${el}`),
+                    DEPS: dependencies.map(el => `/lib/chart-core/${el}`),
                     LIBRARIES: libraries,
                     CSS: `${props.styles.fonts}\n${props.styles.css}`,
                     CHART_CLASS: [
