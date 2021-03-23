@@ -62,12 +62,38 @@
             require(['App'], function(App) {
                 var props = <%- PAGE_PROPS %>;
 
-                // todo: client-side caching
+                // client-side caching
+                var storeHashes = <%- STORE_HASHES %>;
+                if (window.localStorage && window.localStorage.getItem) {
+                    Object.keys(storeHashes).forEach(function(key) {
+                        // check if message hash is newer
+                        var oldHash = window.localStorage.getItem('dw_hash_'+key);
+                        var oldValue = window.localStorage.getItem('dw_value_'+key);
+                        var hasNewValue = (props.stores[key] && Object.keys(props.stores[key]).length);
+                        if (!hasNewValue && !oldValue) {
+                            // problem: local storage might have been cleared but the
+                            // cookie  is still set, let's unset the cookie and reload
+                            document.cookie = 'DW-HASH-'+key.toUpperCase()+'=';
+                            window.location.reload();
+                            return;
+                        }
+                        if (storeHashes[key] !== oldHash || !oldValue) {
+                            // yes, the hash is newer, let's store new translations
+                            window.localStorage.setItem('dw_hash_'+key, storeHashes[key]);
+                            window.localStorage.setItem('dw_value_'+key, JSON.stringify(props.stores[key]));
+                            // also set cookie so server knows we have stored this version
+                            window.document.cookie = 'DW-HASH-'+key.toUpperCase()+'='+storeHashes[key];
+                        } else if (oldHash && !hasNewValue) {
+                            // restore value from cache
+                            props.stores[key] = JSON.parse(oldValue);
+                        }
+                    });
+                }
 
                 var app = new App({
-                  target: document.body,
-                  props: props,
-                  hydrate: true
+                    target: document.body,
+                    props: props,
+                    hydrate: true
                 });
 
                 <% if (DW_DEV_MODE) { %>

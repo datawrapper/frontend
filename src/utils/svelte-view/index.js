@@ -15,7 +15,7 @@ exports.compile = function compile(t, compileOpts) {
     return async function runtime(context, renderOpts) {
         renderOpts = Hoek.applyToDefaults(compileOpts, renderOpts);
 
-        if (!template) {
+        if (!template || process.env.DW_DEV_MODE) {
             template = await readFile(join(__dirname, 'template.ejs'), 'utf8');
         }
 
@@ -34,13 +34,19 @@ exports.compile = function compile(t, compileOpts) {
         const ssrFunc = new Function(ssr + ';return App');
         const { css, html, head } = ssrFunc().render(context.props);
 
+        // remove stores that we already have in client-side cache
+        Object.keys(context.storeCached).forEach(key => {
+            context.props.stores[key] = {};
+        });
+
         const output = ejs.render(template, {
             SSR_HEAD: head,
             SSR_CSS: css.code,
             SSR_HTML: html,
             PAGE: page,
             PAGE_PROPS: JSON.stringify(context.props),
-            DW_DEV_MODE: process.env.DW_DEV_MODE
+            DW_DEV_MODE: process.env.DW_DEV_MODE,
+            STORE_HASHES: JSON.stringify(context.storeHashes)
         })
 
         return output;
