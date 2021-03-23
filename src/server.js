@@ -159,7 +159,7 @@ const start = async () => {
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
-    await server.register({ plugin: require('./plugin-loader'), options: { index: 'frontend.js' }});
+    await server.register([require('./plugin-loader')]);
 
     // wait for all prepared views
     await prepareAllViews();
