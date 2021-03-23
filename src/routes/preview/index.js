@@ -74,6 +74,8 @@ module.exports = {
                 props = Object.assign(props, {
                     isIframe: true,
                     isPreview: true,
+                    // @todo: load from  config
+                    polyfillUri: 'https://static.dwcdn.net/',
                     locales: {
                         dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
                         numeral: loadVendorLocale(locales, 'numeral', chartLocale)
