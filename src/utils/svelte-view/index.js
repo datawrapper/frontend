@@ -47,7 +47,7 @@ exports.compile = function compile(t, compileOpts) {
     }` : '';
 
         const js = `
-require(['App', 'lib/stores'], function(App, stores) {
+require(['App'], function(App) {
     var props = ${JSON.stringify(context.props)};
     var app = new App({
       target: document.body,

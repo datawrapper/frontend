@@ -1,6 +1,5 @@
 <script>
 	import { onMount, beforeUpdate, getContext } from 'svelte';
-	// import { messages, config } from 'lib/stores';
 	import isEqual from 'underscore/modules/isEqual';
 	import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 

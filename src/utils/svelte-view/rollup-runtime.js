@@ -12,7 +12,7 @@ const { join } = require('path');
 const tempfile = require('tempfile');
 const production = process.env.NODE_ENV === 'production';
 
-module.exports.build = async function(page, ssr) {
+module.exports.build = async function (page, ssr) {
     const bundle = await rollup.rollup(buildOptions(page, ssr));
 
     const { output } = await bundle.generate({
@@ -28,39 +28,45 @@ module.exports.build = async function(page, ssr) {
     return output[0].code;
 };
 
-module.exports.watch = async function(page, callback) {
+module.exports.watch = async function (page, callback) {
     if (!production) {
         const tmpCsr = tempfile('.js');
         const tmpSsr = tempfile('.js');
-        const watcher = rollup.watch([{
-            ...buildOptions(page, false),
-            output: {
-                sourcemap: true,
-                format: 'amd',
-                name: 'App',
-                amd: {
-                    id: page.endsWith('.svelte') ? 'App' : null // page
-                },
-                file: tmpCsr
+        const watcher = rollup.watch([
+            {
+                ...buildOptions(page, false),
+                output: {
+                    sourcemap: true,
+                    format: 'amd',
+                    name: 'App',
+                    amd: {
+                        id: page.endsWith('.svelte') ? 'App' : null // page
+                    },
+                    file: tmpCsr
+                }
+            },
+            {
+                ...buildOptions(page, true),
+                output: {
+                    sourcemap: true,
+                    format: 'iife',
+                    name: 'App',
+                    amd: {
+                        id: page.endsWith('.svelte') ? 'App' : null // page
+                    },
+                    file: tmpSsr
+                }
             }
-        }, {
-            ...buildOptions(page, true),
-            output: {
-                sourcemap: true,
-                format: 'iife' ,
-                name: 'App',
-                amd: {
-                    id: page.endsWith('.svelte') ? 'App' : null // page
-                },
-                file: tmpSsr
-            }
-        }]);
+        ]);
         watcher.on('event', async ({ code, result, error }) => {
             if (code === 'ERROR') {
                 console.error(error);
                 callback(error);
             } else if (code === 'END') {
-                const [csr, ssr] = await Promise.all([readFile(tmpCsr, 'utf-8'), readFile(tmpSsr, 'utf-8')]);
+                const [csr, ssr] = await Promise.all([
+                    readFile(tmpCsr, 'utf-8'),
+                    readFile(tmpSsr, 'utf-8')
+                ]);
                 callback(null, { csr, ssr });
                 unlink(tmpCsr);
                 unlink(tmpSsr);
@@ -71,8 +77,8 @@ module.exports.watch = async function(page, callback) {
 
 function buildOptions(page, ssr) {
     return {
-        input: join('src/utils/svelte-view/View.svelte') , // join('src/views', page),
-        external: !ssr && ['lib/stores', 'lib/translate'],
+        input: join('src/utils/svelte-view/View.svelte'), // join('src/views', page),
+        external: !ssr,
         plugins: [
             replace({
                 values: {
@@ -81,15 +87,9 @@ function buildOptions(page, ssr) {
                 preventAssignment: true
             }),
             alias({
-                entries: ssr
-                    ? {
-                          'lib/stores': join(__dirname, '../../views/stores'),
-                          'lib/translate': join(__dirname, '../../views/translate'),
-                          layout: join(__dirname, '../../views/layout')
-                      }
-                    : {
-                          layout: join(__dirname, '../../views/layout')
-                      }
+                entries: {
+                    layout: join(__dirname, '../../views/layout')
+                }
             }),
             svelte({
                 compilerOptions: {
@@ -100,7 +100,7 @@ function buildOptions(page, ssr) {
                 preprocess: {
                     style: less({
                         sourceMap: false
-                    }),
+                    })
                 },
                 emitCss: false
             }),
@@ -112,4 +112,3 @@ function buildOptions(page, ssr) {
         ]
     };
 }
-
