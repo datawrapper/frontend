@@ -24,7 +24,7 @@ const {
     transpileView,
     wsClients
 } = require('./utils/svelte-view/cache');
-const { addScope } = require('./utils/l10n');
+const { addScope } = require('@datawrapper/service-utils/l10n');
 
 const start = async () => {
     validateAPI(config.api);
@@ -137,7 +137,7 @@ const start = async () => {
 
     // hooks
     server.app.event = eventList;
-    server.app.events = new FrontendEventEmitter({ logger: server.logger });
+    server.app.events = new FrontendEventEmitter({ logger: server.logger, eventList });
 
     server.views({
         engines: {
@@ -159,7 +159,7 @@ const start = async () => {
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
-    await server.register([require('./plugin-loader')]);
+    await server.register({ plugin: require('./plugin-loader'), options: { index: 'frontend.js' }});
 
     // wait for all prepared views
     await prepareAllViews();
