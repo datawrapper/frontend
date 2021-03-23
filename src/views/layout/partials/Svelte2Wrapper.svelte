@@ -1,8 +1,11 @@
 <script>
-	import { onMount, beforeUpdate } from 'svelte';
-	import { messages, config } from 'lib/stores';
+	import { onMount, beforeUpdate, getContext } from 'svelte';
+	// import { messages, config } from 'lib/stores';
 	import isEqual from 'underscore/modules/isEqual';
 	import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
+
+	const messages = getContext('messages');
+	const config = getContext('config');
 
 	export let id;
 	export let js;

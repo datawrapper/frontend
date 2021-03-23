@@ -26,21 +26,8 @@ exports.compile = function compile(t, compileOpts) {
             <big>${error.message}</big>
             <pre>${error.frame}</pre>`;
         }
-        // replace placeholder store values
-        const csrStoresInit = [];
-        const storeKeys = Object.keys(context.stores);
-        for (let i = 0; i < storeKeys.length; i++) {
-            const k = storeKeys[i];
-            const value = await Promise.resolve(context.stores[k]);
-            const jsonValue = JSON.stringify(value);
-            // server-side replacement
-            ssr = ssr.replace(
-                `'__${k.replace(/([A-Z])/g, '_$1').toUpperCase()}_STORE__'`,
-                jsonValue
-            );
-            // client-side replacement
-            csrStoresInit.push(`stores.${k}.set(${jsonValue});`);
-        }
+        context.props.stores = context.stores;
+
         // eslint-disable-next-line
         const ssrFunc = new Function(ssr + ';return App');
         const { css, html, head } = ssrFunc().render(context.props);
@@ -61,7 +48,6 @@ exports.compile = function compile(t, compileOpts) {
 
         const js = `
 require(['App', 'lib/stores'], function(App, stores) {
-    ${csrStoresInit.join('\n    ')};
     var props = ${JSON.stringify(context.props)};
     var app = new App({
       target: document.body,

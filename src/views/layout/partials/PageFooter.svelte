@@ -1,5 +1,6 @@
 <script>
-    import { config } from 'lib/stores';
+    import { getContext } from 'svelte';
+    const config = getContext('config');
 </script>
 
 <footer>

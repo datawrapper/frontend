@@ -1,8 +1,11 @@
 <script>
     import MainLayout from 'layout/MainLayout.svelte';
-    import { adminPages, request } from 'lib/stores';
+    import { getContext } from 'svelte';
     import groupBy from 'underscore/modules/groupBy';
     import pairs from 'underscore/modules/pairs';
+
+    const adminPages = getContext('adminPages');
+    const request = getContext('request');
 
     export let title;
 

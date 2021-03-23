@@ -10,9 +10,13 @@ module.exports = {
             method: 'GET',
             path: '/',
             options: {
-                auth: false,
+                // auth: false,
                 async handler(request, h) {
-                    return h.view('HelloWorld.svelte', { });
+                    return h.view('HelloWorld.svelte', {
+                        props: {
+                            magicNumber: 42
+                        }
+                    });
                 }
             }
         });

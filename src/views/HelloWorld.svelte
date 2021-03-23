@@ -1,11 +1,12 @@
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
     import Svelte2Wrapper from 'layout/partials/Svelte2Wrapper.svelte';
-    import { config, user } from 'lib/stores';
-    import __ from 'lib/translate';
-    import { onMount } from 'svelte';
+    import { onMount, getContext } from 'svelte';
 
     export let magicNumber;
+
+    const user = getContext('user');
+    const __ = getContext('translate');
 
     let knocked = false;
 

@@ -5,6 +5,7 @@ const svelte = require('rollup-plugin-svelte');
 const { default: resolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const alias = require('@rollup/plugin-alias');
+const replace = require('@rollup/plugin-replace');
 const { less } = require('svelte-preprocess-less');
 const { readFile, unlink } = require('fs-extra');
 const { join } = require('path');
@@ -70,9 +71,15 @@ module.exports.watch = async function(page, callback) {
 
 function buildOptions(page, ssr) {
     return {
-        input: join('src/views', page),
+        input: join('src/utils/svelte-view/View.svelte') , // join('src/views', page),
         external: !ssr && ['lib/stores', 'lib/translate'],
         plugins: [
+            replace({
+                values: {
+                    __view__: join('../../views', page)
+                },
+                preventAssignment: true
+            }),
             alias({
                 entries: ssr
                     ? {

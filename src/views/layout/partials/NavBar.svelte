@@ -1,5 +1,6 @@
 <script>
-    import { user } from 'lib/stores';
+    import { getContext } from 'svelte';
+    const user = getContext('user');
 </script>
 
 <nav>
@@ -9,7 +10,7 @@
         {#if $user.isAdmin}
             <li>Admin</li>
         {/if}
-        <li>{$user.name}</li>
+        <li>{$user.name}</li>x
     </ul>
 </nav>
 
