@@ -4,6 +4,8 @@ const Hoek = require('@hapi/hoek');
 const { join, relative } = require('path');
 const { readFile } = require('fs').promises;
 const { getView } = require('./cache');
+const ejs = require('ejs');
+
 let template;
 
 exports.compile = function compile(t, compileOpts) {
@@ -14,10 +16,10 @@ exports.compile = function compile(t, compileOpts) {
         renderOpts = Hoek.applyToDefaults(compileOpts, renderOpts);
 
         if (!template) {
-            template = await readFile(join(baseViewDir, 'template.html'), 'utf8');
+            template = await readFile(join(__dirname, 'template.ejs'), 'utf8');
         }
 
-        let { ssr, error } = await getView(page);
+        const { ssr, error } = await getView(page);
 
         if (error) {
             // @todo: show a nicer error message on production
@@ -32,48 +34,14 @@ exports.compile = function compile(t, compileOpts) {
         const ssrFunc = new Function(ssr + ';return App');
         const { css, html, head } = ssrFunc().render(context.props);
 
-        const hotreload = process.env.DW_DEV_MODE ? `
-    new WebSocket(location.origin.replace('http', 'ws')+'/ws').onmessage = function(msg) {
-        const { page } = JSON.parse(msg.data);
-        if (page === '${page}') {
-            require(['/lib/csr/${page}.js?anonymous=1&rev='+Math.random()], function(App) {
-                app = new App({
-                    target: document.body,
-                    props: props,
-                    hydrate: true
-                });
-            });
-        }
-    }` : '';
-
-        const js = `
-require(['App'], function(App) {
-    var props = ${JSON.stringify(context.props)};
-    var app = new App({
-      target: document.body,
-      props: props,
-      hydrate: true
-    });
-    ${hotreload}
-});`;
-
-        const output = template
-            .replace('%SSR_HEAD%', head)
-            .replace('%SSR_CSS%', css.code)
-            .replace('%SSR_HTML%', html)
-            .replace(
-                '%SCRIPTS%',
-                `
-    <script>window.__DW_SVELTE_PROPS__ = { data: '/lib/polyfills' }</script>
-    <script src="/lib/chart-core/load-polyfills.js"></script>
-    <script>
-        document.write('<script type="text/javascript" src="/lib/csr/${page}.'+(window.document.documentMode ? 'ie.' : '')+'js"></s'+'cript>');
-    </script>
-    <script async defer>${js};</script>
-    <script>
-
-    </script>`
-            );
+        const output = ejs.render(template, {
+            SSR_HEAD: head,
+            SSR_CSS: css.code,
+            SSR_HTML: html,
+            PAGE: page,
+            PAGE_PROPS: JSON.stringify(context.props),
+            DW_DEV_MODE: process.env.DW_DEV_MODE
+        })
 
         return output;
     };
