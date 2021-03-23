@@ -75,7 +75,7 @@ module.exports = {
                     isIframe: true,
                     isPreview: true,
                     // @todo: load from  config
-                    polyfillUri: 'https://static.dwcdn.net/',
+                    polyfillUri: '/lib/polyfills',
                     locales: {
                         dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
                         numeral: loadVendorLocale(locales, 'numeral', chartLocale)
