@@ -49,7 +49,7 @@ module.exports = function (request) {
     };
     // check client-side cache in cookie
     clientSideStoreCache.forEach(key => {
-        const curHash = md5(JSON.stringify(context.stores[key] || {}));
+        const curHash = context.stores[key] ? md5(JSON.stringify(context.stores[key])) : null;
         context.storeHashes[key] = curHash;
         const clientHash = request.state[`DW-HASH-${key.toUpperCase()}`];
         if (clientHash && clientHash === curHash) {
