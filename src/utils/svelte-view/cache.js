@@ -77,12 +77,12 @@ async function prepareNext() {
 }
 
 async function compile(page) {
-    // console.log('Compiling view ' + page);
     try {
         const ssrCode = await build(page, true);
         cache.set(page, {
             ssr: ssrCode,
-            csr: await build(page, false)
+            csr: await build(page, false),
+            error: null
         });
     } catch (err) {
         console.error(`Error: Svelte compile error in ${page}`);
