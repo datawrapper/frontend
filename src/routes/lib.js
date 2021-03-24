@@ -55,7 +55,6 @@ module.exports = {
                 async handler(request, h) {
                     const { file } = request.params;
                     const { anonymous } = request.query;
-                    // if (!file.endsWith('.svelte.js') && !file.endsWith('.svelte.ie.js')) return Boom.notFound();
                     const isIE = file.endsWith('.svelte.ie.js');
                     const isJS = file.endsWith('.js');
                     const page = isJS
