@@ -78,7 +78,7 @@
                             return;
                         }
                         if (storeHashes[key] !== oldHash || !oldValue) {
-                            // yes, the hash is newer, let's store new translations
+                            // yes, the hash is newer, let's store new value
                             window.localStorage.setItem('dw_hash_'+key, storeHashes[key]);
                             window.localStorage.setItem('dw_value_'+key, JSON.stringify(props.stores[key]));
                             // also set cookie so server knows we have stored this version
