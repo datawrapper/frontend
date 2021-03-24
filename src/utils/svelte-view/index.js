@@ -109,7 +109,7 @@ const SvelteView = {
             }
 
             if (process.env.DW_DEV_MODE) {
-                watchPage(page).on('change', page => setCache(page));
+                watchPage(page).on('change', result => setCache(page, result));
             }
             const { ssr, error } = await withCache(page, () => compilePage(page));
 
