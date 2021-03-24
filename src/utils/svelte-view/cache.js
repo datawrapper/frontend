@@ -1,5 +1,4 @@
 'use strict';
-// @todo: would be nice to add a watch-mode for development
 const { build, watch } = require('./rollup-runtime');
 const babel = require('@babel/core');
 const cache = new Map();
