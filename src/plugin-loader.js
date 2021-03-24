@@ -14,13 +14,15 @@ module.exports = {
     version: '1.0.0',
     register: async (server, options) => {
         const config = server.methods.config();
-        const root = config.general.localPluginRoot || path.join(process.cwd(), 'plugins');
+        const pluginRoot = config.general.localPluginRoot || path.join(process.cwd(), 'plugins');
 
-        const plugins = Object.keys(config.plugins || []).map(registerPlugin);
+        const plugins = Object.keys(config.plugins || [])
+            .filter(name => fs.existsSync(path.join(pluginRoot, name, 'frontend.js')))
+            .map(registerPlugin);
 
         function registerPlugin(name) {
             try {
-                const pluginPath = path.join(root, name, 'frontend.js');
+                const pluginPath = path.join(pluginRoot, name, 'frontend.js');
                 const { options = {}, ...plugin } = require(pluginPath);
 
                 const { routes, ...opts } = options;
@@ -44,17 +46,13 @@ module.exports = {
 
         if (plugins.length) {
             for (const [{ plugin, options, error, name }, pluginOptions] of plugins) {
-                if (!fs.existsSync(path.join(root, name, 'frontend.js'))) {
-                    // no frontend.js, skipping
-                    continue;
-                }
                 if (error) {
-                    server.logger.warn(`[Plugin] ${name}`, logError(root, name, error));
+                    server.logger.warn(`[Plugin] ${name}`, logError(pluginRoot, name, error));
                 } else {
                     const version = get(plugin, ['pkg', 'version'], plugin.version);
                     server.logger.info(`[Plugin] ${name}@${version}`);
                     // symlink plugin views
-                    const pluginViews = path.join(root, name, 'src/frontend/views');
+                    const pluginViews = path.join(pluginRoot, name, 'src/frontend/views');
                     if (fs.existsSync(pluginViews)) {
                         const target = path.join(__dirname, `views/plugins/${name}`);
                         if (fs.existsSync(target)) {
@@ -68,7 +66,7 @@ module.exports = {
 
                     // @todo: try to load locales
                     try {
-                        const localePath = path.join(root, name, 'locale');
+                        const localePath = path.join(pluginRoot, name, 'locale');
                         const locales = await readDir(localePath);
                         options.locales = {};
                         for (let i = 0; i < locales.length; i++) {
@@ -93,7 +91,7 @@ module.exports = {
     }
 };
 
-function logError(root, name, error) {
+function logError(pluginRoot, name, error) {
     if (error.code === 'MODULE_NOT_FOUND') {
         return `- skipped
     Reason: \`frontend.js\` doesn't exist or a dependency is not installed (${error})`;
@@ -104,10 +102,10 @@ function logError(root, name, error) {
 Loading plugin [${name}] failed! Maybe it is not properly installed.
 
 Is it available in "plugins/"?
-    Tip: run "ls ${root} | grep "${name}"
+    Tip: run "ls ${pluginRoot} | grep "${name}"
 Possible mistakes:
     * Plugin config key doesn't match the plugin folder.
-    * Plugin is missing from ${root}.
+    * Plugin is missing from ${pluginRoot}.
 
 Maybe this error is helpful:
 ${error.stack}`;
