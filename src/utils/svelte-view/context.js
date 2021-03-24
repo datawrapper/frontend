@@ -1,5 +1,6 @@
 const { allScopes } = require('@datawrapper/service-utils/l10n');
 const crypto = require('crypto');
+const get = require('lodash/get');
 
 const clientSideStoreCache = new Set(['messages']);
 
@@ -11,6 +12,7 @@ module.exports = function (request) {
     const { events, event } = server.app;
     const apiConfig = server.methods.config('api');
     const isAdmin = server.methods.isAdmin(request);
+    const userLang = auth.isAuthenticated && auth.artifacts && auth.artifacts.id ? auth.artifacts.language : get(auth.credentials.data, 'data.dw-lang');
     const context = {
         stores: {
             config: {
@@ -23,11 +25,11 @@ module.exports = function (request) {
                 params: request.params,
                 query: request.query
             },
-            user: auth.isAuthenticated && auth.artifacts
+            user: auth.isAuthenticated && auth.artifacts && auth.artifacts.id
                 ? {
                       id: auth.artifacts.id,
                       name: auth.artifacts.email,
-                      language: auth.artifacts.language,
+                      language: userLang,
                       isAdmin: auth.artifacts.isAdmin(),
                       isGuest: false
                   }
@@ -35,9 +37,9 @@ module.exports = function (request) {
                       id: -1,
                       isGuest: true,
                       isAdmin: false,
-                      language: 'en-US'
+                      language: userLang
                   },
-            messages: allScopes(auth.artifacts && auth.artifacts.language || 'en-US'),
+            messages: allScopes(userLang || 'en-US'),
             adminPages: isAdmin
                 ? events.emit(event.REGISTER_ADMIN_PAGE, { request }, { filter: 'success' })
                 : null
