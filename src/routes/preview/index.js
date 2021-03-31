@@ -100,6 +100,7 @@ module.exports = {
 
                 const libraries = vis.libraries.map(lib => lib.uri);
 
+                const teamSettings = await api(`/teams/${chart.organizationId}`);
                 const props = {
                     data: {
                         visJSON: vis,
@@ -109,8 +110,8 @@ module.exports = {
                         isPreview: true,
                         chartLocale,
                         locales: {
-                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
-                            numeral: loadVendorLocale(locales, 'numeral', chartLocale)
+                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, teamSettings),
+                            numeral: loadVendorLocale(locales, 'numeral', chartLocale, teamSettings)
                         },
                         metricPrefix: {} /* NOTE: What about this? */,
                         themeId: theme.id,
@@ -121,7 +122,6 @@ module.exports = {
                     theme,
                     translations: vis.locale
                 };
-
                 const { html, head } = chartCore.svelte.render(props);
 
                 return h.view('preview', {

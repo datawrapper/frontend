@@ -27,20 +27,24 @@ module.exports = {
         return locales;
     },
 
-    loadVendorLocale(locales, vendor, locale) {
+    loadVendorLocale(locales, vendor, locale, team) {
         const culture = locale.replace('_', '-').toLowerCase();
         const tryLocales = [culture];
+        let localeBase = 'null';
         if (culture.length > 2) {
             // also try just language as fallback
             tryLocales.push(culture.split('-')[0]);
         }
         for (let i = 0; i < tryLocales.length; i++) {
             if (locales[vendor].has(tryLocales[i])) {
-                return locales[vendor].get(tryLocales[i]);
+                localeBase = locales[vendor].get(tryLocales[i]);
+                break;
             }
         }
-        // no locale found at all
-        return 'null';
+        return {
+            base:localeBase,
+            custom:get(team,`settings.locales.${vendor}.${locale.replace('_', '-')}`,{})
+        }
     },
 
     createAPI(baseUrl, sessionID, session) {
