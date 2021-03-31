@@ -100,7 +100,7 @@ module.exports = {
 
                 const libraries = vis.libraries.map(lib => lib.uri);
 
-                const teamSettings = await api(`/teams/${chart.organizationId}`);
+                const teamSettings = chart.organizationId ? await api(`/teams/${chart.organizationId}`) : {};
                 const props = {
                     data: {
                         visJSON: vis,
