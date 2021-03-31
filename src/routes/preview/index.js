@@ -122,6 +122,7 @@ module.exports = {
                     theme,
                     translations: vis.locale
                 };
+
                 const { html, head } = chartCore.svelte.render(props);
 
                 return h.view('preview', {
