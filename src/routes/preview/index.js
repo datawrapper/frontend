@@ -100,7 +100,7 @@ module.exports = {
 
                 const libraries = vis.libraries.map(lib => lib.uri);
 
-                const teamSettings = chart.organizationId ? await api(`/teams/${chart.organizationId}`) : {};
+                const team = chart.organizationId ? await api(`/teams/${chart.organizationId}`) : {};
                 const props = {
                     data: {
                         visJSON: vis,
@@ -110,8 +110,8 @@ module.exports = {
                         isPreview: true,
                         chartLocale,
                         locales: {
-                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, teamSettings),
-                            numeral: loadVendorLocale(locales, 'numeral', chartLocale, teamSettings)
+                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
+                            numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
                         },
                         metricPrefix: {} /* NOTE: What about this? */,
                         themeId: theme.id,
