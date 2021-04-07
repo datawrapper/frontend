@@ -53,7 +53,7 @@
          because `src/client.js` references it -->
         <%- SSR_HTML %>
 
-         <script>window.__DW_SVELTE_PROPS__ = { data: '/lib/polyfills' }</script>
+         <script>window.__DW_SVELTE_PROPS__ = { data: { polyfillUri: '/lib/polyfills' }}</script>
          <script src="/lib/chart-core/load-polyfills.js"></script>
          <script>
              document.write('<script type="text/javascript" src="/lib/csr/<%= PAGE %>.'+(window.document.documentMode ? 'ie.' : '')+'js"></s'+'cript>');
@@ -98,7 +98,7 @@
 
                 <% if (DW_DEV_MODE) { %>
                 new WebSocket(location.origin.replace('http', 'ws')+'/ws').onmessage = function(msg) {
-                    const { page } = JSON.parse(msg.data);
+                    var page = (JSON.parse(msg.data)).page;
                     if (page === '<%= PAGE %>') {
                         require(['/lib/csr/<%= PAGE %>.js?anonymous=1&rev='+Math.random()], function(App) {
                             app = new App({
