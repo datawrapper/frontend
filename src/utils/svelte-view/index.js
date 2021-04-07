@@ -85,7 +85,7 @@ async function transpileView(view) {
         // transpile now
         view.csrBabel = (
             await babel.transformAsync(view.csr, {
-                presets: [['@babel/env', { targets: '> 1%', corejs: 3, useBuiltIns: 'entry' }]],
+                presets: [['@babel/env', { targets: { ie: 11 }, corejs: 3, useBuiltIns: 'entry' }]],
                 plugins: ['babel-plugin-transform-async-to-promises']
             })
         ).code;
@@ -94,10 +94,8 @@ async function transpileView(view) {
 }
 
 async function transpileAndCompilePage(page) {
-    withCache(page => async () => {
-        const view = await compilePage(page);
-        return transpileView(view);
-    });
+    const view = await getView(page);
+    return transpileView(view);
 }
 
 const SvelteView = {
