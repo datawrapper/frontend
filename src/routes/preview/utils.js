@@ -30,7 +30,6 @@ module.exports = {
     loadVendorLocale(locales, vendor, locale, team) {
         const culture = locale.replace('_', '-').toLowerCase();
         const tryLocales = [culture];
-
         if (culture.length > 2) {
             // also try just language as fallback
             tryLocales.push(culture.split('-')[0]);
