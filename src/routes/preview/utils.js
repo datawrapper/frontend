@@ -30,21 +30,22 @@ module.exports = {
     loadVendorLocale(locales, vendor, locale, team) {
         const culture = locale.replace('_', '-').toLowerCase();
         const tryLocales = [culture];
-        let localeBase = 'null';
+
         if (culture.length > 2) {
             // also try just language as fallback
             tryLocales.push(culture.split('-')[0]);
         }
         for (let i = 0; i < tryLocales.length; i++) {
             if (locales[vendor].has(tryLocales[i])) {
-                localeBase = locales[vendor].get(tryLocales[i]);
-                break;
+                const localeBase = locales[vendor].get(tryLocales[i]);
+                return {
+                    base:localeBase,
+                    custom:get(team,`settings.locales.${vendor}.${locale.replace('_', '-')}`,{})
+                };
             }
         }
-        return {
-            base:localeBase,
-            custom:get(team,`settings.locales.${vendor}.${locale.replace('_', '-')}`,{})
-        }
+        // no locale found at all
+        return 'null';
     },
 
     createAPI(baseUrl, sessionID, session) {

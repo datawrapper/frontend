@@ -1,5 +1,6 @@
 const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
 const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
+const { Team } = require('@datawrapper/orm/models');
 const chartCore = require('@datawrapper/chart-core');
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
@@ -100,7 +101,8 @@ module.exports = {
 
                 const libraries = vis.libraries.map(lib => lib.uri);
 
-                const team = chart.organizationId ? await api(`/teams/${chart.organizationId}`) : {};
+                const team = await Team.findByPk(chart.organizationId);
+
                 const props = {
                     data: {
                         visJSON: vis,
