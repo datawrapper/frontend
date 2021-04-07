@@ -64,12 +64,10 @@ module.exports = {
                     if (error) {
                         return Boom.notImplemented(error.message);
                     }
-                    const code = isIE
-                        ? await server.methods.transpileView(page)
-                        : anonymous
-                        ? csr.replace("define('App',", 'define(')
-                        : csr;
-                    return h.response(code).header('Content-Type', 'application/javascript');
+                    const code = isIE ? await server.methods.transpileView(page) : csr;
+                    return h
+                        .response(anonymous ? code.replace("define('App',", 'define(') : code)
+                        .header('Content-Type', 'application/javascript');
                 }
             }
         ]);
