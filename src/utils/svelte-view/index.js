@@ -36,6 +36,10 @@ async function prepareNext() {
     compilePromise = false;
 }
 
+function getView(page) {
+    return withCache(page, () => compilePage(page));
+}
+
 async function compilePage(page) {
     try {
         const ssr = await build(page, true);
@@ -148,9 +152,9 @@ const SvelteView = {
 };
 
 module.exports = {
+    getView,
     prepareView,
     prepareAllViews,
-    prepareNext,
     transpileView: transpileAndCompilePage, // TODO Rename
     SvelteView
 };

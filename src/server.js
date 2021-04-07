@@ -14,7 +14,7 @@ const {
 const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
-const { SvelteView, prepareView, prepareAllViews, wsClients } = require('./utils/svelte-view');
+const { SvelteView, getView, prepareView, transpileView, prepareAllViews, wsClients } = require('./utils/svelte-view');
 const { FrontendEventEmitter, eventList } = require('./utils/events');
 
 const { addScope } = require('@datawrapper/service-utils/l10n');
@@ -146,7 +146,9 @@ const start = async () => {
         isCached: !process.env.DW_DEV_MODE
     });
 
+    server.method('getView', getView);
     server.method('prepareView', prepareView);
+    server.method('transpileView', transpileView);
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);

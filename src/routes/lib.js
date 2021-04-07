@@ -60,14 +60,14 @@ module.exports = {
                     const page = isJS
                         ? file.replace(isIE ? '.svelte.ie.js' : '.svelte.js', '.svelte')
                         : `${file}.js`;
-                    const { csr, error } = await server.methods.getView(page); // FIXME
+                    const { csr, error } = await server.methods.getView(page);
                     if (error) {
                         return Boom.notImplemented(error.message);
                     }
                     return h
                         .response(
                             isIE
-                                ? server.methods.transpileView(page) // FIXME
+                                ? server.methods.transpileView(page)
                                 : anonymous
                                 ? csr.replace("define('App',", 'define(')
                                 : csr
