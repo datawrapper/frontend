@@ -34,6 +34,9 @@
             }
         </style>
 
+        <script>window.__DW_SVELTE_PROPS__ = { data: { polyfillUri: '/lib/polyfills' }}</script>
+        <script src="/lib/chart-core/load-polyfills.js"></script>
+
         <script type="text/javascript" src="/lib/requirejs/require.js"></script>
         <script type="text/javascript">
             requirejs.config({
@@ -53,8 +56,7 @@
          because `src/client.js` references it -->
         <%- SSR_HTML %>
 
-         <script>window.__DW_SVELTE_PROPS__ = { data: { polyfillUri: '/lib/polyfills' }}</script>
-         <script src="/lib/chart-core/load-polyfills.js"></script>
+
          <script>
              document.write('<script type="text/javascript" src="/lib/csr/<%= PAGE %>.'+(window.document.documentMode ? 'ie.' : '')+'js"></s'+'cript>');
          </script>
