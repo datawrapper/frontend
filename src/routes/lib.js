@@ -60,11 +60,12 @@ module.exports = {
                     const page = isJS
                         ? file.replace(isIE ? '.svelte.ie.js' : '.svelte.js', '.svelte')
                         : `${file}.js`;
-                    const { csr, error } = await server.methods.getView(page);
+                    const view = await server.methods.getView(page);
+                    const { csr, error } = view;
                     if (error) {
                         return Boom.notImplemented(error.message);
                     }
-                    const code = isIE ? await server.methods.transpileView(page) : csr;
+                    const code = isIE ? await server.methods.transpileView(view) : csr;
                     return h
                         .response(anonymous ? code.replace("define('App',", 'define(') : code)
                         .header('Content-Type', 'application/javascript');

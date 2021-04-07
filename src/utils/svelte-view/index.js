@@ -29,7 +29,7 @@ function prepareAllViews() {
 
 async function prepareNext() {
     const page = templateQueue.shift();
-    await withCache(page, () => compilePage(page));
+    await getView(page);
     if (templateQueue.length > 0) {
         return prepareNext();
     }
@@ -93,11 +93,6 @@ async function transpileView(view) {
     return view.csrBabel;
 }
 
-async function transpileAndCompilePage(page) {
-    const view = await getView(page);
-    return transpileView(view);
-}
-
 const SvelteView = {
     compile(t, compileOpts) {
         const baseViewDir = join(__dirname, '../../views');
@@ -113,7 +108,7 @@ const SvelteView = {
             if (process.env.DW_DEV_MODE) {
                 watchPage(page).on('change', result => setCache(page, result));
             }
-            const { ssr, error } = await withCache(page, () => compilePage(page));
+            const { ssr, error } = await getView(page);
 
             if (error) {
                 // @todo: show a nicer error message on production
@@ -153,6 +148,6 @@ module.exports = {
     getView,
     prepareView,
     prepareAllViews,
-    transpileView: transpileAndCompilePage, // TODO Rename
+    transpileView,
     SvelteView
 };
