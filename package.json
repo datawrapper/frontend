@@ -9,8 +9,8 @@
     "dependencies": {
         "@babel/core": "^7.12.10",
         "@babel/preset-env": "^7.12.11",
-        "@datawrapper/chart-core": "^8.27.2",
-        "@datawrapper/locales": "^1.1.2",
+        "@datawrapper/chart-core": "^8.28.1",
+        "@datawrapper/locales": "^1.2.1",
         "@datawrapper/orm": "^3.20.0",
         "@datawrapper/schemas": "^1.8.0",
         "@datawrapper/service-utils": "^0.4.0",
