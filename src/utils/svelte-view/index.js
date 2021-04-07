@@ -2,7 +2,7 @@
 
 const Hoek = require('@hapi/hoek');
 const babel = require('@babel/core');
-const { EventEmmiter } = require('events');
+const EventEmmiter = require('events');
 const { join, relative } = require('path');
 const { readFile } = require('fs').promises;
 const { setCache, withCache } = require('./cache');
