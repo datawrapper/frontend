@@ -149,5 +149,6 @@ module.exports = {
     prepareView,
     prepareAllViews,
     transpileView,
-    SvelteView
+    SvelteView,
+    wsClients
 };
