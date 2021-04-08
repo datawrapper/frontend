@@ -6,6 +6,12 @@
 
     export let stores = {};
 
+    export function getValue(key) {
+        return view[key];
+    }
+
+    let view;
+
     Object.keys(stores).forEach(key => {
         setContext(key, writable(stores[key]));
     });
@@ -20,4 +26,4 @@
     });
 </script>
 
-<View {...$$restProps} />
+<View bind:this={view} {...$$restProps} />

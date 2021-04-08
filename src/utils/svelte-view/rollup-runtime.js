@@ -95,7 +95,8 @@ function buildOptions(page, ssr) {
                 compilerOptions: {
                     dev: !production,
                     generate: ssr ? 'ssr' : 'csr',
-                    hydratable: true
+                    hydratable: true,
+                    accessors: !production
                 },
                 preprocess: {
                     style: less({

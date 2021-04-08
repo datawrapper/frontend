@@ -103,6 +103,15 @@
                     var page = (JSON.parse(msg.data)).page;
                     if (page === '<%= PAGE %>') {
                         require(['/lib/csr/<%= PAGE %>.js?anonymous=1&rev='+Math.random()], function(App) {
+                            // update props to keep state
+                            Object.keys(props).forEach(function(key) {
+                                if (app.getValue && key !== 'stores') {
+                                    props[key] = app.getValue(key);
+                                }
+                            })
+                            // destroy old component
+                            app.$destroy();
+                            // initiate new component
                             app = new App({
                                 target: document.body,
                                 props: props,
