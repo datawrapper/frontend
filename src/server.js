@@ -127,6 +127,7 @@ const start = async () => {
 
     server.method('config', key => (key ? config[key] : config));
     server.method('logAction', require('@datawrapper/orm/utils/action').logAction);
+    server.method('isDevMode', () => process.env.DW_DEV_MODE);
 
     // hooks
     server.app.event = eventList;
