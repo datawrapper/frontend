@@ -4,7 +4,8 @@
     "description": "The new Datawrapper frontend service using hapi",
     "scripts": {
         "format": "prettier --write 'src/**/*.{js,svelte}'",
-        "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'"
+        "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@babel/core": "^7.12.10",
@@ -47,6 +48,8 @@
     "devDependencies": {
         "babel-eslint": "^10.1.0",
         "eslint": "^7.18.0",
+        "husky": "^6.0.0",
+        "lint-staged": "^10.5.4",
         "prettier": "^2.2.1",
         "prettier-plugin-svelte": "^2.1.0"
     },
@@ -61,15 +64,8 @@
         "tabWidth": 4,
         "trailingComma": "none"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
     "lint-staged": {
-        "*.{js,svelte}": [
-            "prettier --write",
-            "eslint --fix"
-        ]
+        "*.{js,svelte}": "prettier --write",
+        "*.js": "eslint --cache --fix"
     }
 }
