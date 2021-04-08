@@ -27,7 +27,7 @@ module.exports = {
         return locales;
     },
 
-    loadVendorLocale(locales, vendor, locale) {
+    loadVendorLocale(locales, vendor, locale, team) {
         const culture = locale.replace('_', '-').toLowerCase();
         const tryLocales = [culture];
         if (culture.length > 2) {
@@ -36,7 +36,11 @@ module.exports = {
         }
         for (let i = 0; i < tryLocales.length; i++) {
             if (locales[vendor].has(tryLocales[i])) {
-                return locales[vendor].get(tryLocales[i]);
+                const localeBase = locales[vendor].get(tryLocales[i]);
+                return {
+                    base:localeBase,
+                    custom:get(team,`settings.locales.${vendor}.${locale.replace('_', '-')}`,{})
+                };
             }
         }
         // no locale found at all

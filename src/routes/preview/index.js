@@ -1,5 +1,6 @@
 const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
 const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
+const { Team } = require('@datawrapper/orm/models');
 const chartCore = require('@datawrapper/chart-core');
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
@@ -102,6 +103,8 @@ module.exports = {
 
                 const libraries = vis.libraries.map(lib => lib.uri);
 
+                const team = await Team.findByPk(chart.organizationId);
+
                 const props = {
                     data: {
                         visJSON: vis,
@@ -111,8 +114,8 @@ module.exports = {
                         isPreview: true,
                         chartLocale,
                         locales: {
-                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
-                            numeral: loadVendorLocale(locales, 'numeral', chartLocale)
+                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
+                            numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
                         },
                         metricPrefix: {} /* NOTE: What about this? */,
                         themeId: theme.id,
