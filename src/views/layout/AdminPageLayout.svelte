@@ -15,7 +15,7 @@
             pages: pages
                 .sort((a, b) => a.order - b.order)
                 .map(page => ({
-                    url: page.url || `/admin2/${page.id}`,
+                    url: page.url || `/v2/admin/${page.id}`,
                     title: page.title
                 }))
         }))
