@@ -8,12 +8,12 @@ This repository contains the `frontend` service for Datawrapper. It is intended 
 
 Repository overview:
 
-* `locale` - translation files, automatically updated through the Lokalise API. Run `npm update-translations` in the `api` repository to update all translations.
-* `src/auth` - our authentication adapter for Hapi, handles cookie sessions etc.
-* `src/routes` - controller for the individual frontend routes (e.g. [routes/preview/index.js](src/routes/preview/index.js) for the `GET /preview/:chartid:` route)
-* `src/utils/` - some utilities such as the [plugin loader](src/utils/plugin-loader.js) or our custom [Svelte view adapter](src/utils/svelte-view)
-* `src/views` - the view templates (currently we support `pug` and `Svelte3` views)
-* `src/server.js` - where all the fun begins ;-)
+* [`locale`](locale/) - translation files, automatically updated through the Lokalise API. Run `npm update-translations` in the `api` repository to update all translations.
+* [`src/auth`](src/auth/) - our authentication adapter for Hapi, handles cookie sessions etc.
+* [`src/routes`](src/routes/) - controller for the individual frontend routes (e.g. [routes/preview/index.js](src/routes/preview/index.js) for the `GET /preview/:chartid:` route)
+* [`src/utils/`](src/utils) - some utilities such as the [plugin loader](src/utils/plugin-loader.js) or our custom [Svelte view adapter](src/utils/svelte-view)
+* [`src/views`](src/views) - the view templates (currently we support `pug` and `Svelte3` views)
+* [`src/server.js`](src/server.js) - where all the fun begins ;-)
 
 ## Quick introduction of the new Svelte views
 
