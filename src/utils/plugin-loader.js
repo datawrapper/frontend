@@ -54,7 +54,7 @@ module.exports = {
                     // symlink plugin views
                     const pluginViews = path.join(pluginRoot, name, 'src/frontend/views');
                     if (fs.existsSync(pluginViews)) {
-                        const target = path.join(__dirname, `views/plugins/${name}`);
+                        const target = path.join(__dirname, `../views/plugins/${name}`);
                         if (fs.existsSync(target)) {
                             await unlink(target);
                         }
