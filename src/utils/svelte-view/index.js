@@ -5,35 +5,30 @@ const babel = require('@babel/core');
 const EventEmmiter = require('events');
 const { join, relative } = require('path');
 const { readFile } = require('fs').promises;
+const parallelLimit = require('async/parallelLimit');
 const { setCache, withCache } = require('./cache');
 const { build, watch } = require('./rollup-runtime');
 const ejs = require('ejs');
 
 let template;
 
-let compilePromise = false;
 const templateQueue = [];
 const watchers = new Set();
 const wsClients = new Set();
 
 function prepareView(page) {
     templateQueue.push(page);
-    if (!compilePromise) {
-        compilePromise = prepareNext();
-    }
 }
 
 function prepareAllViews() {
-    return compilePromise;
-}
-
-async function prepareNext() {
-    const page = templateQueue.shift();
-    await getView(page);
-    if (templateQueue.length > 0) {
-        return prepareNext();
-    }
-    compilePromise = false;
+    return parallelLimit(
+        templateQueue.map(page => {
+            return async () => {
+                await getView(page);
+            };
+        }),
+        4
+    );
 }
 
 function getView(page) {
