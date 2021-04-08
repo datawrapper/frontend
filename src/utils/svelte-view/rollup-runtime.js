@@ -25,8 +25,7 @@ module.exports.build = async function (page, ssr) {
         },
         file: 'public/build/bundle.js'
     });
-
-    return output[0].code;
+    return { code: output[0].code, map: output[0].map };
 };
 
 module.exports.watch = async function (page, callback) {
@@ -64,13 +63,17 @@ module.exports.watch = async function (page, callback) {
                 console.error(error);
                 callback(error);
             } else if (code === 'END') {
-                const [csr, ssr] = await Promise.all([
+                const [csr, ssr, csrMap, ssrMap] = await Promise.all([
                     readFile(tmpCsr, 'utf-8'),
-                    readFile(tmpSsr, 'utf-8')
+                    readFile(tmpSsr, 'utf-8'),
+                    readFile(`${tmpCsr}.map`, 'utf-8'),
+                    readFile(`${tmpSsr}.map`, 'utf-8')
                 ]);
-                callback(null, { csr, ssr });
+                callback(null, { csr, ssr, csrMap, ssrMap });
                 unlink(tmpCsr);
                 unlink(tmpSsr);
+                unlink(`${tmpCsr}.map`);
+                unlink(`${tmpSsr}.map`);
             }
         });
     }
@@ -79,7 +82,6 @@ module.exports.watch = async function (page, callback) {
 function buildOptions(page, ssr) {
     return {
         input: join('src/utils/svelte-view/View.svelte'), // join('src/views', page),
-        external: !ssr,
         plugins: [
             replace({
                 values: {
@@ -111,7 +113,7 @@ function buildOptions(page, ssr) {
                 dedupe: ['svelte']
             }),
             commonjs(),
-            production && terser()
+            terser()
         ]
     };
 }

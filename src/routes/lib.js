@@ -55,19 +55,30 @@ module.exports = {
                 async handler(request, h) {
                     const { file } = request.params;
                     const { anonymous } = request.query;
-                    const isIE = file.endsWith('.svelte.ie.js');
+                    const isIE = file.endsWith('.ie.js');
                     const isJS = file.endsWith('.js');
-                    const page = isJS
-                        ? file.replace(isIE ? '.svelte.ie.js' : '.svelte.js', '.svelte')
+                    const isSvelte = file.includes('.svelte.js');
+                    const isJSMap = file.endsWith('.js.map');
+                    const page = isSvelte
+                        ? file.replace(/\.svelte(\.ie)?\.js(\.map)?/, '.svelte')
+                        : isJS
+                        ? file
                         : `${file}.js`;
                     const view = await server.methods.getView(page);
-                    const { csr, error } = view;
+                    const { csr, csrMap, error } = view;
                     if (error) {
                         return Boom.notImplemented(error.message);
                     }
-                    const code = isIE ? await server.methods.transpileView(view) : csr;
+                    const code = isIE
+                        ? await server.methods.transpileView(view)
+                        : isJSMap
+                        ? csrMap
+                        : csr.replace(
+                              /\/\/# sourceMappingURL=.*\.js\.map/,
+                              `//# sourceMappingURL=/lib/csr/${page}.js.map`
+                          );
                     return h
-                        .response(anonymous ? code.replace("define('App',", 'define(') : code)
+                        .response(anonymous ? code.replace('define("App",', 'define(') : code)
                         .header('Content-Type', 'application/javascript');
                 }
             }

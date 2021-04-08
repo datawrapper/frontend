@@ -39,7 +39,13 @@ async function compilePage(page) {
     try {
         const ssr = await build(page, true);
         const csr = await build(page, false);
-        return { ssr, csr, error: null };
+        return {
+            ssr: ssr.code,
+            ssrMap: ssr.map,
+            csr: csr.code,
+            csrMap: csr.map,
+            error: null
+        };
     } catch (err) {
         console.error(`Error: Svelte compile error in ${page}`);
         return { error: err };
