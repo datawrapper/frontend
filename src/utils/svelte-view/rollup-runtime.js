@@ -7,6 +7,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const alias = require('@rollup/plugin-alias');
 const replace = require('@rollup/plugin-replace');
 const { less } = require('svelte-preprocess-less');
+const { terser } = require('rollup-plugin-terser');
 const { readFile, unlink } = require('fs-extra');
 const { join } = require('path');
 const tempfile = require('tempfile');
@@ -109,7 +110,8 @@ function buildOptions(page, ssr) {
                 browser: true,
                 dedupe: ['svelte']
             }),
-            commonjs()
+            commonjs(),
+            production && terser()
         ]
     };
 }
