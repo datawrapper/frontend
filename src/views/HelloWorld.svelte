@@ -38,7 +38,7 @@
     <div class="container">
         <h1 style="color:#d00" on:click={knock}>{message}</h1>
         <p>{__('team / invite / intro')}</p>
-        The magic number is<b>{magicNumber}</b>!
+        The magic number is&nbsp;<b>{magicNumber}</b>!
         <hr />
         <h2>Webhook URL: <input bind:value={data.settings.webhook_url} /> (svelte3)</h2>
         <Svelte2Wrapper
