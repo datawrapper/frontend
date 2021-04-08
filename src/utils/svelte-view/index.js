@@ -117,6 +117,10 @@ const SvelteView = {
             <big>${error.message}</big>
             <pre>${error.frame}</pre>`;
             }
+            for (var key in context.stores) {
+                // resolve store values in case they are async
+                context.stores[key] = await Promise.resolve(context.stores[key]);
+            }
             context.props.stores = context.stores;
 
             // eslint-disable-next-line
