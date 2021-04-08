@@ -61,38 +61,6 @@
         "tabWidth": 4,
         "trailingComma": "none"
     },
-    "eslintConfig": {
-        "parser": "babel-eslint",
-        "plugins": [
-            "svelte3"
-        ],
-        "overrides": [
-            {
-                "files": [
-                    "**/*.svelte"
-                ],
-                "processor": "svelte3/svelte3"
-            }
-        ],
-        "rules": {
-            "no-console": [
-                "error",
-                {
-                    "allow": [
-                        "warn",
-                        "error"
-                    ]
-                }
-            ],
-            "camelcase": [
-                "warn",
-                {
-                    "ignoreDestructuring": true,
-                    "properties": "never"
-                }
-            ]
-        }
-    },
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged"
