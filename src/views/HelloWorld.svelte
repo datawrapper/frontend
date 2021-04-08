@@ -1,7 +1,7 @@
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
     import Svelte2Wrapper from 'layout/partials/Svelte2Wrapper.svelte';
-    import { onMount, getContext } from 'svelte';
+    import { onMount, onDestroy, getContext } from 'svelte';
 
     export let magicNumber;
 
@@ -14,13 +14,24 @@
         knocked = true;
     }
 
+    let interval;
+    onMount(() => {
+        interval = setInterval(() => {
+            magicNumber++;
+        }, 1000);
+    });
+
+    onDestroy(() => {
+        clearInterval(interval);
+    });
+
     let data = {
         settings: {
             webhook_url: 'test'
         }
     };
 
-    $: message = knocked ? `Knock, knock. Who's there?` : `Hello ${$user.name}, click me!`;
+    $: message = !knocked ? `Knock, knock. Who's there? (click me!)` : `Hello ${$user.name}!`;
 </script>
 
 <MainLayout title="Hello world">
@@ -43,5 +54,10 @@
     p {
         font-size: 20px;
         margin-bottom: 2ex;
+    }
+
+    b {
+        font-size: 250%;
+        color: magenta;
     }
 </style>
