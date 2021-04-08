@@ -14,6 +14,10 @@
         knocked = true;
     }
 
+    function causeError() {
+        throw new Error('This is a serious error!');
+    }
+
     let interval;
     onMount(() => {
         interval = setInterval(() => {
@@ -36,9 +40,10 @@
 
 <MainLayout title="Hello world">
     <div class="container">
-        <h1 style="color:#d00" on:click={knock}>{message}</h1>
+        <h1 style="color:#c04" on:click={knock}>{message}</h1>
         <p>{__('team / invite / intro')}</p>
-        The magic number is&nbsp;<b>{magicNumber}</b>!
+        <p>The magic number is&nbsp;<b>{magicNumber}</b>!</p>
+        <button on:click={causeError}>Throw an error!</button>
         <hr />
         <h2>Webhook URL: <input bind:value={data.settings.webhook_url} /> (svelte3)</h2>
         <Svelte2Wrapper
