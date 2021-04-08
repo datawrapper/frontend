@@ -17,7 +17,7 @@
     let data = {
         settings: {
             webhook_url: 'test'
-        },
+        }
     };
 
     $: message = knocked ? `Knock, knock. Who's there?` : `Hello ${$user.name}, click me!`;
@@ -34,7 +34,8 @@
             id="plugin-team-integrations"
             js="/static/plugins/team-integrations/team-integrations.js"
             css="/static/plugins/team-integrations/team-integrations.css"
-            bind:data />
+            bind:data
+        />
     </div>
 </MainLayout>
 

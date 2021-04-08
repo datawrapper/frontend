@@ -22,7 +22,7 @@
         .sort((a, b) => a.pages[0].order - b.pages[0].order);
 </script>
 
-<MainLayout title="{`Admin - ${title}`}">
+<MainLayout title={`Admin - ${title}`}>
     <div class="container">
         <div class="columns">
             <div class="column sidebar">
@@ -41,7 +41,6 @@
             <div class="column content">
                 <h1>Admin >> {title}</h1>
                 <slot />
-
             </div>
         </div>
     </div>

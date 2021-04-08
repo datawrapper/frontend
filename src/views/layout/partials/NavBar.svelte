@@ -10,7 +10,9 @@
         {#if $user.isAdmin}
             <li>Admin</li>
         {/if}
-        <li>{#if $user.isGuest}Guest{:else}{$user.name}{/if}</li>
+        <li>
+            {#if $user.isGuest}Guest{:else}{$user.name}{/if}
+        </li>
         <li>{$user.language}</li>
     </ul>
 </nav>

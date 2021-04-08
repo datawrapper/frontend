@@ -38,8 +38,8 @@ module.exports = {
             if (locales[vendor].has(tryLocales[i])) {
                 const localeBase = locales[vendor].get(tryLocales[i]);
                 return {
-                    base:localeBase,
-                    custom:get(team,`settings.locales.${vendor}.${locale.replace('_', '-')}`,{})
+                    base: localeBase,
+                    custom: get(team, `settings.locales.${vendor}.${locale.replace('_', '-')}`, {})
                 };
             }
         }
@@ -95,9 +95,14 @@ module.exports = {
                     if (cachedCSS) return cachedCSS;
                 }
 
-                return api(`/visualizations/${visId}/styles.css?theme=${themeId}${transparent ? '&transparent=true' : ''}`, {
-                    json: false
-                });
+                return api(
+                    `/visualizations/${visId}/styles.css?theme=${themeId}${
+                        transparent ? '&transparent=true' : ''
+                    }`,
+                    {
+                        json: false
+                    }
+                );
             },
 
             async getVis(api, visId) {

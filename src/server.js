@@ -14,7 +14,14 @@ const {
 const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
-const { SvelteView, getView, prepareView, transpileView, prepareAllViews, wsClients } = require('./utils/svelte-view');
+const {
+    SvelteView,
+    getView,
+    prepareView,
+    transpileView,
+    prepareAllViews,
+    wsClients
+} = require('./utils/svelte-view');
 const { FrontendEventEmitter, eventList } = require('./utils/events');
 
 const { addScope } = require('@datawrapper/service-utils/l10n');

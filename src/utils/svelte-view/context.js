@@ -12,7 +12,10 @@ module.exports = function (request) {
     const { events, event } = server.app;
     const apiConfig = server.methods.config('api');
     const isAdmin = server.methods.isAdmin(request);
-    const userLang = auth.isAuthenticated && auth.artifacts && auth.artifacts.id ? auth.artifacts.language : get(auth.credentials.data, 'data.dw-lang');
+    const userLang =
+        auth.isAuthenticated && auth.artifacts && auth.artifacts.id
+            ? auth.artifacts.language
+            : get(auth.credentials.data, 'data.dw-lang');
     const context = {
         stores: {
             config: {
@@ -25,20 +28,21 @@ module.exports = function (request) {
                 params: request.params,
                 query: request.query
             },
-            user: auth.isAuthenticated && auth.artifacts && auth.artifacts.id
-                ? {
-                      id: auth.artifacts.id,
-                      name: auth.artifacts.email,
-                      language: userLang,
-                      isAdmin: auth.artifacts.isAdmin(),
-                      isGuest: false
-                  }
-                : {
-                      id: -1,
-                      isGuest: true,
-                      isAdmin: false,
-                      language: userLang
-                  },
+            user:
+                auth.isAuthenticated && auth.artifacts && auth.artifacts.id
+                    ? {
+                          id: auth.artifacts.id,
+                          name: auth.artifacts.email,
+                          language: userLang,
+                          isAdmin: auth.artifacts.isAdmin(),
+                          isGuest: false
+                      }
+                    : {
+                          id: -1,
+                          isGuest: true,
+                          isAdmin: false,
+                          language: userLang
+                      },
             messages: allScopes(userLang || 'en-US'),
             adminPages: isAdmin
                 ? events.emit(event.REGISTER_ADMIN_PAGE, { request }, { filter: 'success' })
