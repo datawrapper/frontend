@@ -5,3 +5,4 @@ yarn-error.log
 config.js
 src/views/plugins/*
 !src/views/plugins/.gitkeep
+.eslintcache
