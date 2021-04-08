@@ -11,7 +11,7 @@
             href="manifest.json"
             crossorigin="use-credentials"
         />
-        <link rel="icon" type="image/png" href="/static/img/icon/favicon<%= DW_DEV_MODE ? '-dev' : '' %>.png" />
+        <link rel="icon" type="image/png" href="/static/img/icon/favicon<%= NODE_ENV !== 'production' ? '-dev' : '' %>.png" />
 
         <style type="text/css">
         <%- SSR_CSS %>
