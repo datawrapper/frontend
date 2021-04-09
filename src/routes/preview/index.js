@@ -65,7 +65,7 @@ module.exports = {
                     return Boom.unauthorized();
                 }
 
-                const chartLocale = props.chartAttrs.language || 'en-US';
+                const chartLocale = props.chart.language || 'en-US';
 
                 const dependencies = [
                     'dw-2.0.min.js',
