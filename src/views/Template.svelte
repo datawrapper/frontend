@@ -139,7 +139,7 @@
             If you don't have an account yet, you can try out our tool and sign up later.
         </p>
     {:else}
-        <p>Do you really want to create the visualization and add it to your account?</p>
+        <p>Do you really want to create the visualization?</p>
     {/if}
 
     <button class="btn btn-primary" on:click={openInDatawrapper}
