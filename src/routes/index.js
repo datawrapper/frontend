@@ -28,9 +28,9 @@ module.exports = {
             });
         }
 
-        await server.register(require('./template'), {
+        await server.register(require('./create'), {
             routes: {
-                prefix: '/v2/template'
+                prefix: '/v2/create'
             }
         });
     }

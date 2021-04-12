@@ -4,7 +4,7 @@ module.exports = {
     name: 'routes/template',
     version: '1.0.0',
     async register(server, options) {
-        server.methods.prepareView('Template.svelte');
+        server.methods.prepareView('Create.svelte');
 
         server.route({
             path: '/',
@@ -31,7 +31,7 @@ module.exports = {
 
                 const props = { chartData, dataset };
                 const layout = 'SignInPageLayout';
-                return h.view('Template.svelte', { layout, props });
+                return h.view('Create.svelte', { layout, props });
             }
         });
     }
