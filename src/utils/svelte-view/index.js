@@ -41,7 +41,6 @@ async function compilePage(page) {
         const csr = await build(page, false);
         return {
             ssr: ssr.code,
-            ssrMap: ssr.map,
             csr: csr.code,
             csrMap: csr.map,
             error: null
