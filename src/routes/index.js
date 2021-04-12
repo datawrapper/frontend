@@ -30,7 +30,7 @@ module.exports = {
 
         await server.register(require('./template'), {
             routes: {
-                prefix: '/template'
+                prefix: '/v2/template'
             }
         });
     }
