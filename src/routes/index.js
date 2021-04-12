@@ -20,10 +20,12 @@ module.exports = {
             }
         });
 
-        await server.register(require('./hello'), {
-            routes: {
-                prefix: '/v2/hello'
-            }
-        });
+        if (server.methods.isDevMode()) {
+            await server.register(require('./hello'), {
+                routes: {
+                    prefix: '/v2/hello'
+                }
+            });
+        }
     }
 };
