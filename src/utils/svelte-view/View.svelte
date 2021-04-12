@@ -1,0 +1,29 @@
+<script>
+    import { setContext } from 'svelte';
+    import { writable, get } from 'svelte/store';
+
+    import View from '__view__';
+
+    export let stores = {};
+
+    export function getValue(key) {
+        return view[key];
+    }
+
+    let view;
+
+    Object.keys(stores).forEach(key => {
+        setContext(key, writable(stores[key]));
+    });
+    setContext('translate', function (key, scope = 'core') {
+        const messages = stores.messages;
+        try {
+            const msg = messages[scope];
+            return msg[key] || key;
+        } catch (e) {
+            return key;
+        }
+    });
+</script>
+
+<View bind:this={view} {...$$restProps} />

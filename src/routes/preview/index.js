@@ -15,8 +15,9 @@ module.exports = {
         const { getStyles, getVis, getTheme } = initCaches(server);
         const locales = await loadLocales();
         const config = server.methods.config();
-        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${config.api.domain
-            }/v3`;
+        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
+            config.api.domain
+        }/v3`;
 
         server.route({
             method: 'GET',
@@ -58,7 +59,6 @@ module.exports = {
                     .map(([key, value]) => `${key}=${value}`)
                     .join('&');
 
-
                 let publishData, vis, theme, css, csv;
 
                 try {
@@ -88,7 +88,9 @@ module.exports = {
                     vis.locale = publishData.locales;
                     delete publishData.locales;
                 } catch (error) {
-                    server.logger.error(`Error fetching information for ${chart.id}: ${error.message}`);
+                    server.logger.error(
+                        `Error fetching information for ${chart.id}: ${error.message}`
+                    );
                     return Boom.badImplementation();
                 }
 
@@ -127,7 +129,7 @@ module.exports = {
 
                 const { html, head } = chartCore.svelte.render(props);
 
-                return h.view('preview', {
+                return h.view('preview.pug', {
                     __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
                         isScriptContext: true,
                         json: true,
@@ -149,7 +151,5 @@ module.exports = {
                 });
             }
         });
-
-
     }
 };

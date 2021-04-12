@@ -23,7 +23,7 @@ module.exports = {
                         mode: 'try',
                         strategy: provider
                     },
-                    handler: async function(request, h) {
+                    handler: async function (request, h) {
                         if (!request.auth.isAuthenticated) {
                             throw Boom.unauthorized();
                         }

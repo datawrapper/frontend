@@ -3,6 +3,7 @@ const Vision = require('@hapi/vision');
 const Inert = require('@hapi/inert');
 const Pino = require('hapi-pino');
 const ORM = require('@datawrapper/orm');
+const fs = require('fs-extra');
 const Pug = require('pug');
 const {
     validateAPI,
@@ -13,6 +14,17 @@ const {
 const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const config = requireConfig();
 const path = require('path');
+const {
+    SvelteView,
+    getView,
+    prepareView,
+    transpileView,
+    prepareAllViews,
+    wsClients
+} = require('./utils/svelte-view');
+const { FrontendEventEmitter, eventList } = require('./utils/events');
+
+const { addScope } = require('@datawrapper/service-utils/l10n');
 
 const start = async () => {
     validateAPI(config.api);
@@ -38,27 +50,56 @@ const start = async () => {
         cache: {
             provider: useRedis
                 ? {
-                    constructor: require('@hapi/catbox-redis'),
-                    options: {
-                        ...config.redis,
-                        partition: 'api'
-                    }
-                }
+                      constructor: require('@hapi/catbox-redis'),
+                      options: {
+                          ...config.redis,
+                          partition: 'api'
+                      }
+                  }
                 : {
-                    constructor: require('@hapi/catbox-memory'),
-                    options: {
-                        maxByteSize: 52480000
-                    }
-                }
+                      constructor: require('@hapi/catbox-memory'),
+                      options: {
+                          maxByteSize: 52480000
+                      }
+                  }
         },
         router: { stripTrailingSlash: true }
     });
 
+    if (process.env.DW_DEV_MODE) {
+        const HAPIWebSocket = require('hapi-plugin-websocket');
+        await server.register(HAPIWebSocket);
+
+        server.route({
+            method: 'POST',
+            path: '/ws',
+            config: {
+                plugins: {
+                    websocket: {
+                        initially: true,
+                        only: true,
+                        connect({ ws }) {
+                            server.logger.info('new websocket client connected\n');
+                            wsClients.add(ws);
+                        },
+                        disconnect({ ws }) {
+                            server.logger.info('websocket client disconnected\n');
+                            wsClients.delete(ws);
+                        }
+                    }
+                }
+            },
+            handler: (request, h) => {
+                return {};
+            }
+        });
+    }
+
     await ORM.init(config);
     await ORM.registerPlugins();
-
     await server.register(Vision);
     await server.register(Inert);
+
     await server.register({
         plugin: Pino,
         options: {
@@ -67,7 +108,7 @@ const start = async () => {
             logEvents: ['request', 'log', 'onPostStart', 'onPostStop', 'request-error'],
             level: process.env.DW_DEV_MODE
                 ? 'debug'
-                : process.env.NODE_ENV == 'test'
+                : process.env.NODE_ENV === 'test'
                 ? 'error'
                 : 'info',
             base: { name: process.env.COMMIT || require('../package.json').version },
@@ -75,22 +116,56 @@ const start = async () => {
         }
     });
 
+    // load translations
+    try {
+        const localePath = path.join(__dirname, '../locale');
+        const localeFiles = await fs.readdir(localePath);
+        const locales = {};
+        for (let i = 0; i < localeFiles.length; i++) {
+            const file = localeFiles[i];
+            if (/[a-z]+_[a-z]+\.json/i.test(file)) {
+                locales[file.split('.')[0]] = JSON.parse(
+                    await fs.readFile(path.join(localePath, file))
+                );
+            }
+        }
+        addScope('core', locales);
+    } catch (e) {}
+
     server.method('config', key => (key ? config[key] : config));
     server.method('logAction', require('@datawrapper/orm/utils/action').logAction);
+    server.method('isDevMode', () => process.env.DW_DEV_MODE);
+
+    // hooks
+    server.app.event = eventList;
+    server.app.events = new FrontendEventEmitter({ logger: server.logger, eventList });
 
     server.views({
         engines: {
-            pug: Pug
+            pug: Pug,
+            svelte: SvelteView
         },
         relativeTo: __dirname,
         compileOptions: {
             basedir: path.join(__dirname, 'views')
         },
-        path: 'views'
+        path: 'views',
+        context: SvelteView.context,
+        isCached: !process.env.DW_DEV_MODE
     });
+
+    server.method('getView', getView);
+    server.method('prepareView', prepareView);
+    server.method('transpileView', transpileView);
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
+    server.logger.info('loading plugins...');
+    await server.register([require('./utils/plugin-loader')]);
+
+    // wait for all prepared views
+    server.logger.info('preparing Svelte views...');
+    await prepareAllViews();
     await server.start();
 
     setTimeout(() => {
@@ -100,7 +175,7 @@ const start = async () => {
         }
     }, 100);
 
-    process.on('SIGINT', async function() {
+    process.on('SIGINT', async function () {
         server.logger.info('received SIGINT signal, closing all connections...');
         await server.stop();
         server.logger.info('server has stopped');

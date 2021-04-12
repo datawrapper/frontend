@@ -2,7 +2,6 @@ module.exports = {
     name: 'routes',
     version: '1.0.0',
     register: async (server, options) => {
-
         await server.register(require('./signin'), {
             routes: {
                 prefix: '/signin'
@@ -20,5 +19,13 @@ module.exports = {
                 prefix: '/lib'
             }
         });
+
+        if (server.methods.isDevMode()) {
+            await server.register(require('./hello'), {
+                routes: {
+                    prefix: '/v2/hello'
+                }
+            });
+        }
     }
 };
