@@ -15,7 +15,7 @@ module.exports = function (request) {
     const userLang =
         auth.isAuthenticated && auth.artifacts && auth.artifacts.id
             ? auth.artifacts.language
-            : get(auth.credentials.data, 'data.dw-lang');
+            : get(auth.credentials, 'data.data.dw-lang') || 'en-US';
     const context = {
         stores: {
             config: {
