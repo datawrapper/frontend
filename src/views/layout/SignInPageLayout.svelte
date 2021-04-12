@@ -35,7 +35,7 @@
         background-color: #ffffff;
         border-radius: 6px;
         outline: none;
-        padding: 20px;
+        padding: 30px 30px 26px;
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     }
 </style>
