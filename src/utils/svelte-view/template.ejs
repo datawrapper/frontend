@@ -62,10 +62,10 @@
          </script>
          <script async defer>
             require(['App'], function(App) {
-                var props = <%- PAGE_PROPS %>;
+                var props = JSON.parse(<%- PAGE_PROPS %>);
 
                 // client-side caching
-                var storeHashes = <%- STORE_HASHES %>;
+                var storeHashes = JSON.parse(<%- STORE_HASHES %>);
                 if (window.localStorage && window.localStorage.getItem) {
                     Object.keys(storeHashes).forEach(function(key) {
                         // check if message hash is newer

@@ -9,6 +9,7 @@ const parallelLimit = require('async/parallelLimit');
 const { setCache, withCache } = require('./cache');
 const { build, watch } = require('./rollup-runtime');
 const ejs = require('ejs');
+const jsesc = require('jsesc');
 
 let template;
 
@@ -138,11 +139,18 @@ const SvelteView = {
                 NODE_ENV: process.env.NODE_ENV,
                 SSR_HTML: html,
                 PAGE: page,
-                PAGE_PROPS: JSON.stringify(context.props),
+                PAGE_PROPS: jsesc(JSON.stringify(context.props), {
+                    isScriptContext: true,
+                    json: true,
+                    wrap: true
+                }),
                 DW_DEV_MODE: process.env.DW_DEV_MODE,
-                STORE_HASHES: JSON.stringify(context.storeHashes)
+                STORE_HASHES: jsesc(JSON.stringify(context.storeHashes), {
+                    isScriptContext: true,
+                    json: true,
+                    wrap: true
+                })
             });
-
             return output;
         };
     },
