@@ -12,10 +12,7 @@ module.exports = function (request) {
     const { events, event } = server.app;
     const apiConfig = server.methods.config('api');
     const isAdmin = server.methods.isAdmin(request);
-    const userLang =
-        auth.isAuthenticated && auth.artifacts && auth.artifacts.id
-            ? auth.artifacts.language
-            : get(auth.credentials, 'data.data.dw-lang') || 'en-US';
+    const userLang = server.methods.getUserLanguage(auth);
     const context = {
         stores: {
             config: {

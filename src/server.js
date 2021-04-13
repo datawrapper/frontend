@@ -157,6 +157,11 @@ const start = async () => {
     server.method('getView', getView);
     server.method('prepareView', prepareView);
     server.method('transpileView', transpileView);
+    server.method('getUserLanguage', auth => {
+        return auth.isAuthenticated && auth.artifacts && auth.artifacts.id
+            ? auth.artifacts.language
+            : get(auth.credentials, 'data.data.dw-lang') || 'en-US';
+    });
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
