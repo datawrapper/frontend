@@ -1,3 +1,4 @@
+const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
 
 module.exports = {
@@ -17,8 +18,21 @@ module.exports = {
         server.route({
             path: '/',
             method: 'POST',
-            config: {
-                auth: false
+            options: {
+                auth: false,
+                validate: {
+                    payload: Joi.object({
+                        title: Joi.string().optional(),
+                        type: Joi.string().optional(),
+                        theme: Joi.string().optional(),
+                        language: Joi.string()
+                            .pattern(/[a-z][a-z](-[A-Z][A-Z])?/)
+                            .optional(),
+                        metadata: Joi.string().optional(),
+                        last_edit_step: Joi.number().integer().min(2).max(4).optional(),
+                        data: Joi.string().optional()
+                    })
+                }
             },
             async handler(request, h) {
                 const { payload } = request;
