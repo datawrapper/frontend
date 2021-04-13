@@ -267,8 +267,8 @@
         text-align: left;
         vertical-align: top;
         font-weight: normal;
-        color: #888;
-        font-size: 13px;
+        color: #777;
+        font-size: 14px;
     }
     hr {
         border: none;
@@ -281,18 +281,24 @@
     }
     td.title {
         font-weight: bold;
-        font-size: 18px;
+        font-size: 22px;
+        color: #000;
         line-height: 1.25;
+    }
+    td.intro {
+        font-size: 14px;
+        color: #222;
+        line-height: 17px;
     }
     td.notes {
         font-style: italic;
-        color: #777;
+        color: #656565;
         font-size: 12px;
     }
     td.byline,
     td.source-name,
     td.source-url {
-        color: #777;
-        font-size: 12px;
+        color: #888;
+        font-size: 11px;
     }
 </style>
