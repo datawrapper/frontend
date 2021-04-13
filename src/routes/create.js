@@ -4,6 +4,14 @@ module.exports = {
     name: 'routes/template',
     version: '1.0.0',
     async register(server, options) {
+        server.route({
+            path: '/',
+            method: 'GET',
+            async handler(request, h) {
+                return h.redirect('/chart/create');
+            }
+        });
+
         server.methods.prepareView('Create.svelte');
 
         server.route({
