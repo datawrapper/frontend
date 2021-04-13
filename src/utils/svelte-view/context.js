@@ -1,6 +1,5 @@
 const { allScopes } = require('@datawrapper/service-utils/l10n');
 const crypto = require('crypto');
-const get = require('lodash/get');
 
 const clientSideStoreCache = new Set(['messages']);
 

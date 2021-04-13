@@ -2,7 +2,11 @@
     export let dataset = '';
     export let chartData = {};
 
-    import { onMount, getContext } from 'svelte';
+    import { onMount, getContext, setContext } from 'svelte';
+
+    // dynamic language
+    const msg = getContext('messages');
+    export let __;
 
     import get from '@datawrapper/shared/get';
     import dayjs from 'dayjs';
@@ -11,7 +15,6 @@
     import delimited from '@datawrapper/chart-core/lib/dw/dataset/delimited';
     import SignInPageLayout from './layout/SignInPageLayout.svelte';
 
-    const __ = getContext('translate');
     let loggedIn = false;
     let ds;
     let showData = false;
@@ -43,6 +46,14 @@
     onMount(async () => {
         httpReq.get('/v3/me').then(res => {
             loggedIn = res.role !== 'guest';
+            if (res.language !== 'en-US') {
+                // request language
+                httpReq
+                    .get('/v2/stores/messages.json', { baseUrl: `//${window.location.host}` })
+                    .then(res => {
+                        msg.set(res);
+                    });
+            }
         });
 
         httpReq.get(`/v3/visualizations/${chartData.type || 'd3-lines'}`).then(res => {

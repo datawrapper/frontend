@@ -20,6 +20,12 @@ module.exports = {
             }
         });
 
+        await server.register(require('./stores'), {
+            routes: {
+                prefix: '/v2/stores'
+            }
+        });
+
         if (server.methods.isDevMode()) {
             await server.register(require('./hello'), {
                 routes: {
