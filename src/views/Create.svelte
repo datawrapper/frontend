@@ -45,6 +45,12 @@
             loggedIn = res.role !== 'guest';
         });
 
+        httpReq.get(`/v3/visualizations/${chartData.type || 'd3-lines'}`).then(res => {
+            chartData.niceType = `<img style="vertical-align:middle;height:20px" alt="" src="/static/plugins/${
+                res.__plugin
+            }/${res.id}.svg" /> ${res.__title || ''}`;
+        });
+
         ds = await delimited({ csv: dataset }).dataset();
     });
 
@@ -79,6 +85,11 @@
     }
 
     const fields = [
+        {
+            key: 'niceType',
+            label: 'Type',
+            html: true
+        },
         {
             key: 'title',
             label: 'Title'
@@ -118,7 +129,10 @@
             {#if get(chartData, field.key)}
                 <tr
                     ><th>{field.label}:</th><td class={field.key.split('.').slice(-1)[0]}
-                        >{(field.format || noFormat)(get(chartData, field.key))}</td
+                        >{#if field.html}{@html get(chartData, field.key)}{:else}{get(
+                                chartData,
+                                field.key
+                            )}{/if}</td
                     ></tr
                 >
             {/if}
