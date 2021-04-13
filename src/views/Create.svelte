@@ -111,20 +111,20 @@
 <SignInPageLayout title="Edit Visualization in Datawrapper">
     <h1>Create a new Datawrapper visualization</h1>
 
-    <p>Please confirm that you want to create a new visualization based on the provided template</p>
+    <p>Please confirm that you want to create a new visualization based on this data:</p>
 
     <table>
         {#each fields as field}
             {#if get(chartData, field.key)}
                 <tr
-                    ><th>{field.label}</th><td
+                    ><th>{field.label}:</th><td class={field.key.split('.').slice(-1)[0]}
                         >{(field.format || noFormat)(get(chartData, field.key))}</td
                     ></tr
                 >
             {/if}
         {/each}
         <tr
-            ><th>Dataset columns</th><td>
+            ><th>Dataset columns:</th><td>
                 {#if ds}
                     {#each columns as col}
                         <div class="column t-{col.type}">
@@ -140,7 +140,7 @@
             </td></tr
         >
         <tr
-            ><th>Dataset rows</th><td>
+            ><th>Dataset rows:</th><td>
                 {#if ds}
                     {ds.numRows()} (<button
                         on:click={() => (showData = !showData)}
@@ -151,11 +151,11 @@
         >
         {#if showData && ds}
             <tr
-                ><th>Dataset</th><td>
+                ><th>Dataset:</th><td>
                     <div
-                        style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px"
+                        style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px; max-width: 490px;"
                     >
-                        <table>
+                        <table class="data">
                             <thead>
                                 <tr>
                                     {#each ds.columns() as col}
@@ -179,7 +179,7 @@
         {/if}
     </table>
 
-    <p>Do you really want to create the visualization?</p>
+    <p>Do you want to create a visualization with this data now?</p>
 
     <button class="btn btn-primary" on:click={openInDatawrapper}
         >Yes, create new visualization</button
@@ -211,7 +211,7 @@
     .column {
         display: inline-block;
         padding: 7px 10px;
-        margin: 0 6px 0 0;
+        margin: 0 6px 6px 0;
         border: 1px solid #ddd;
         border-radius: 4px;
         line-height: 15px;
@@ -233,13 +233,11 @@
     .btn {
         display: inline-block;
         background: #cccccc;
-        font-size: 17px;
-        padding: 14px 18px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        font-size: 17.5px;
+        padding: 14px 15px;
+        font-weight: 400;
         margin-bottom: 8px;
-        border-radius: 6px;
+        border-radius: 4px;
         border: 0;
         line-height: 1;
         margin-right: 10px;
@@ -250,7 +248,10 @@
     }
     .btn-primary {
         color: #fff;
-        background: #18a1cd;
+        background: #1d81a2;
+        border-color: #1d81a2 !important;
+        line-height: 20px;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
     }
     pre {
         background: #eee;
@@ -265,9 +266,33 @@
     th {
         text-align: left;
         vertical-align: top;
+        font-weight: normal;
+        color: #888;
+        font-size: 13px;
     }
     hr {
         border: none;
         border-bottom: 1px solid #eee;
+    }
+    table.data th {
+        color: #222;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    td.title {
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 1.25;
+    }
+    td.notes {
+        font-style: italic;
+        color: #777;
+        font-size: 12px;
+    }
+    td.byline,
+    td.source-name,
+    td.source-url {
+        color: #777;
+        font-size: 12px;
     }
 </style>
