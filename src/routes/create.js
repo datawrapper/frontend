@@ -29,14 +29,10 @@ module.exports = {
                     theme: payload.theme,
                     type: payload.type,
                     language: payload.language,
-                    last_edit_step: payload.last_edit_step,
-                    forked_from: payload.forked_from,
+                    last_edit_step: payload.last_edit_step || 3,
                     metadata: payload.metadata ? JSON.parse(payload.metadata) : undefined
                 };
                 const dataset = payload.data || '';
-                const { config } = request.server.methods;
-                const api = config('api');
-
                 const props = { chartData, dataset };
                 const layout = 'SignInPageLayout';
                 return h.view('Create.svelte', { layout, props });
