@@ -2,7 +2,7 @@
     export let dataset = '';
     export let chartData = {};
 
-    import { onMount } from 'svelte';
+    import { onMount, getContext } from 'svelte';
 
     import get from '@datawrapper/shared/get';
     import dayjs from 'dayjs';
@@ -11,28 +11,33 @@
     import delimited from '@datawrapper/chart-core/lib/dw/dataset/delimited';
     import SignInPageLayout from './layout/SignInPageLayout.svelte';
 
+    const __ = getContext('translate');
     let loggedIn = false;
     let ds;
+    let showData = false;
 
     $: columns = ds
-        ? ds.columns().map(col => {
-              let range = col.range();
-              if (col.type() === 'date') {
-                  const fmt = autoTickFormatDate(range).split('|')[0];
-                  range = range.map(d => dayjs(d).format(fmt));
-              }
-              if (col.type() === 'text') {
-                  // use first and last value
-                  const values = col.values().sort();
-                  range = [values[0], values[values.length - 1]];
-              }
+        ? ds
+              .columns()
+              .slice(0, 10)
+              .map(col => {
+                  let range = col.range();
+                  if (col.type() === 'date') {
+                      const fmt = autoTickFormatDate(range).split('|')[0];
+                      range = range.map(d => dayjs(d).format(fmt));
+                  }
+                  if (col.type() === 'text') {
+                      // use first and last value
+                      const values = col.values().sort();
+                      range = [values[0], values[values.length - 1]];
+                  }
 
-              return {
-                  name: col.title(),
-                  type: col.type(),
-                  range
-              };
-          })
+                  return {
+                      name: col.title(),
+                      type: col.type(),
+                      range
+                  };
+              })
         : null;
 
     onMount(async () => {
@@ -125,27 +130,63 @@
                         <div class="column t-{col.type}">
                             <div class="title">{col.name}</div>
                             <div class="type">{col.type}</div>
-                            <div class="range">{col.range.join(' - ')}</div>
+                            <div class="range">({col.range.join(' - ')})</div>
                         </div>
                     {/each}
+                    {#if ds.numColumns() > 10}
+                        and {ds.numColumns() - 1} more
+                    {/if}
                 {/if}
             </td></tr
         >
+        <tr
+            ><th>Dataset rows</th><td>
+                {#if ds}
+                    {ds.numRows()} (<button
+                        on:click={() => (showData = !showData)}
+                        class="plain-link">{showData ? 'hide' : 'show'} dataset</button
+                    >)
+                {/if}
+            </td></tr
+        >
+        {#if showData && ds}
+            <tr
+                ><th>Dataset</th><td>
+                    <div
+                        style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px"
+                    >
+                        <table>
+                            <thead>
+                                <tr>
+                                    {#each ds.columns() as col}
+                                        <th>{col.name()}</th>
+                                    {/each}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#each ds.column(0).values() as v, i}
+                                    <tr>
+                                        {#each ds.columns() as col}
+                                            <td>{col.raw(i) || '-'}</td>
+                                        {/each}
+                                    </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    </div>
+                </td></tr
+            >
+        {/if}
     </table>
 
-    {#if !loggedIn}
-        <p>
-            Datawrapper is a tool that lets you create and publish charts, maps & tables for free.
-            If you don't have an account yet, you can try out our tool and sign up later.
-        </p>
-    {:else}
-        <p>Do you really want to create the visualization?</p>
-    {/if}
+    <p>Do you really want to create the visualization?</p>
 
     <button class="btn btn-primary" on:click={openInDatawrapper}
         >Yes, create new visualization</button
     >
     <button class="btn" on:click={dontOpen}>No</button>
+    <hr />
+    <p class="footer">{@html __('login / signup / intro')}</p>
 </SignInPageLayout>
 
 <style>
@@ -158,19 +199,26 @@
         font-size: 18px;
         line-height: 1.25;
     }
+    p.footer {
+        font-size: 14px;
+        margin-bottom: 0;
+        line-height: 20px;
+    }
     th,
     td {
         padding: 5px 10px 5px 0;
     }
     .column {
         display: inline-block;
-        padding: 3px 10px;
+        padding: 7px 10px;
         margin: 0 6px 0 0;
         border: 1px solid #ddd;
         border-radius: 4px;
+        line-height: 15px;
     }
     .column .title {
         color: #222;
+        margin-bottom: 5px;
     }
     .column .type {
         font-size: 11px;
@@ -179,6 +227,7 @@
     }
     .column .range {
         color: #999;
+        font-size: 12px;
         font-style: italic;
     }
     .btn {
@@ -216,5 +265,9 @@
     th {
         text-align: left;
         vertical-align: top;
+    }
+    hr {
+        border: none;
+        border-bottom: 1px solid #eee;
     }
 </style>
