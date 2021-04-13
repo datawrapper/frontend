@@ -95,35 +95,35 @@
         window.close();
     }
 
-    const fields = [
+    $: fields = [
         {
             key: 'niceType',
-            label: 'Type',
+            label: __('create / field / type'),
             html: true
         },
         {
             key: 'title',
-            label: 'Title'
+            label: __('Title')
         },
         {
             key: 'metadata.describe.intro',
-            label: 'Description'
+            label: __('Description')
         },
         {
             key: 'metadata.annotate.notes',
-            label: 'Notes'
+            label: __('Notes')
         },
         {
             key: 'metadata.describe.byline',
-            label: 'Byline'
+            label: __('visualize / annotate / byline')
         },
         {
             key: 'metadata.describe.source-name',
-            label: 'Source'
+            label: __('Source name')
         },
         {
             key: 'metadata.describe.source-url',
-            label: 'Source URL'
+            label: __('Source URL')
         }
     ];
 
@@ -131,9 +131,9 @@
 </script>
 
 <SignInPageLayout title="Edit Visualization in Datawrapper">
-    <h1>Create a new Datawrapper visualization</h1>
+    <h1>{__('create / hed')}</h1>
 
-    <p>Please confirm that you want to create a new visualization based on this data:</p>
+    <p>{__('create / confirm')}</p>
 
     <table>
         {#each fields as field}
@@ -149,7 +149,7 @@
             {/if}
         {/each}
         <tr
-            ><th>Dataset columns:</th><td>
+            ><th>{__('create / field / dataset columns')}:</th><td>
                 {#if ds}
                     {#each columns as col}
                         <div class="column t-{col.type}">
@@ -165,18 +165,19 @@
             </td></tr
         >
         <tr
-            ><th>Dataset rows:</th><td>
+            ><th>{__('create / field / dataset rows')}:</th><td>
                 {#if ds}
                     {ds.numRows()} (<button
                         on:click={() => (showData = !showData)}
-                        class="plain-link">{showData ? 'hide' : 'show'} dataset</button
+                        class="plain-link"
+                        >{__('create / ' + (showData ? 'hide' : 'show') + ' dataset')}</button
                     >)
                 {/if}
             </td></tr
         >
         {#if showData && ds}
             <tr
-                ><th>Dataset:</th><td>
+                ><th>{__('create / field / dataset')}:</th><td>
                     <div
                         style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px; max-width: 490px;"
                     >
@@ -204,14 +205,14 @@
         {/if}
     </table>
 
-    <p>Do you want to create a visualization with this data now?</p>
+    <p>{__('create / confirm-q')}</p>
 
     <button class="btn btn-primary" on:click={openInDatawrapper}
-        >Yes, create new visualization</button
+        >{__('create / confirm-q / yes')}</button
     >
-    <button class="btn" on:click={dontOpen}>No</button>
+    <button class="btn" on:click={dontOpen}>{__('create / confirm-q / no')}</button>
     <hr />
-    <p class="footer">{@html __('login / signup / intro')}</p>
+    <p class="footer">{@html __('create / footer')}</p>
 </SignInPageLayout>
 
 <style>
