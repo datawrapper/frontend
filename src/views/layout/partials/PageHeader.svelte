@@ -4,14 +4,21 @@
 </script>
 
 <header id="top">
-    <div class="flex">
-        <DatawrapperLogo height="35" />
-        <NavBar />
+    <div class="container">
+        <div class="flex">
+            <a href="/">
+                <DatawrapperLogo height="50" />
+            </a>
+            <NavBar />
+        </div>
     </div>
 </header>
 
 <style>
     header {
-        margin: 4ex 0;
+        padding: 4ex 0;
+    }
+    .container {
+        margin-bottom: 0;
     }
 </style>

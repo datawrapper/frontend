@@ -1,21 +1,30 @@
 <script>
     import { getContext } from 'svelte';
     const config = getContext('config');
+    const msg = getContext('messages');
+
+    let __;
+    $: {
+        __ = (key, scope = 'core') => msg.translate(key, scope, $msg);
+    }
 </script>
 
 <footer>
     <div class="flex">
         <div>
-            Datawrapper is developed by <b>Datawrapper GmbH.</b>
+            <p class="mb-0">{@html __('footer / datawrapper-gmbh')}</p>
             <nav>
                 <ul>
-                    <li>Quick Start</li>
-                    <li>Tutorial</li>
+                    {#each $config.footerLinks as link}
+                        <li><a href={link.url}>{link.title.en}</a></li>
+                    {/each}
                 </ul>
             </nav>
         </div>
         <div class="right">
-            <a href="#top">Back to top</a><br />
+            <a href="#top" on:click|preventDefault={() => window.scrollTo(0, 0)}
+                >{__('Back to top')}</a
+            ><br />
             {$config.apiDomain} / {$config.dev ? 'dev' : 'prod'}
             <div />
         </div>
@@ -27,14 +36,21 @@
         border-top: 1px solid #ccc;
         padding-top: 2ex;
         margin-top: 2ex;
-        font-size: 12px;
+        font-size: 14px;
     }
     nav ul {
+        color: silver;
         margin: 0;
         padding: 0;
     }
     nav ul li {
         display: inline-block;
-        margin-right: 1ex;
+        margin-right: 0.3ex;
+    }
+    nav ul li + li {
+        margin-left: 0.3ex;
+    }
+    nav ul li + li:before {
+        content: ' – ';
     }
 </style>
