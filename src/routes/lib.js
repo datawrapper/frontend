@@ -47,6 +47,18 @@ module.exports = {
                 }
             },
             {
+                path: '/static/{file*}',
+                method: 'GET',
+                config: {
+                    auth: false
+                },
+                handler: {
+                    directory: {
+                        path: 'static'
+                    }
+                }
+            },
+            {
                 path: '/csr/{file*}',
                 method: 'GET',
                 config: {
