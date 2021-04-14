@@ -12,6 +12,7 @@ const {
     validateRedis
 } = require('@datawrapper/schemas/config');
 const { requireConfig } = require('@datawrapper/service-utils/findConfig');
+const registerVisualizations = require('@datawrapper/service-utils/registerVisualizations');
 const config = requireConfig();
 const path = require('path');
 const { getUserLanguage } = require('./utils');
@@ -136,6 +137,7 @@ const start = async () => {
     server.method('config', key => (key ? config[key] : config));
     server.method('logAction', require('@datawrapper/orm/utils/action').logAction);
     server.method('isDevMode', () => process.env.DW_DEV_MODE);
+    server.method('registerVisualization', registerVisualizations(server));
 
     // hooks
     server.app.event = eventList;
@@ -164,6 +166,19 @@ const start = async () => {
     await server.register([require('./routes')]);
     server.logger.info('loading plugins...');
     await server.register([require('./utils/plugin-loader')]);
+
+    // custom HTML error pages
+    server.ext('onPreResponse', (request, h) => {
+        if (request.response.isBoom) {
+            const err = request.response;
+            return h
+                .view('Error.svelte', {
+                    props: err.output.payload
+                })
+                .code(err.output.payload.statusCode);
+        }
+        return h.continue;
+    });
 
     // wait for all prepared views
     server.logger.info('preparing Svelte views...');
