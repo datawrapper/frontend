@@ -32,20 +32,21 @@ module.exports = {
                 auth: false,
                 validate: {
                     payload: Joi.object({
-                        title: Joi.string().optional(),
-                        description: Joi.string().optional(),
-                        aria_description: Joi.string().optional(),
+                        title: Joi.string().optional().allow(''),
+                        description: Joi.string().optional().allow(''),
+                        aria_description: Joi.string().optional().allow(''),
                         type: Joi.string().optional(),
                         theme: Joi.string().optional(),
-                        source_name: Joi.string().optional(),
-                        source_url: Joi.string().optional(),
-                        notes: Joi.string().optional(),
-                        byline: Joi.string().optional(),
+                        source_name: Joi.string().optional().allow(''),
+                        source_url: Joi.string().optional().allow(''),
+                        notes: Joi.string().optional().allow(''),
+                        byline: Joi.string().optional().allow(''),
                         language: Joi.string()
                             .pattern(/[a-z][a-z](-[A-Z][A-Z])?/)
-                            .optional(),
+                            .optional()
+                            .default('en-US'),
                         metadata: Joi.string().optional(),
-                        last_edit_step: Joi.number().integer().min(2).max(4).optional(),
+                        last_edit_step: Joi.number().integer().min(2).max(4).optional().default(3),
                         data: Joi.string().optional()
                     })
                 }
