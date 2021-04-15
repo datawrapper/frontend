@@ -1,6 +1,8 @@
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
+const get = require('lodash/get');
 const set = require('lodash/set');
+const createChart = require('@datawrapper/service-utils/createChart');
 
 module.exports = {
     name: 'routes/template',
@@ -10,7 +12,63 @@ module.exports = {
             path: '/',
             method: 'GET',
             async handler(request, h) {
-                return h.redirect('/chart/create');
+                return h.redirect('/create/chart');
+            }
+        });
+
+        server.route({
+            path: '/{workflow}',
+            method: 'GET',
+            options: {
+                validate: {
+                    params: Joi.object({
+                        workflow: Joi.string().valid('chart', 'map', 'table')
+                    }),
+                    query: Joi.object({
+                        type: Joi.string().optional()
+                    })
+                }
+            },
+            async handler(request, h) {
+                const cfg = server.methods.config('general');
+                const { auth, params, query } = request;
+                const { workflow } = params;
+                const { type } = query;
+                const payload = {};
+                if (type) {
+                    // check if chart type exists
+                    if (!server.app.visualizations.has(type)) {
+                        return Boom.badRequest('Invalid visualization type');
+                    }
+                    const vis = server.app.visualizations.get(type);
+                    if (vis.namespace !== workflow) {
+                        return Boom.badRequest(
+                            `Type ${type} does not belong to namespace ${workflow}`
+                        );
+                    }
+                    payload.type = type;
+                } else {
+                    // get default type from namespace
+                    if (workflow === 'map') {
+                        payload.type = 'd3-maps-choropleth';
+                    } else if (workflow === 'table') {
+                        payload.type = 'tables';
+                    } else {
+                        payload.type = get(cfg, 'defaults.type', 'd3-bars');
+                    }
+                }
+                // create new chart
+                const user = auth.artifacts;
+                const { session } = auth.credentials;
+                try {
+                    const chart = await createChart({ server, payload, user, session });
+                    return h.redirect(
+                        type === 'locator-maps' ? `/edit/${chart.id}` : `/chart/${chart.id}/edit`
+                    );
+                } catch (e) {
+                    server.logger.error(e);
+                    return Boom.badRequest();
+                }
             }
         });
 
@@ -70,8 +128,7 @@ module.exports = {
                 });
                 const dataset = payload.data || '';
                 const props = { chartData, dataset };
-                const layout = 'SignInPageLayout';
-                return h.view('Create.svelte', { layout, props });
+                return h.view('Create.svelte', { props });
             }
         });
     }

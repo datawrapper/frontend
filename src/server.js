@@ -162,6 +162,7 @@ const start = async () => {
     server.method('transpileView', transpileView);
     server.method('getUserLanguage', getUserLanguage);
     server.method('translate', translate);
+    server.method('getModel', name => ORM.db.models[name]);
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
@@ -181,9 +182,11 @@ const start = async () => {
         return h.continue;
     });
 
-    // wait for all prepared views
-    server.logger.info('preparing Svelte views...');
-    await prepareAllViews();
+    if (!process.env.DW_DEV_MODE) {
+        // wait for all prepared views
+        server.logger.info('preparing Svelte views...');
+        await prepareAllViews();
+    }
     await server.start();
 
     setTimeout(() => {
