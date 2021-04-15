@@ -50,7 +50,8 @@ module.exports = {
                 } else {
                     // get default type from namespace
                     if (workflow === 'map') {
-                        payload.type = 'd3-maps-choropleth';
+                        // use old map selector for now (it will redirect us back here)
+                        return h.redirect('/select/map');
                     } else if (workflow === 'table') {
                         payload.type = 'tables';
                     } else {
@@ -63,7 +64,7 @@ module.exports = {
                 try {
                     const chart = await createChart({ server, payload, user, session });
                     return h.redirect(
-                        type === 'locator-maps' ? `/edit/${chart.id}` : `/chart/${chart.id}/edit`
+                        type === 'locator-map' ? `/edit/${chart.id}` : `/chart/${chart.id}/edit`
                     );
                 } catch (e) {
                     server.logger.error(e);
