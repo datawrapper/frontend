@@ -26,7 +26,7 @@ const {
 } = require('./utils/svelte-view');
 const { FrontendEventEmitter, eventList } = require('./utils/events');
 
-const { addScope } = require('@datawrapper/service-utils/l10n');
+const { addScope, translate } = require('@datawrapper/service-utils/l10n');
 
 const start = async () => {
     validateAPI(config.api);
@@ -161,6 +161,7 @@ const start = async () => {
     server.method('prepareView', prepareView);
     server.method('transpileView', transpileView);
     server.method('getUserLanguage', getUserLanguage);
+    server.method('translate', translate);
 
     await server.register(require('./auth/dw-auth'));
     await server.register([require('./routes')]);
