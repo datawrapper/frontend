@@ -6,6 +6,17 @@ body {
   margin: 0;
 }
 
+.has-text-red {
+  color: #c71e1d;
+}
+.has-text-white {
+  color: #fff;
+}
+
+.has-bg-red {
+  background: #c71e1d;
+}
+
 a {
     color: #1d81a2;
     text-decoration: none;
