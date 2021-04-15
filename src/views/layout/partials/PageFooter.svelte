@@ -24,9 +24,10 @@
         <div class="right">
             <a href="#top" on:click|preventDefault={() => window.scrollTo(0, 0)}
                 >{__('Back to top')}</a
-            ><br />
-            {$config.apiDomain} / {$config.dev ? 'dev' : 'prod'}
-            <div />
+            >{#if config.dev}
+                <br />
+                {$config.apiDomain}
+            {/if}
         </div>
     </div>
 </footer>

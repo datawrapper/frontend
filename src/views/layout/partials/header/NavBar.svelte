@@ -1,29 +1,23 @@
 <script>
     import { getContext } from 'svelte';
     const user = getContext('user');
+    const request = getContext('request');
 </script>
 
 <nav>
-    <ul>
-        <li>Start creating</li>
-        <li>My Charts</li>
-        {#if $user.isAdmin}
-            <li>Admin</li>
-        {/if}
-        <li>
-            {#if $user.isGuest}Guest{:else}{$user.name}{/if}
-        </li>
-        <li>{$user.language}</li>
-    </ul>
+    <ul />
 </nav>
 
 <style>
     nav ul {
         margin: 0;
         display: flex;
-        column-gap: 2ex;
+        column-gap: 3ex;
+        align-items: center;
+        height: 100%;
     }
     nav ul li {
         list-style: none;
+        margin-bottom: 0;
     }
 </style>
