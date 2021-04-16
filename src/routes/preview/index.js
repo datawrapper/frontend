@@ -78,7 +78,7 @@ module.exports = {
                     locales: {
                         dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
                         numeral: loadVendorLocale(locales, 'numeral', chartLocale)
-                        },
+                    },
                 });
 
                 const css = props.styles;
