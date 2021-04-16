@@ -5,7 +5,8 @@
     "scripts": {
         "format": "prettier --write 'src/**/*.{js,svelte}'",
         "lint": "eslint 'src/**/*.{js,svelte}' && prettier --check 'src/**/*.{js,svelte}'",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "build:css": "lessc src/styles/index.less static/datawrapper.css"
     },
     "dependencies": {
         "@babel/core": "^7.12.10",
