@@ -84,6 +84,14 @@ module.exports = {
                 const css = props.styles;
                 delete props.styles;
 
+                const assets = {};
+                props.assets.forEach(({ name, cached, value }) => {
+                    assets[name] = {
+                        value
+                    };
+                });
+                props.assets = assets;
+
                 const libraries = props.visualization.libraries.map(lib => lib.uri);
 
                 const { html, head } = chartCore.svelte.render(props);
