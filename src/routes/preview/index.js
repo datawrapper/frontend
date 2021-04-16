@@ -71,13 +71,14 @@ module.exports = {
                     'dw-2.0.min.js',
                 ];
 
+                const team = await Team.findByPk(chart.organizationId);
                 props = Object.assign(props, {
                     isIframe: true,
                     isPreview: true,
                     polyfillUri: '/lib/polyfills',
                     locales: {
-                        dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
-                        numeral: loadVendorLocale(locales, 'numeral', chartLocale)
+                        dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
+                        numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
                     },
                 });
 
