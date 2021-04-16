@@ -71,7 +71,7 @@ module.exports = {
                     'dw-2.0.min.js',
                 ];
 
-                const team = await Team.findByPk(chart.organizationId);
+                const team = await Team.findByPk(props.chart.organizationId);
                 props = Object.assign(props, {
                     isIframe: true,
                     isPreview: true,
