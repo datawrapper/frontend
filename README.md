@@ -14,6 +14,7 @@ Repository overview:
 * [`src/utils/`](src/utils) - some utilities such as the [plugin loader](src/utils/plugin-loader.js) or our custom [Svelte view adapter](src/utils/svelte-view)
 * [`src/views`](src/views) - the view templates (currently we support `pug` and `Svelte3` views)
 * [`src/server.js`](src/server.js) - where all the fun begins ;-)
+* [`src/styles`](src/styles) - the LESS sources for `static/datawrapper.css` (use `npm run build:css` to update)
 
 ## Quick introduction of the new Svelte views
 
