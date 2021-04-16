@@ -74,13 +74,15 @@ module.exports = {
                 props = Object.assign(props, {
                     isIframe: true,
                     isPreview: true,
-                    // @todo: load from  config
                     polyfillUri: '/lib/polyfills',
                     locales: {
                         dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
                         numeral: loadVendorLocale(locales, 'numeral', chartLocale)
                         },
                 });
+
+                const css = props.styles;
+                delete props.styles;
 
                 const libraries = props.visualization.libraries.map(lib => lib.uri);
 
@@ -99,7 +101,7 @@ module.exports = {
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
                     DEPS: dependencies.map(el => `/lib/chart-core/${el}`),
                     LIBRARIES: libraries,
-                    CSS: `${props.styles.fonts}\n${props.styles.css}`,
+                    CSS: css,
                     CHART_CLASS: [
                         `vis-height-${get(props.visualization, 'height', 'fit')}`,
                         `theme-${get(props.theme, 'id')}`,
