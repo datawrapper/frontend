@@ -86,7 +86,7 @@ module.exports = {
                 delete props.styles;
 
                 const assets = {};
-                props.assets.forEach(({ name, cached, value }) => {
+                props.assets.forEach(({ name, value }) => {
                     assets[name] = {
                         value
                     };
