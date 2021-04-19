@@ -649,3 +649,11 @@ a:hover {
 .has-bg-red {
   background: #c71e1d;
 }
+dd,
+dt,
+li {
+  margin-bottom: 0.5rem;
+}
+ul {
+  list-style: disc inside;
+}
