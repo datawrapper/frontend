@@ -872,5 +872,5 @@
   "chart-notification / download / fail / svg": "",
   "chart-notification / download / fail / image": "",
   "chart-notification / download / fail / pdf": "",
-  "error / support-help": "In jedem Fall kann Dir unser freundliches Support-Team weiterhelfen, wenn Du uns eine E-Mail an <b><a href=\"%s\">support@datawrapper.de</a></b> sendest."
+  "error / support-help": "In jedem Fall kann Dir unser freundliches Support-Team weiterhelfen (und Du uns), wenn Du uns eine E-Mail an <b><a href=\"%s\">support@datawrapper.de</a></b> sendest."
 }
