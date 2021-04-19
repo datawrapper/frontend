@@ -17,10 +17,12 @@ module.exports = function (request) {
         stores: {
             config: {
                 apiDomain: `${apiConfig.subdomain}.${apiConfig.domain}`,
+                frontendDomain: `${frontendConfig.domain}`,
                 dev: process.env.DW_DEV_MODE,
                 footerLinks: frontendConfig.footerLinks
             },
             request: {
+                method: request.method,
                 url: request.url,
                 path: request.path,
                 params: request.params,

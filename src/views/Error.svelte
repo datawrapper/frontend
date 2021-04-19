@@ -1,5 +1,9 @@
 <script>
     import MainLayout from 'layout/MainLayout.svelte';
+    import { getContext } from 'svelte';
+
+    const request = getContext('request');
+    const config = getContext('config');
 
     export let statusCode;
     export let error;
@@ -26,7 +30,9 @@
     <div class="container">
         <div class="row">
             <div class="column column-75">
-                <h3 class="kicker mb-0">Error {statusCode} ({error})</h3>
+                <h3 class="kicker mb-0">
+                    Error {statusCode} ({error}{#if message !== error}&nbsp;/&nbsp;{message}{/if})
+                </h3>
                 <h2 class="has-text-red">{niceHed}</h2>
                 <p class="summary">{niceText}</p>
 
@@ -36,14 +42,16 @@
                         <li><a href="/">Dashboard</a></li>
                         <li><a href="/account">User settings</a></li>
                     </ul>
-                {:else}
-                    {message}
                 {/if}
                 <p>
-                    Our support team may also be able to help you if you send us an <a
-                        href="mailto:support@datawrapper.de?subject=Error%20{statusCode}%20{error}"
-                        >email to <b>support@datawrapper.de</b></a
-                    >!
+                    {@html __('error / support-help').replace(
+                        '%s',
+                        `mailto:support@datawrapper.de?subject=Error%20${statusCode}:%20${error}&body=%0A%0A%0A%0A----%0AError:%20${statusCode}%20/%20${message}%0AURL:%20${$request.method.toUpperCase()}%20${
+                            $config.frontendDomain
+                        }${$request.path}%0AQuery:%20${encodeURI(
+                            JSON.stringify($request.query)
+                        )}%0ATime:%20${new Date().toUTCString()}`
+                    )}
                 </p>
                 <p />
             </div>
