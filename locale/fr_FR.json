@@ -865,5 +865,12 @@
   "error / bad-request / hed": "",
   "error / bad-request / text": "",
   "error / forbidden / hed": "",
-  "error / forbidden / text": ""
+  "error / forbidden / text": "",
+  "chart-notification / download / image": "",
+  "chart-notification / download / pdf": "",
+  "chart-notification / download / SVG": "",
+  "chart-notification / download / fail / svg": "",
+  "chart-notification / download / fail / image": "",
+  "chart-notification / download / fail / pdf": "",
+  "error / support-help": ""
 }
