@@ -1,6 +1,6 @@
 <script>
     import MainLayout from 'layout/MainLayout.svelte';
-    import StackedNav from './partials/StackedNav.svelte';
+    import Menu from './partials/Menu.svelte';
     import { getContext } from 'svelte';
     import groupBy from 'underscore/modules/groupBy';
     import pairs from 'underscore/modules/pairs';
@@ -10,29 +10,27 @@
     export let title;
 
     $: groupedAdminPages = pairs(groupBy($adminPages, d => d.group))
-        .map(([group, pages]) => ({
-            group,
-            pages: pages
+        .map(([title, pages]) => ({
+            title,
+            items: pages
                 .sort((a, b) => a.order - b.order)
                 .map(page => ({
                     url: page.url || `/v2/admin/${page.id}`,
                     title: page.title
                 }))
         }))
-        .sort((a, b) => a.pages[0].order - b.pages[0].order);
+        .sort((a, b) => a.items[0].order - b.items[0].order);
 </script>
 
 <MainLayout title={`Admin - ${title}`}>
     <div class="container">
-        <div class="row">
-            <div class="column column-25 pr-6">
-                {#each groupedAdminPages as g}
-                    <StackedNav title={g.group} items={g.pages} />
-                {/each}
+        <div class="columns is-variable is-6">
+            <div class="column">
+                <Menu groups={groupedAdminPages} />
                 <slot name="belowNav" />
             </div>
-            <div class="column content">
-                <h1>Admin >> {title}</h1>
+            <div class="column is-four-fifths content">
+                <h1 class="title">Admin >> {title}</h1>
                 <slot />
             </div>
         </div>

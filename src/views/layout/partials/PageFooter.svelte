@@ -9,9 +9,9 @@
     }
 </script>
 
-<footer>
-    <div class="flex">
-        <div>
+<footer class="footer">
+    <div class="columns">
+        <div class="column">
             <p class="mb-0">{@html __('footer / datawrapper-gmbh')}</p>
             <nav>
                 <ul>
@@ -21,7 +21,7 @@
                 </ul>
             </nav>
         </div>
-        <div class="right">
+        <div class="column is-narrow">
             <a href="#top" on:click|preventDefault={() => window.scrollTo(0, 0)}
                 >{__('Back to top')}</a
             >{#if config.dev}

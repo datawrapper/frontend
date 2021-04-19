@@ -28,13 +28,13 @@
 
 <MainLayout title="Error {statusCode} / {error}">
     <div class="container">
-        <div class="row">
-            <div class="column column-75">
-                <h3 class="kicker mb-0">
+        <div class="columns">
+            <div class="column is-four-fifths content">
+                <h3 class="is-size-4 mb-2 has-text-grey">
                     Error {statusCode} ({error}{#if message !== error}&nbsp;/&nbsp;{message}{/if})
                 </h3>
-                <h2 class="has-text-red">{niceHed}</h2>
-                <p class="summary">{niceText}</p>
+                <h1 class="title is-1 has-text-danger mt-1">{niceHed}</h1>
+                <p class="subtitle is-3">{niceText}</p>
 
                 {#if statusCode === 404}
                     <p>Here are some other places you may want to go to now</p>
@@ -58,19 +58,3 @@
         </div>
     </div>
 </MainLayout>
-
-<style>
-    .kicker {
-        font-size: 24px;
-        font-weight: 400;
-        color: #999;
-        letter-spacing: 0;
-    }
-
-    .summary {
-        font-size: 2.2rem;
-        letter-spacing: -0.08rem;
-        line-height: 1.5;
-        color: #656565;
-    }
-</style>
