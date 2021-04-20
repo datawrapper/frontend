@@ -44,9 +44,13 @@
 <MainLayout title="Hello world">
     <div class="container">
         <h1 class="title is-1" style="color:#c04" on:click={knock}>{message}</h1>
-        <p>{__('team / invite / intro')}</p>
-        <p>The magic number is&nbsp;<b>{magicNumber}</b>!</p>
-        <button class="button is-danger" on:click={causeError}>Throw an error!</button>
+        <div class="content">
+            <p>{__('team / invite / intro')}</p>
+            <p>
+                The magic number is&nbsp;<b>{magicNumber}</b>, and it keeps increasing because
+                Svelte client-side hydration works!
+            </p>
+        </div>
     </div>
 
     <div class="section">
@@ -655,5 +659,11 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container content">
+        <p>Finally,</p>
+        <p><button class="button is-danger" on:click={causeError}>Throw an error!</button></p>
+        <p>to test source maps in Svelte error stacktraces</p>
     </div>
 </MainLayout>
