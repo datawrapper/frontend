@@ -664,24 +664,25 @@
     <div class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-one-fifth">
+                <div class="column is-one-fifth content">
                     <h3 class="title is-3">Embedding Svelte2 components</h3>
+                    <p class="has-text-grey">Svelte3 data binding demo</p>
+                    <p>
+                        <label class="checkbox"
+                            ><input type="checkbox" bind:checked={data.settings.webhook_enabled} /> Webhook
+                            enabled</label
+                        >
+                    </p>
+                    {#if data.settings.webhook_enabled}
+                        <p>
+                            Webhook URL: <input
+                                class="input"
+                                bind:value={data.settings.webhook_url}
+                            />
+                        </p>
+                    {/if}
                 </div>
                 <div class="column">
-                    <div class="columns">
-                        <div class="column is-narrow">
-                            <label class="checkbox"
-                                ><input
-                                    type="checkbox"
-                                    bind:checked={data.settings.webhook_enabled}
-                                /> Webhook enabled</label
-                            >
-                        </div>
-                        <div class="column is-narrow">
-                            <p>Webhook URL: <input bind:value={data.settings.webhook_url} /></p>
-                        </div>
-                    </div>
-                    <hr />
                     <div class="box">
                         <Svelte2Wrapper
                             id="plugin-team-integrations"

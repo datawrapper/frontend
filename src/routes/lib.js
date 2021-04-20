@@ -90,7 +90,13 @@ module.exports = {
                               `//# sourceMappingURL=/lib/csr/${page}.js.map`
                           );
                     return h
-                        .response(anonymous ? code.replace('define("App",', 'define(') : code)
+                        .response(
+                            anonymous
+                                ? code
+                                      .replace('define("App",', 'define(')
+                                      .replace("define('App',", 'define(')
+                                : code
+                        )
                         .header('Content-Type', 'application/javascript');
                 }
             }
