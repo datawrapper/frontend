@@ -661,7 +661,7 @@
         </div>
     </div>
 
-    <div class="section">
+    <div class="section" id="svelte2-embed">
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth content">
