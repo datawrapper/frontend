@@ -2,14 +2,14 @@
     export let deletable = true;
     export let type = '';
     export let content = '';
-    let deleted = false;
+    export let visible = true;
 </script>
 
-{#if !deleted}
+{#if visible}
     <div class="notification {type ? `is-${type}` : ''}">
         {#if deletable}<button
                 aria-label="delete"
-                on:click={() => (deleted = true)}
+                on:click={() => (visible = false)}
                 class="delete"
             />{/if}
         <slot />

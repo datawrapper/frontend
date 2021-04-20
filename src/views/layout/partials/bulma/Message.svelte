@@ -3,15 +3,15 @@
     export let deletable = true;
     export let type = 'info';
 
-    let deleted = false;
+    let visible = true;
 </script>
 
-{#if !deleted}
+{#if visible}
     <article class="message {type ? `is-${type}` : ''}">
         {#if title}
             <div class="message-header">
                 <p>{@html title}</p>
-                <button class="delete" on:click={() => (deleted = true)} aria-label="delete" />
+                <button class="delete" on:click={() => (visible = false)} aria-label="delete" />
             </div>
         {/if}
         <div class="message-body">

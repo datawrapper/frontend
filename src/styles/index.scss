@@ -12,7 +12,7 @@ $link-hover: $dw_blue_dark;
 $background: $dw_lightgray;
 $body-background-color: $dw_background;
 $light: $dw_gray;
-$title-weight: 300;
+$title-weight: 400;
 $content-heading-weight: 400;
 $size-1: 2.75rem;
 
@@ -26,11 +26,11 @@ $footer-padding: 3rem 0rem 6rem;
  * https://bulma.io/documentation/elements/
  */
 // @import "../../node_modules/bulma/sass/elements/_all.sass";
-// @import "../../node_modules/bulma/sass/elements/box.sass";
+@import "../../node_modules/bulma/sass/elements/box.sass";
 @import "../../node_modules/bulma/sass/elements/button.sass";
 @import "../../node_modules/bulma/sass/elements/container.sass";
 @import "../../node_modules/bulma/sass/elements/content.sass";
-// @import "../../node_modules/bulma/sass/elements/icon.sass";
+@import "../../node_modules/bulma/sass/elements/icon.sass";
 // @import "../../node_modules/bulma/sass/elements/image.sass";
 @import "../../node_modules/bulma/sass/elements/notification.sass";
 @import "../../node_modules/bulma/sass/elements/other.sass";
@@ -50,7 +50,7 @@ $footer-padding: 3rem 0rem 6rem;
  * https://bulma.io/documentation/components/
  */
 // @import "../../node_modules/bulma/sass/components/_all.sass";
-// @import "../../node_modules/bulma/sass/components/breadcrumb.sass";
+@import "../../node_modules/bulma/sass/components/breadcrumb.sass";
 // @import "../../node_modules/bulma/sass/components/card.sass";
 @import "../../node_modules/bulma/sass/components/dropdown.sass";
 @import "../../node_modules/bulma/sass/components/level.sass";
@@ -86,4 +86,8 @@ $footer-padding: 3rem 0rem 6rem;
 
 a:hover {
 	text-decoration: underline;
+}
+
+.title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
+	font-weight: 300;
 }

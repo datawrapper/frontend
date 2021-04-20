@@ -400,7 +400,7 @@
   fieldset[disabled] .pagination-ellipsis {
     cursor: not-allowed; }
 
-.button, .file, .pagination-previous,
+.button, .file, .breadcrumb, .pagination-previous,
 .pagination-next,
 .pagination-link,
 .pagination-ellipsis, .is-unselectable {
@@ -426,8 +426,8 @@
   transform-origin: center;
   width: 0.625em; }
 
-.content:not(:last-child), .notification:not(:last-child), .block:not(:last-child), .highlight:not(:last-child), .progress:not(:last-child), .table:not(:last-child), .table-container:not(:last-child), .title:not(:last-child),
-.subtitle:not(:last-child), .level:not(:last-child), .message:not(:last-child), .pagination:not(:last-child) {
+.box:not(:last-child), .content:not(:last-child), .notification:not(:last-child), .block:not(:last-child), .highlight:not(:last-child), .progress:not(:last-child), .table:not(:last-child), .table-container:not(:last-child), .title:not(:last-child),
+.subtitle:not(:last-child), .breadcrumb:not(:last-child), .level:not(:last-child), .message:not(:last-child), .pagination:not(:last-child) {
   margin-bottom: 1.5rem; }
 
 .delete {
@@ -707,6 +707,20 @@ table th {
  * BULMA ELEMENTS
  * https://bulma.io/documentation/elements/
  */
+.box {
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+  color: #4a4a4a;
+  display: block;
+  padding: 1.25rem; }
+
+a.box:hover, a.box:focus {
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0 0 1px #18a1cd; }
+
+a.box:active {
+  box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2), 0 0 0 1px #18a1cd; }
+
 .button {
   background-color: white;
   border-color: #dbdbdb;
@@ -1774,6 +1788,40 @@ table th {
 .content.is-large {
   font-size: 1.5rem; }
 
+.icon {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  height: 1.5rem;
+  width: 1.5rem; }
+  .icon.is-small {
+    height: 1rem;
+    width: 1rem; }
+  .icon.is-medium {
+    height: 2rem;
+    width: 2rem; }
+  .icon.is-large {
+    height: 3rem;
+    width: 3rem; }
+
+.icon-text {
+  align-items: flex-start;
+  color: inherit;
+  display: inline-flex;
+  flex-wrap: wrap;
+  line-height: 1.5rem;
+  vertical-align: top; }
+  .icon-text .icon {
+    flex-grow: 0;
+    flex-shrink: 0; }
+    .icon-text .icon:not(:last-child) {
+      margin-right: 0.25em; }
+    .icon-text .icon:not(:first-child) {
+      margin-left: 0.25em; }
+
+div.icon-text {
+  display: flex; }
+
 .notification {
   background-color: #eaeaea;
   border-radius: 4px;
@@ -2304,7 +2352,7 @@ a.tag:hover {
 .title {
   color: #363636;
   font-size: 2rem;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.125; }
   .title strong {
     color: inherit;
@@ -3167,6 +3215,60 @@ a.tag:hover {
  * BULMA COMPONENTS
  * https://bulma.io/documentation/components/
  */
+.breadcrumb {
+  font-size: 1rem;
+  white-space: nowrap; }
+  .breadcrumb a {
+    align-items: center;
+    color: #18a1cd;
+    display: flex;
+    justify-content: center;
+    padding: 0 0.75em; }
+    .breadcrumb a:hover {
+      color: #15607a; }
+  .breadcrumb li {
+    align-items: center;
+    display: flex; }
+    .breadcrumb li:first-child a {
+      padding-left: 0; }
+    .breadcrumb li.is-active a {
+      color: #363636;
+      cursor: default;
+      pointer-events: none; }
+    .breadcrumb li + li::before {
+      color: #b5b5b5;
+      content: "\0002f"; }
+  .breadcrumb ul,
+  .breadcrumb ol {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; }
+  .breadcrumb .icon:first-child {
+    margin-right: 0.5em; }
+  .breadcrumb .icon:last-child {
+    margin-left: 0.5em; }
+  .breadcrumb.is-centered ol,
+  .breadcrumb.is-centered ul {
+    justify-content: center; }
+  .breadcrumb.is-right ol,
+  .breadcrumb.is-right ul {
+    justify-content: flex-end; }
+  .breadcrumb.is-small {
+    font-size: 0.75rem; }
+  .breadcrumb.is-medium {
+    font-size: 1.25rem; }
+  .breadcrumb.is-large {
+    font-size: 1.5rem; }
+  .breadcrumb.has-arrow-separator li + li::before {
+    content: "\02192"; }
+  .breadcrumb.has-bullet-separator li + li::before {
+    content: "\02022"; }
+  .breadcrumb.has-dot-separator li + li::before {
+    content: "\000b7"; }
+  .breadcrumb.has-succeeds-separator li + li::before {
+    content: "\0227B"; }
+
 .dropdown {
   display: inline-flex;
   position: relative;
@@ -6956,3 +7058,6 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 
 a:hover {
   text-decoration: underline; }
+
+.title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
+  font-weight: 300; }

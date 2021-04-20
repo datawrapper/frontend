@@ -53,7 +53,7 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <h3 class="is-size-4">Bulma buttons</h3>
+                    <h3 class="title is-3">Buttons</h3>
                 </div>
                 <div class="column">
                     <div class="buttons">
@@ -110,7 +110,123 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <h3 class="is-size-4">Bulma notifications</h3>
+                    <h3 class="title is-3">Titles</h3>
+                </div>
+                <div class="column">
+                    <h1 class="title is-1">Title size 1</h1>
+                    <h2 class="subtitle has-text-grey is-3">Subtitle size 3</h2>
+                    <hr />
+                    <h1 class="title is-2">Title size 2</h1>
+                    <h2 class="subtitle has-text-grey is-4">Subtitle size 4</h2>
+                </div>
+                <div class="column">
+                    <h1 class="title is-3">Title size 3</h1>
+                    <h2 class="subtitle has-text-grey is-5">Subtitle size 5</h2>
+                    <hr />
+                    <h1 class="title is-4">Title size 4</h1>
+                    <h2 class="subtitle has-text-grey is-6">Subtitle size 6</h2>
+                    <hr />
+                    <h1 class="title is-5">Title size 5</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-fifth">
+                    <h3 class="title is-3">Breadcrumbs</h3>
+                </div>
+                <div class="column">
+                    <div class="columns is-2 is-variable">
+                        <div class="column is-narrow">
+                            <span>This chart is in</span>
+                        </div>
+                        <div class="column">
+                            <nav class="breadcrumb" aria-label="breadcrumbs">
+                                <ul>
+                                    <li><a href="#">My Charts</a></li>
+                                    <li><a href="#">Folder xyz</a></li>
+                                    <li class="is-active"><a href="#">Folder 123</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-fifth">
+                    <h3 class="title is-3">Content</h3>
+                </div>
+                <div class="column content">
+                    <h1>Hello World</h1>
+                    <p>
+                        Lorem ipsum<sup><a>[1]</a></sup> dolor sit amet, consectetur adipiscing
+                        elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius
+                        lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat
+                        odio, sollicitudin vel erat vel, interdum mattis neque. Sub<sub>script</sub>
+                        works as well!
+                    </p>
+                    <h2>Second level</h2>
+                    <p>
+                        Curabitur accumsan turpis pharetra <strong>augue tincidunt</strong> blandit.
+                        Quisque condimentum maximus mi, sit amet commodo arcu rutrum id. Proin pretium
+                        urna vel cursus venenatis. Suspendisse potenti. Etiam mattis sem rhoncus lacus
+                        dapibus facilisis. Donec at dignissim dui. Ut et neque nisl.
+                    </p>
+                    <ul>
+                        <li>In fermentum leo eu lectus mollis, quis dictum mi aliquet.</li>
+                        <li>Morbi eu nulla lobortis, lobortis est in, fringilla felis.</li>
+                        <li>Aliquam nec felis in sapien venenatis viverra fermentum nec lectus.</li>
+                        <li>Ut non enim metus.</li>
+                    </ul>
+                    <h3>Third level</h3>
+                    <p>
+                        Quisque ante lacus, malesuada ac auctor vitae, congue <a href="#"
+                            >non ante</a
+                        >. Phasellus lacus ex, semper ac tortor nec, fringilla condimentum orci.
+                        Fusce eu rutrum tellus.
+                    </p>
+                    <ol>
+                        <li>Donec blandit a lorem id convallis.</li>
+                        <li>Cras gravida arcu at diam gravida gravida.</li>
+                        <li>Integer in volutpat libero.</li>
+                        <li>Quisque aliquam cursus urna, non bibendum massa viverra eget.</li>
+                        <li>Vivamus maximus ultricies pulvinar.</li>
+                    </ol>
+                    <blockquote>
+                        Ut venenatis, nisl scelerisque sollicitudin fermentum, quam libero hendrerit
+                        ipsum, ut blandit est tellus sit amet turpis.
+                    </blockquote>
+                    <p>
+                        Quisque at semper enim, eu hendrerit odio. Etiam auctor nisl et <em
+                            >justo sodales</em
+                        > elementum. Maecenas ultrices lacus quis neque consectetur, et lobortis nisi
+                        molestie.
+                    </p>
+                    <p>
+                        Sed sagittis enim ac tortor maximus rutrum. Nulla facilisi. Donec mattis
+                        vulputate risus in luctus. Maecenas vestibulum interdum commodo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-fifth">
+                    <h3 class="title is-3">Notifications</h3>
+                    <p class="subtitle is-5">
+                        Use wrapper component <tt>&lt;Notification /&gt;</tt>
+                    </p>
                 </div>
                 <div class="column">
                     <Notification>
@@ -169,7 +285,7 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <h3 class="is-size-4">Bulma progress bar</h3>
+                    <h3 class="title is-3">Progress bar</h3>
                 </div>
                 <div class="column">
                     <progress class="progress is-primary" value="15" max="100">15%</progress>
@@ -187,7 +303,7 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <h3 class="is-size-4">Bulma table</h3>
+                    <h3 class="title is-3">Table</h3>
                 </div>
                 <div class="column">
                     <table class="table is-striped">
@@ -227,7 +343,8 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <h3 class="is-size-4">Bulma message</h3>
+                    <h3 class="title is-3">Message</h3>
+                    <p class="subtitle is-5">Use wrapper component <tt>&lt;Message /&gt;</tt></p>
                 </div>
                 <div class="column">
                     <div class="columns">
@@ -272,16 +389,267 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <h3 class="is-size-4">Embedding Svelte 2 components</h3>
+                    <h3 class="title is-3">Forms</h3>
+                </div>
+                <div class="column is-one-quarter">
+                    <h2 class="title is-4">Vertical</h2>
+                    <div class="field">
+                        <label class="label">Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input" />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Username</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input
+                                class="input is-success"
+                                type="text"
+                                placeholder="Text input"
+                                value="bulma"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-user" />
+                            </span>
+                            <span class="icon is-small is-right">
+                                <i class="fa fa-check" />
+                            </span>
+                        </div>
+                        <p class="help is-success">This username is available</p>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input
+                                class="input is-danger"
+                                type="email"
+                                placeholder="Email input"
+                                value="hello@"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-envelope" />
+                            </span>
+                            <span class="icon is-small is-right">
+                                <i class="fa fa-exclamation-triangle" />
+                            </span>
+                        </div>
+                        <p class="help is-danger">This email is invalid</p>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Subject</label>
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option>Select dropdown</option>
+                                    <option>With options</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Message</label>
+                        <div class="control">
+                            <textarea class="textarea" placeholder="Textarea" />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" />
+                                I agree to the <a href="#">terms and conditions</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <label class="radio">
+                                <input type="radio" name="question" />
+                                Yes
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="question" />
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link">Submit</button>
+                        </div>
+                        <div class="control">
+                            <button class="button is-link is-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <h2 class="title is-4">Horizontal</h2>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">From</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control is-expanded has-icons-left">
+                                    <input class="input" type="text" placeholder="Name" />
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-user" />
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control is-expanded has-icons-left has-icons-right">
+                                    <input
+                                        class="input is-success"
+                                        type="email"
+                                        placeholder="Email"
+                                        value="alex@smith.com"
+                                    />
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-envelope" />
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fa fa-check" />
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label" />
+                        <div class="field-body">
+                            <div class="field is-expanded">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <a class="button is-static"> +44 </a>
+                                    </p>
+                                    <p class="control is-expanded">
+                                        <input
+                                            class="input"
+                                            type="tel"
+                                            placeholder="Your phone number"
+                                        />
+                                    </p>
+                                </div>
+                                <p class="help">Do not enter the first zero</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Department</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <div class="select is-fullwidth">
+                                        <select>
+                                            <option>Business development</option>
+                                            <option>Marketing</option>
+                                            <option>Sales</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Already a member?</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <label class="radio">
+                                        <input type="radio" name="member" />
+                                        Yes
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="member" />
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Subject</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input
+                                        class="input is-danger"
+                                        type="text"
+                                        placeholder="e.g. Partnership opportunity"
+                                    />
+                                </div>
+                                <p class="help is-danger">This field is required</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Question</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea
+                                        class="textarea"
+                                        placeholder="Explain how we can help you"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <button class="button is-primary"> Send message </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-fifth">
+                    <h3 class="title is-3">Embedding Svelte 2 components</h3>
                 </div>
                 <div class="column">
                     <h2>Webhook URL: <input bind:value={data.settings.webhook_url} /> (svelte3)</h2>
-                    <Svelte2Wrapper
-                        id="plugin-team-integrations"
-                        js="/static/plugins/team-integrations/team-integrations.js"
-                        css="/static/plugins/team-integrations/team-integrations.css"
-                        bind:data
-                    />
+                    <hr />
+                    <div class="box">
+                        <Svelte2Wrapper
+                            id="plugin-team-integrations"
+                            js="/static/plugins/team-integrations/team-integrations.js"
+                            css="/static/plugins/team-integrations/team-integrations.css"
+                            bind:data
+                        />
+                    </div>
                 </div>
             </div>
         </div>
