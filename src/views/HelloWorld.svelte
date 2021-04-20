@@ -3,6 +3,7 @@
     import Svelte2Wrapper from 'layout/partials/Svelte2Wrapper.svelte';
     import Message from 'layout/partials/bulma/Message.svelte';
     import Notification from 'layout/partials/bulma/Notification.svelte';
+    import Tabs from 'layout/partials/bulma/Tabs.svelte';
     import { onMount, onDestroy, getContext } from 'svelte';
 
     export let magicNumber;
@@ -162,6 +163,26 @@
         </div>
     </div>
 
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-fifth">
+                    <h3 class="title is-3">Tabs</h3>
+                </div>
+                <div class="column is-one-third">
+                    <Tabs
+                        items={[
+                            { id: 'vis', title: 'Chart type' },
+                            { id: 'refine', title: 'Refine' },
+                            { id: 'annotate', title: 'Annotate' },
+                            { id: 'design', title: 'Design' }
+                        ]}
+                        active="refine"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="section">
         <div class="container">
             <div class="columns">

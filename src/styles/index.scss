@@ -12,6 +12,7 @@ $link-hover: $dw_blue_dark;
 $background: $dw_lightgray;
 $body-background-color: $dw_background;
 $light: $dw_gray;
+$tabs-boxed-link-active-background-color: $dw_background;
 
 // font styles
 $family-sans-serif: "Roboto", Helvetica, sans-serif;
@@ -66,7 +67,7 @@ $footer-padding: 3rem 0rem 6rem;
 @import "../../node_modules/bulma/sass/components/navbar.sass";
 @import "../../node_modules/bulma/sass/components/pagination.sass";
 // @import "../../node_modules/bulma/sass/components/panel.sass";
-// @import "../../node_modules/bulma/sass/components/tabs.sass";
+@import "../../node_modules/bulma/sass/components/tabs.sass";
 
 /*
  * BULMA GRID
