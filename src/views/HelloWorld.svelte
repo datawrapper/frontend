@@ -146,9 +146,9 @@
                         <div class="column">
                             <nav class="breadcrumb" aria-label="breadcrumbs">
                                 <ul>
-                                    <li><a href="#">My Charts</a></li>
-                                    <li><a href="#">Folder xyz</a></li>
-                                    <li class="is-active"><a href="#">Folder 123</a></li>
+                                    <li><a href="#/link">My Charts</a></li>
+                                    <li><a href="#/link">Folder xyz</a></li>
+                                    <li class="is-active"><a href="#/link">Folder 123</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -167,10 +167,12 @@
                 <div class="column content">
                     <h1>Hello World</h1>
                     <p>
-                        Lorem ipsum<sup><a>[1]</a></sup> dolor sit amet, consectetur adipiscing
-                        elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius
-                        lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat
-                        odio, sollicitudin vel erat vel, interdum mattis neque. Sub<sub>script</sub>
+                        Lorem ipsum<sup><a href="#/link">[1]</a></sup> dolor sit amet, consectetur
+                        adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc
+                        varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui.
+                        Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque. Sub<sub
+                            >script</sub
+                        >
                         works as well!
                     </p>
                     <h2>Second level</h2>
@@ -188,7 +190,7 @@
                     </ul>
                     <h3>Third level</h3>
                     <p>
-                        Quisque ante lacus, malesuada ac auctor vitae, congue <a href="#"
+                        Quisque ante lacus, malesuada ac auctor vitae, congue <a href="#/link"
                             >non ante</a
                         >. Phasellus lacus ex, semper ac tortor nec, fringilla condimentum orci.
                         Fusce eu rutrum tellus.
@@ -354,7 +356,7 @@
                                     >Pellentesque risus mi</strong
                                 >, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac
                                 ex sit amet fringilla. Nullam gravida purus diam, et dictum
-                                <a>felis venenatis</a>
+                                <a href="#/link">felis venenatis</a>
                                 efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus.
                                 Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor
                                 ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et
@@ -367,7 +369,7 @@
                                     >Pellentesque risus mi</strong
                                 >, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac
                                 ex sit amet fringilla. Nullam gravida purus diam, et dictum
-                                <a>felis venenatis</a> efficitur.
+                                <a href="#/link">felis venenatis</a> efficitur.
                             </Message>
                         </div>
                         <div class="column">
@@ -376,7 +378,7 @@
                                     >Pellentesque risus mi</strong
                                 >, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac
                                 ex sit amet fringilla. Nullam gravida purus diam, et dictum
-                                <a>felis venenatis</a> efficitur.
+                                <a href="#/link">felis venenatis</a> efficitur.
                             </Message>
                         </div>
                     </div>
@@ -394,9 +396,9 @@
                 <div class="column is-one-quarter">
                     <h2 class="title is-4">Vertical</h2>
                     <div class="field">
-                        <label class="label">Name</label>
+                        <label for="t0" class="label">Name</label>
                         <div class="control">
-                            <input class="input" type="text" placeholder="Text input" />
+                            <input id="t0" class="input" type="text" placeholder="Text input" />
                         </div>
                     </div>
 
@@ -461,7 +463,7 @@
                         <div class="control">
                             <label class="checkbox">
                                 <input type="checkbox" />
-                                I agree to the <a href="#">terms and conditions</a>
+                                I agree to the <a href="#/link">terms and conditions</a>
                             </label>
                         </div>
                     </div>

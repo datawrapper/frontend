@@ -29,31 +29,32 @@
 <MainLayout title="Error {statusCode} / {error}">
     <div class="container">
         <div class="columns">
-            <div class="column is-four-fifths content">
+            <div class="column is-four-fifths">
                 <h3 class="is-size-4 mb-2 has-text-grey">
                     Error {statusCode} ({error}{#if message !== error}&nbsp;/&nbsp;{message}{/if})
                 </h3>
                 <h1 class="title is-1 has-text-danger mt-1">{niceHed}</h1>
-                <p class="subtitle is-3">{niceText}</p>
+                <p class="subtitle is-4">{niceText}</p>
 
-                {#if statusCode === 404}
-                    <p>Here are some other places you may want to go to now</p>
-                    <ul>
-                        <li><a href="/">Dashboard</a></li>
-                        <li><a href="/account">User settings</a></li>
-                    </ul>
-                {/if}
-                <p>
-                    {@html __('error / support-help').replace(
-                        '%s',
-                        `mailto:support@datawrapper.de?subject=Error%20${statusCode}:%20${error}&body=%0A%0A%0A%0A----%0AError:%20${statusCode}%20/%20${message}%0AURL:%20${$request.method.toUpperCase()}%20${
-                            $config.frontendDomain
-                        }${$request.path}%0AQuery:%20${encodeURI(
-                            JSON.stringify($request.query)
-                        )}%0ATime:%20${new Date().toUTCString()}`
-                    )}
-                </p>
-                <p />
+                <div class="content">
+                    {#if statusCode === 404}
+                        <p>Here are some other places you may want to go to now</p>
+                        <ul>
+                            <li><a href="/">Dashboard</a></li>
+                            <li><a href="/account">User settings</a></li>
+                        </ul>
+                    {/if}
+                    <p>
+                        {@html __('error / support-help').replace(
+                            '%s',
+                            `mailto:support@datawrapper.de?subject=Error%20${statusCode}:%20${error}&body=%0A%0A%0A%0A----%0AError:%20${statusCode}%20/%20${message}%0AURL:%20${$request.method.toUpperCase()}%20${
+                                $config.frontendDomain
+                            }${$request.path}%0AQuery:%20${encodeURI(
+                                JSON.stringify($request.query)
+                            )}%0ATime:%20${new Date().toUTCString()}`
+                        )}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
