@@ -3,7 +3,7 @@
 @import "./fonts";
 @import "./colors";
 
-$family-sans-serif: "Roboto", Helvetica, sans-serif;
+// colors
 $primary: $dw_blue_medium;
 $red: $dw_red;
 $green: $dw_green;
@@ -12,9 +12,14 @@ $link-hover: $dw_blue_dark;
 $background: $dw_lightgray;
 $body-background-color: $dw_background;
 $light: $dw_gray;
+
+// font styles
+$family-sans-serif: "Roboto", Helvetica, sans-serif;
+$body-size: 14px;
+$size-1: 2.75rem;
+$size-3: 1.75rem;
 $title-weight: 400;
 $content-heading-weight: 400;
-$size-1: 2.75rem;
 
 $footer-padding: 3rem 0rem 6rem;
 

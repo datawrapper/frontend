@@ -589,7 +589,7 @@ th {
 
 html {
   background-color: #f9f9f9;
-  font-size: 16px;
+  font-size: 14px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   min-width: 300px;
@@ -2351,7 +2351,7 @@ a.tag:hover {
 
 .title {
   color: #363636;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 400;
   line-height: 1.125; }
   .title strong {
@@ -2366,7 +2366,7 @@ a.tag:hover {
   .title.is-2 {
     font-size: 2.5rem; }
   .title.is-3 {
-    font-size: 2rem; }
+    font-size: 1.75rem; }
   .title.is-4 {
     font-size: 1.5rem; }
   .title.is-5 {
@@ -2391,7 +2391,7 @@ a.tag:hover {
   .subtitle.is-2 {
     font-size: 2.5rem; }
   .subtitle.is-3 {
-    font-size: 2rem; }
+    font-size: 1.75rem; }
   .subtitle.is-4 {
     font-size: 1.5rem; }
   .subtitle.is-5 {
@@ -6449,7 +6449,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   font-size: 2.5rem !important; }
 
 .is-size-3 {
-  font-size: 2rem !important; }
+  font-size: 1.75rem !important; }
 
 .is-size-4 {
   font-size: 1.5rem !important; }
@@ -6469,7 +6469,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   .is-size-2-mobile {
     font-size: 2.5rem !important; }
   .is-size-3-mobile {
-    font-size: 2rem !important; }
+    font-size: 1.75rem !important; }
   .is-size-4-mobile {
     font-size: 1.5rem !important; }
   .is-size-5-mobile {
@@ -6485,7 +6485,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   .is-size-2-tablet {
     font-size: 2.5rem !important; }
   .is-size-3-tablet {
-    font-size: 2rem !important; }
+    font-size: 1.75rem !important; }
   .is-size-4-tablet {
     font-size: 1.5rem !important; }
   .is-size-5-tablet {
@@ -6501,7 +6501,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   .is-size-2-touch {
     font-size: 2.5rem !important; }
   .is-size-3-touch {
-    font-size: 2rem !important; }
+    font-size: 1.75rem !important; }
   .is-size-4-touch {
     font-size: 1.5rem !important; }
   .is-size-5-touch {
@@ -6517,7 +6517,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   .is-size-2-desktop {
     font-size: 2.5rem !important; }
   .is-size-3-desktop {
-    font-size: 2rem !important; }
+    font-size: 1.75rem !important; }
   .is-size-4-desktop {
     font-size: 1.5rem !important; }
   .is-size-5-desktop {
@@ -6533,7 +6533,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   .is-size-2-widescreen {
     font-size: 2.5rem !important; }
   .is-size-3-widescreen {
-    font-size: 2rem !important; }
+    font-size: 1.75rem !important; }
   .is-size-4-widescreen {
     font-size: 1.5rem !important; }
   .is-size-5-widescreen {
@@ -6549,7 +6549,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   .is-size-2-fullhd {
     font-size: 2.5rem !important; }
   .is-size-3-fullhd {
-    font-size: 2rem !important; }
+    font-size: 1.75rem !important; }
   .is-size-4-fullhd {
     font-size: 1.5rem !important; }
   .is-size-5-fullhd {
