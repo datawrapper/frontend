@@ -131,11 +131,13 @@
 </script>
 
 <SignInPageLayout title="Edit Visualization in Datawrapper">
-    <h1>{__('create / hed')}</h1>
+    <h1 class="title is-3">{__('create / hed')}</h1>
 
-    <p>{__('create / confirm')}</p>
+    <div class="content">
+        <p>{__('create / confirm')}</p>
+    </div>
 
-    <table>
+    <table class="mt-3">
         {#each fields as field}
             {#if get(chartData, field.key)}
                 <tr
@@ -152,8 +154,8 @@
             ><th>{__('create / field / dataset columns')}:</th><td>
                 {#if ds}
                     {#each columns as col}
-                        <div class="column t-{col.type}">
-                            <div class="title">{col.name}</div>
+                        <div class="cols t-{col.type}">
+                            <div class="name">{col.name}</div>
                             <div class="type">{col.type}</div>
                             <div class="range">({col.range.join(' - ')})</div>
                         </div>
@@ -205,36 +207,25 @@
         {/if}
     </table>
 
-    <p>{__('create / confirm-q')}</p>
+    <div class="content mt-4">
+        <p class="is-size-5">{__('create / confirm-q')}</p>
 
-    <button class="btn btn-primary" on:click={openInDatawrapper}
-        >{__('create / confirm-q / yes')}</button
-    >
-    <button class="btn" on:click={dontOpen}>{__('create / confirm-q / no')}</button>
-    <hr />
-    <p class="footer">{@html __('create / footer')}</p>
+        <p>
+            <button class="button is-primary" on:click={openInDatawrapper}
+                >{__('create / confirm-q / yes')}</button
+            >
+            <button class="button" on:click={dontOpen}>{__('create / confirm-q / no')}</button>
+        </p>
+        <p class="has-text-grey">{@html __('create / footer')}</p>
+    </div>
 </SignInPageLayout>
 
 <style>
-    h1 {
-        font-weight: 400;
-        line-height: 1.25;
-        margin-top: 0;
-    }
-    p {
-        font-size: 18px;
-        line-height: 1.25;
-    }
-    p.footer {
-        font-size: 14px;
-        margin-bottom: 0;
-        line-height: 20px;
-    }
     th,
     td {
         padding: 5px 10px 5px 0;
     }
-    .column {
+    .cols {
         display: inline-block;
         padding: 7px 10px;
         margin: 0 6px 6px 0;
@@ -242,43 +233,25 @@
         border-radius: 4px;
         line-height: 15px;
     }
-    .column .title {
+    .cols .name {
         color: #222;
         margin-bottom: 5px;
     }
-    .column .type {
+    .cols .type {
         font-size: 11px;
         text-transform: uppercase;
         color: #777;
     }
-    .column .range {
+    .cols .range {
         color: #999;
         font-size: 12px;
         font-style: italic;
     }
-    .btn {
-        display: inline-block;
-        background: #cccccc;
-        font-size: 17.5px;
-        padding: 14px 15px;
-        font-weight: 400;
-        margin-bottom: 8px;
-        border-radius: 4px;
-        border: 0;
-        line-height: 1;
-        margin-right: 10px;
-        cursor: pointer;
-    }
+
     img {
         max-width: 100%;
     }
-    .btn-primary {
-        color: #fff;
-        background: #1d81a2;
-        border-color: #1d81a2 !important;
-        line-height: 20px;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
-    }
+
     pre {
         background: #eee;
         margin-top: 0;
