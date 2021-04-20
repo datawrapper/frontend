@@ -17,6 +17,7 @@
         "@datawrapper/orm": "^3.20.0",
         "@datawrapper/schemas": "^1.8.0",
         "@datawrapper/service-utils": "^0.6.0-3",
+        "@datawrapper/shared": "^0.28.6",
         "@hapi/bell": "^12.1.1",
         "@hapi/catbox-memory": "^5.0.0",
         "@hapi/catbox-redis": "^6.0.2",

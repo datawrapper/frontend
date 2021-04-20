@@ -1,35 +1,21 @@
-<svelte:options tag="svelte2-wrapper" />
-
 <script>
-    import { onMount, beforeUpdate, getContext } from 'svelte';
+    import { onMount, getContext, beforeUpdate } from 'svelte';
+    import clone from '@datawrapper/shared/clone';
     import isEqual from 'underscore/modules/isEqual';
-    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
-
-    const messages = getContext('messages');
-    const config = getContext('config');
 
     export let id;
     export let js;
     export let css;
     export let data;
 
-    let _data;
+    const messages = getContext('messages');
+    const config = getContext('config');
 
-    let container;
-    let loading = true;
+    let component;
+    let ready = false;
+    let _data = clone(data);
 
-    let _app;
-
-    beforeUpdate(() => {
-        if (!isEqual(_data, data)) {
-            _data = JSON.parse(JSON.stringify(data));
-            if (_app) _app.set(data);
-        }
-    });
-
-    onMount(async () => {
-        await Promise.all([loadScript(js), loadStylesheet(css)]);
-
+    onMount(() => {
         // mimic old dw setup
         window.dw = {
             backend: {
@@ -37,33 +23,39 @@
                 __api_domain: $config.apiDomain
             }
         };
-        require([id], ({ App }) => {
-            loading = false;
-            _app = new App({
-                target: container,
-                data
-            });
-            _app.on('state', ({ current }) => {
-                data = current;
-            });
-        });
+
+        setTimeout(() => {
+            ready = true;
+        }, 100);
     });
+
+    beforeUpdate(() => {
+        // notify svelte2 wrapper about data changes from parent component
+        if (!isEqual(_data, data)) {
+            _data = clone(data);
+            if (component && component.update) {
+                component.update(_data);
+            }
+        }
+    });
+
+    function update(event) {
+        // notify parent component about data changes from svelte2 wrapper
+        data = clone(event.detail);
+    }
 </script>
 
-<div class="svelte-2" bind:this={container}>
-    {#if loading}<span class="loading">loading...</span>{/if}
-</div>
-
-<style lang="less">
-    .svelte-2 {
-        position: relative;
-
-        :global(.vis-option-type-switch) {
-            position: relative;
-        }
-
-        .loading {
-            color: #888;
-        }
-    }
-</style>
+<svelte:head
+    ><script
+        type="text/javascript"
+        src="/lib/csr/layout/partials/Svelte2Wrapper.element.svelte.js"></script></svelte:head
+>{#if ready}
+    <svelte2-wrapper
+        bind:this={component}
+        {id}
+        {js}
+        {css}
+        on:update={update}
+        data={JSON.stringify(data)}
+    />
+{/if}

@@ -35,7 +35,8 @@
 
     let data = {
         settings: {
-            webhook_url: 'test'
+            webhook_url: 'test',
+            webhook_enabled: true
         }
     };
 
@@ -664,10 +665,22 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-fifth">
-                    <h3 class="title is-3">Embedding Svelte 2 components</h3>
+                    <h3 class="title is-3">Embedding Svelte2 components</h3>
                 </div>
                 <div class="column">
-                    <h2>Webhook URL: <input bind:value={data.settings.webhook_url} /> (svelte3)</h2>
+                    <div class="columns">
+                        <div class="column is-narrow">
+                            <label class="checkbox"
+                                ><input
+                                    type="checkbox"
+                                    bind:checked={data.settings.webhook_enabled}
+                                /> Webhook enabled</label
+                            >
+                        </div>
+                        <div class="column is-narrow">
+                            <p>Webhook URL: <input bind:value={data.settings.webhook_url} /></p>
+                        </div>
+                    </div>
                     <hr />
                     <div class="box">
                         <Svelte2Wrapper
