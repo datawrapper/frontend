@@ -8,7 +8,7 @@
     <title>Datawrapper{title ? ` - ${title}` : ''}</title>
 </svelte:head>
 
-<div class="container">
+<div class="container" style="max-width: 50rem">
     <DatawrapperLogo color="#ffffff" height="40" />
     <div class="box mt-6">
         <slot />
@@ -22,16 +22,6 @@
         color: white;
         font-family: 'Roboto', Helvetica, sans-serif;
         padding-top: 15px;
-    }
-
-    :global(a) {
-        color: #1d81a2;
-        text-decoration: none;
-    }
-
-    :global(a:hover) {
-        color: #15607a;
-        text-decoration: underline;
     }
 
     :global(button.plain-link) {
@@ -48,9 +38,5 @@
     :global(button.plain-link:hover) {
         text-decoration: underline;
         color: #15607a;
-    }
-    .container {
-        max-width: 676px;
-        margin: 2em auto;
     }
 </style>

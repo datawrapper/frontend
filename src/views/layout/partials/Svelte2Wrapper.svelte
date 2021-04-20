@@ -1,3 +1,5 @@
+<svelte:options tag="svelte2-wrapper" />
+
 <script>
     import { onMount, beforeUpdate, getContext } from 'svelte';
     import isEqual from 'underscore/modules/isEqual';
