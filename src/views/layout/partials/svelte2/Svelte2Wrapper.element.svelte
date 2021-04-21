@@ -59,34 +59,21 @@
     }`;
         parent.appendChild(style);
 
-        function waitFor(condFunc, execFunc) {
-            if (condFunc()) return execFunc();
-            setTimeout(() => {
-                waitFor(condFunc, execFunc);
-            }, 10);
-        }
-
         require([id], ({ App }) => {
-            waitFor(
-                () => window.dw && window.dw.backend,
-                () => {
-                    console.log('initializing app', App, container);
-                    try {
-                        loading = false;
-                        _app = new App({
-                            target: container,
-                            data: JSON.parse(data)
-                        });
-                        _data = data;
-                        _app.on('state', ({ current }) => {
-                            data = current;
-                            dispatch('update', current);
-                        });
-                    } catch (err) {
-                        console.error('x', err);
-                    }
-                }
-            );
+            try {
+                loading = false;
+                _app = new App({
+                    target: container,
+                    data: JSON.parse(data)
+                });
+                _data = data;
+                _app.on('state', ({ current }) => {
+                    data = current;
+                    dispatch('update', current);
+                });
+            } catch (err) {
+                console.error('x', err);
+            }
         });
     });
 

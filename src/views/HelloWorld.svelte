@@ -1,6 +1,6 @@
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
-    import Svelte2Wrapper from 'layout/partials/Svelte2Wrapper.svelte';
+    import Svelte2Wrapper from 'layout/partials/svelte2/Svelte2Wrapper.svelte';
     import Message from 'layout/partials/bulma/Message.svelte';
     import Notification from 'layout/partials/bulma/Notification.svelte';
     import SvgIcon from 'layout/partials/SvgIcon.svelte';
