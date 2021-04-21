@@ -13,9 +13,12 @@ $background: $dw_lightgray;
 $body-background-color: $dw_background;
 $light: $dw_gray;
 $tabs-boxed-link-active-background-color: $dw_background;
+$table-background-color: transparent;
+$table-striped-row-even-background-color: hsla(0,0,0, 0.03);
 
 // font styles
 $family-sans-serif: "Roboto", Helvetica, sans-serif;
+$family-monospace: "Roboto Mono", monospace;
 $body-size: 14px;
 $size-1: 2.75rem;
 $size-3: 1.75rem;

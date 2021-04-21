@@ -2053,7 +2053,7 @@ div.icon-text {
     background-position: -200% 0; } }
 
 .table {
-  background-color: white;
+  background-color: transparent;
   color: #363636; }
   .table td,
   .table th {
@@ -2176,7 +2176,7 @@ div.icon-text {
   .table.is-narrow th {
     padding: 0.25em 0.5em; }
   .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
-    background-color: #fafafa; }
+    background-color: rgba(0, 0, 0, 0.03); }
 
 .table-container {
   -webkit-overflow-scrolling: touch;

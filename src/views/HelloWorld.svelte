@@ -386,6 +386,7 @@
                     <table class="table is-striped">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
                                 <th>Plugin</th>
@@ -393,8 +394,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {#each visualizations as vis}
+                            {#each visualizations as vis, i}
                                 <tr>
+                                    <td><tt class="has-text-grey">{i + 1}</tt></td>
                                     <td>{vis.id}</td>
                                     <td>{vis.title}</td>
                                     <td><span class="tag">{vis.__plugin}</span></td>
