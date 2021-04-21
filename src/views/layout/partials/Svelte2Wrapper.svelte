@@ -2,6 +2,7 @@
     import { onMount, getContext, beforeUpdate } from 'svelte';
     import clone from '@datawrapper/shared/clone';
     import isEqual from 'underscore/modules/isEqual';
+    import { loadScript } from '@datawrapper/shared/fetch';
 
     export let id;
     export let js;
@@ -15,7 +16,7 @@
     let ready = false;
     let _data = clone(data);
 
-    onMount(() => {
+    onMount(async () => {
         // mimic old dw setup
         window.dw = {
             backend: {
@@ -23,6 +24,12 @@
                 __api_domain: $config.apiDomain
             }
         };
+
+        await loadScript(
+            `/lib/csr/layout/partials/Svelte2Wrapper.element.svelte.${
+                window.document.documentMode ? 'ie.' : ''
+            }js`
+        );
 
         setTimeout(() => {
             ready = true;
@@ -45,11 +52,7 @@
     }
 </script>
 
-<svelte:head
-    ><script
-        type="text/javascript"
-        src="/lib/csr/layout/partials/Svelte2Wrapper.element.svelte.js"></script></svelte:head
->{#if ready}
+{#if ready}
     <svelte2-wrapper
         bind:this={component}
         {id}

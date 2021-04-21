@@ -47,6 +47,21 @@ module.exports = {
                 }
             },
             {
+                path: '/icons/{file*}',
+                method: 'GET',
+                config: {
+                    auth: false
+                },
+                handler: {
+                    directory: {
+                        path: path.resolve(
+                            path.dirname(require.resolve('@datawrapper/icons/package.json')),
+                            'build'
+                        )
+                    }
+                }
+            },
+            {
                 path: '/static/{file*}',
                 method: 'GET',
                 config: {
