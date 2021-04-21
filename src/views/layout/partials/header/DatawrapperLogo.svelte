@@ -6,7 +6,7 @@
 
 <svg
     alt="Datawrapper logo"
-    viewBox="0 0 335 91"
+    viewBox="0 0 335 80"
     width={height * ratio}
     {height}
     fill="none"

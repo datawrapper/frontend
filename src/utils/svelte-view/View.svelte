@@ -1,5 +1,5 @@
 <script>
-    import { setContext } from 'svelte';
+    import { setContext, getContext } from 'svelte';
     import { writable, get } from 'svelte/store';
 
     import View from '__view__';
@@ -13,17 +13,26 @@
     let view;
 
     Object.keys(stores).forEach(key => {
-        setContext(key, writable(stores[key]));
+        const store = writable(stores[key]);
+        if (key === 'messages') store.translate = translate;
+        setContext(key, store);
     });
-    setContext('translate', function (key, scope = 'core') {
-        const messages = stores.messages;
+
+    function translate(key, scope = 'core', messages) {
+        if (!messages) messages = stores.messages;
         try {
             const msg = messages[scope];
             return msg[key] || key;
         } catch (e) {
             return key;
         }
-    });
+    }
+
+    const msg = getContext('messages');
+    let __;
+    $: {
+        __ = (key, scope = 'core') => translate(key, scope, $msg);
+    }
 </script>
 
-<View bind:this={view} {...$$restProps} />
+<View bind:this={view} {...$$restProps} {__} />

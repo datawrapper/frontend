@@ -12,7 +12,10 @@ module.exports = {
                 async handler(request, h) {
                     return h.view('HelloWorld.svelte', {
                         props: {
-                            magicNumber: 42
+                            magicNumber: 42,
+                            visualizations: Array.from(server.app.visualizations.keys()).map(key =>
+                                server.app.visualizations.get(key)
+                            )
                         }
                     });
                 }

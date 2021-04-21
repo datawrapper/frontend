@@ -47,6 +47,33 @@ module.exports = {
                 }
             },
             {
+                path: '/icons/{file*}',
+                method: 'GET',
+                config: {
+                    auth: false
+                },
+                handler: {
+                    directory: {
+                        path: path.resolve(
+                            path.dirname(require.resolve('@datawrapper/icons/package.json')),
+                            'build'
+                        )
+                    }
+                }
+            },
+            {
+                path: '/static/{file*}',
+                method: 'GET',
+                config: {
+                    auth: false
+                },
+                handler: {
+                    directory: {
+                        path: 'static'
+                    }
+                }
+            },
+            {
                 path: '/csr/{file*}',
                 method: 'GET',
                 config: {
@@ -56,11 +83,12 @@ module.exports = {
                     const { file } = request.params;
                     const { anonymous } = request.query;
                     const isIE = file.endsWith('.ie.js');
-                    const isJS = file.endsWith('.js');
-                    const isSvelte = file.includes('.svelte.js');
-                    const isJSMap = file.endsWith('.js.map');
+                    const file2 = isIE ? file.replace('.ie.js', '.js') : file;
+                    const isJS = file2.endsWith('.js');
+                    const isSvelte = file2.includes('.svelte.js');
+                    const isJSMap = file2.endsWith('.js.map');
                     const page = isSvelte
-                        ? file.replace(/\.svelte(\.ie)?\.js(\.map)?/, '.svelte')
+                        ? file2.replace(/\.svelte(\.ie)?\.js(\.map)?/, '.svelte')
                         : isJS
                         ? file
                         : `${file}.js`;
@@ -78,7 +106,13 @@ module.exports = {
                               `//# sourceMappingURL=/lib/csr/${page}.js.map`
                           );
                     return h
-                        .response(anonymous ? code.replace('define("App",', 'define(') : code)
+                        .response(
+                            anonymous
+                                ? code
+                                      .replace('define("App",', 'define(')
+                                      .replace("define('App',", 'define(')
+                                : code
+                        )
                         .header('Content-Type', 'application/javascript');
                 }
             }

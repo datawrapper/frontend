@@ -1,6 +1,5 @@
 const { allScopes } = require('@datawrapper/service-utils/l10n');
 const crypto = require('crypto');
-const get = require('lodash/get');
 
 const clientSideStoreCache = new Set(['messages']);
 
@@ -11,18 +10,19 @@ module.exports = function (request) {
     const { server, auth } = request;
     const { events, event } = server.app;
     const apiConfig = server.methods.config('api');
+    const frontendConfig = server.methods.config('frontend');
     const isAdmin = server.methods.isAdmin(request);
-    const userLang =
-        auth.isAuthenticated && auth.artifacts && auth.artifacts.id
-            ? auth.artifacts.language
-            : get(auth.credentials.data, 'data.dw-lang');
+    const userLang = server.methods.getUserLanguage(auth);
     const context = {
         stores: {
             config: {
                 apiDomain: `${apiConfig.subdomain}.${apiConfig.domain}`,
-                dev: process.env.DW_DEV_MODE
+                frontendDomain: `${frontendConfig.domain}`,
+                dev: process.env.DW_DEV_MODE,
+                footerLinks: frontendConfig.footerLinks
             },
             request: {
+                method: request.method,
                 url: request.url,
                 path: request.path,
                 params: request.params,
@@ -52,16 +52,18 @@ module.exports = function (request) {
         storeCached: {}
     };
     // check client-side cache in cookie
-    clientSideStoreCache.forEach(key => {
-        const curHash = context.stores[key] ? md5(JSON.stringify(context.stores[key])) : null;
-        context.storeHashes[key] = curHash;
-        const clientHash = request.state[`DW-HASH-${key.toUpperCase()}`];
-        if (clientHash && clientHash === curHash) {
-            // the client aleady has a cache of the messages, let's not send them again
-            // to save some bandwidth!
-            context.storeCached[key] = true;
-        }
-    });
+    if (request.state) {
+        clientSideStoreCache.forEach(key => {
+            const curHash = context.stores[key] ? md5(JSON.stringify(context.stores[key])) : null;
+            context.storeHashes[key] = curHash;
+            const clientHash = request.state[`DW-HASH-${key.toUpperCase()}`];
+            if (clientHash && clientHash === curHash) {
+                // the client aleady has a cache of the messages, let's not send them again
+                // to save some bandwidth!
+                context.storeCached[key] = true;
+            }
+        });
+    }
     return context;
 };
 

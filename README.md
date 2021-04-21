@@ -14,6 +14,7 @@ Repository overview:
 * [`src/utils/`](src/utils) - some utilities such as the [plugin loader](src/utils/plugin-loader.js) or our custom [Svelte view adapter](src/utils/svelte-view)
 * [`src/views`](src/views) - the view templates (currently we support `pug` and `Svelte3` views)
 * [`src/server.js`](src/server.js) - where all the fun begins ;-)
+* [`src/styles`](src/styles) - the LESS sources for `static/datawrapper.css` (use `npm run build:css` to update)
 
 ## Quick introduction of the new Svelte views
 
@@ -111,8 +112,6 @@ Svelte views can now use these stores like regular Svelte stores:
     import { getContext } from 'svelte';
     // all context variables are stores
     const user = getContext('user');
-    // ...except 'translate' which is a ready-to-use translate function
-    const __ = getContext('translate');
 </script>
 <h1>Hello { $user.name }</h1>
 <p>{__('team / invite / intro')}</p>
@@ -205,13 +204,13 @@ This is the exact system we’re using in our API server, but I’m open to adju
 
 ###  Translations
 
-To use translations in Svelte views you simply need to load the `translate` context
+To use (dynamic) translations in Svelte views you need to load the `messages` context. Unfortunately Svelte won't trigger DOM updates unless we define our own reactive `__()` method in each view, or pass it around.
 
 ```html
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
-    import { getContext } from 'svelte';
-    const __ = getContext('translate';
+    
+    export let __;
 </script>
 
 <MainLayout title="Hello world">
@@ -223,6 +222,19 @@ To use translations in Svelte views you simply need to load the `translate` cont
 ```
 
 Behind the scenes, `translate` is using the `messages` store which contains all available translatable strings for the currently active language. By using a store we *could* even hot swap languages should we decide this is a cool feature.
+
+If you don't want to pass around the `__` method you can also define your own reactive version anywhere you want:
+
+```html
+<script>
+    import { getContext } from 'svelte';
+    const messages = getContext('messages');
+    let __;
+    $: {
+        __ = (key, scope='core') => messages.translate(key, scope, $messages);
+    };
+</script>
+```
 
 ### Client-side localStorage caching + cookie-based validation
 
