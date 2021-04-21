@@ -19,7 +19,7 @@ module.exports = function (request) {
                 apiDomain: `${apiConfig.subdomain}.${apiConfig.domain}`,
                 frontendDomain: `${frontendConfig.domain}`,
                 dev: process.env.DW_DEV_MODE,
-                footerLinks: frontendConfig.footerLinks
+                footerLinks: frontendConfig.footerLinks || []
             },
             request: {
                 method: request.method,
