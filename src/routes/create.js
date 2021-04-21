@@ -68,6 +68,7 @@ module.exports = {
                     !get(payload, 'metadata.visualize.basemap')
                 ) {
                     set(payload, 'metadata.visualize.basemap', 'world-2019');
+                    set(payload, 'metadata.visualize.map-type-set', true);
                 }
 
                 try {
