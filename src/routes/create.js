@@ -61,6 +61,15 @@ module.exports = {
                 // create new chart
                 const user = auth.artifacts;
                 const { session } = auth.credentials;
+
+                // @todo remove this ugly temporary hack for d3-maps
+                if (
+                    payload.type.startsWith('d3-maps-') &&
+                    !get(payload, 'metadata.visualize.basemap')
+                ) {
+                    set(payload, 'metadata.visualize.basemap', 'world-2019');
+                }
+
                 try {
                     const chart = await createChart({ server, payload, user, session });
                     return h.redirect(
