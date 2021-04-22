@@ -5,7 +5,7 @@ const set = require('lodash/set');
 const createChart = require('@datawrapper/service-utils/createChart');
 
 module.exports = {
-    name: 'routes/template',
+    name: 'routes/create',
     version: '1.0.0',
     async register(server, options) {
         server.route({
@@ -25,7 +25,9 @@ module.exports = {
                         workflow: Joi.string().valid('chart', 'map', 'table')
                     }),
                     query: Joi.object({
-                        type: Joi.string().optional()
+                        type: Joi.string().optional(),
+                        team: Joi.string().optional(),
+                        folder: Joi.number().integer().min(1).optional()
                     })
                 }
             },
@@ -35,13 +37,15 @@ module.exports = {
                 const { workflow } = params;
                 const { type } = query;
                 const payload = {};
+                if (query.folder) payload.folderId = query.folder;
+                if (query.team) payload.teamId = query.team;
                 if (type) {
                     // check if chart type exists
                     if (!server.app.visualizations.has(type)) {
                         return Boom.badRequest('Invalid visualization type');
                     }
                     const vis = server.app.visualizations.get(type);
-                    if (vis.namespace !== workflow) {
+                    if (vis.namespace && vis.namespace !== workflow) {
                         return Boom.badRequest(
                             `Type ${type} does not belong to namespace ${workflow}`
                         );
@@ -51,7 +55,9 @@ module.exports = {
                     // get default type from namespace
                     if (workflow === 'map') {
                         // use old map selector for now (it will redirect us back here)
-                        return h.redirect('/select/map');
+                        return h.redirect(
+                            `/select/map${query.folder ? `?folder=${query.folder}` : ''}`
+                        );
                     } else if (workflow === 'table') {
                         payload.type = 'tables';
                     } else {
@@ -70,13 +76,13 @@ module.exports = {
                     set(payload, 'metadata.visualize.basemap', 'world-2019');
                     set(payload, 'metadata.visualize.map-type-set', true);
                 }
-
                 try {
                     const chart = await createChart({ server, payload, user, session });
                     return h.redirect(
                         type === 'locator-map' ? `/edit/${chart.id}` : `/chart/${chart.id}/edit`
                     );
                 } catch (e) {
+                    if (Boom.isBoom(e)) return e;
                     server.logger.error(e);
                     return Boom.badRequest();
                 }
