@@ -55,10 +55,12 @@ module.exports = {
                 } else {
                     // get default type from namespace
                     if (workflow === 'map') {
+                        const params = new URLSearchParams({
+                            ...(query.folder ? { folder: query.folder } : null),
+                            ...(query.team ? { team: query.team } : null)
+                        }).toString();
                         // use old map selector for now (it will redirect us back here)
-                        return h.redirect(
-                            `/select/map${query.folder ? `?folder=${query.folder}` : ''}`
-                        );
+                        return h.redirect(`/select/map${params ? `?${params}` : ''}`);
                     } else if (workflow === 'table') {
                         payload.type = 'tables';
                     } else if (workflow === 'locator-map') {
