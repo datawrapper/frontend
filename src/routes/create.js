@@ -5,7 +5,7 @@ const set = require('lodash/set');
 const createChart = require('@datawrapper/service-utils/createChart');
 
 module.exports = {
-    name: 'routes/template',
+    name: 'routes/create',
     version: '1.0.0',
     async register(server, options) {
         server.route({
@@ -43,7 +43,7 @@ module.exports = {
                         return Boom.badRequest('Invalid visualization type');
                     }
                     const vis = server.app.visualizations.get(type);
-                    if (vis.namespace !== workflow) {
+                    if (vis.namespace && vis.namespace !== workflow) {
                         return Boom.badRequest(
                             `Type ${type} does not belong to namespace ${workflow}`
                         );
@@ -74,13 +74,13 @@ module.exports = {
                     set(payload, 'metadata.visualize.basemap', 'world-2019');
                     set(payload, 'metadata.visualize.map-type-set', true);
                 }
-
                 try {
                     const chart = await createChart({ server, payload, user, session });
                     return h.redirect(
                         type === 'locator-map' ? `/edit/${chart.id}` : `/chart/${chart.id}/edit`
                     );
                 } catch (e) {
+                    if (Boom.isBoom(e)) return e;
                     server.logger.error(e);
                     return Boom.badRequest();
                 }
