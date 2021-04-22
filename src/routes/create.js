@@ -25,7 +25,8 @@ module.exports = {
                         workflow: Joi.string().valid('chart', 'map', 'table')
                     }),
                     query: Joi.object({
-                        type: Joi.string().optional()
+                        type: Joi.string().optional(),
+                        folder: Joi.number().integer().min(1).optional()
                     })
                 }
             },
@@ -35,6 +36,7 @@ module.exports = {
                 const { workflow } = params;
                 const { type } = query;
                 const payload = {};
+                if (query.folder) payload.in_folder = query.folder;
                 if (type) {
                     // check if chart type exists
                     if (!server.app.visualizations.has(type)) {
@@ -51,7 +53,9 @@ module.exports = {
                     // get default type from namespace
                     if (workflow === 'map') {
                         // use old map selector for now (it will redirect us back here)
-                        return h.redirect('/select/map');
+                        return h.redirect(
+                            `/select/map${query.folder ? `?folder=${query.folder}` : ''}`
+                        );
                     } else if (workflow === 'table') {
                         payload.type = 'tables';
                     } else {
