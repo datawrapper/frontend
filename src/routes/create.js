@@ -26,6 +26,7 @@ module.exports = {
                     }),
                     query: Joi.object({
                         type: Joi.string().optional(),
+                        team: Joi.string().optional(),
                         folder: Joi.number().integer().min(1).optional()
                     })
                 }
@@ -36,7 +37,8 @@ module.exports = {
                 const { workflow } = params;
                 const { type } = query;
                 const payload = {};
-                if (query.folder) payload.in_folder = query.folder;
+                if (query.folder) payload.folderId = query.folder;
+                if (query.team) payload.teamId = query.team;
                 if (type) {
                     // check if chart type exists
                     if (!server.app.visualizations.has(type)) {
