@@ -22,12 +22,13 @@ module.exports = {
             options: {
                 validate: {
                     params: Joi.object({
-                        workflow: Joi.string().valid('chart', 'map', 'table')
+                        workflow: Joi.string().valid('chart', 'map', 'table', 'locator-map')
                     }),
                     query: Joi.object({
                         type: Joi.string().optional(),
                         team: Joi.string().optional(),
-                        folder: Joi.number().integer().min(1).optional()
+                        folder: Joi.number().integer().min(1).optional(),
+                        v: Joi.number().optional() // legacy cache-busting
                     })
                 }
             },
@@ -60,6 +61,8 @@ module.exports = {
                         );
                     } else if (workflow === 'table') {
                         payload.type = 'tables';
+                    } else if (workflow === 'locator-map') {
+                        payload.type = 'locator-map';
                     } else {
                         payload.type = get(cfg, 'defaults.type', 'd3-bars');
                     }
