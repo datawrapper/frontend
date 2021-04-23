@@ -15,7 +15,7 @@
         "@datawrapper/chart-core": "^8.28.2",
         "@datawrapper/icons": "^1.1.2",
         "@datawrapper/locales": "^1.2.3",
-        "@datawrapper/orm": "^3.20.0",
+        "@datawrapper/orm": "^3.22.2",
         "@datawrapper/schemas": "^1.8.0",
         "@datawrapper/service-utils": "^0.6.1",
         "@datawrapper/shared": "^0.28.6",
