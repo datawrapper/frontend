@@ -1,7 +1,7 @@
 <script>
     export let icon = 'api';
-    export let size = 30;
-    export let color = 'auto';
+    export let size = '0.9rem';
+    export let color = 'inherit';
 
     export let className = '';
 </script>

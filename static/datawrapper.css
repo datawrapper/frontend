@@ -619,7 +619,7 @@ code,
 pre {
   -moz-osx-font-smoothing: auto;
   -webkit-font-smoothing: auto;
-  font-family: monospace; }
+  font-family: "Roboto Mono", monospace; }
 
 body {
   color: #4a4a4a;
@@ -6860,10 +6860,10 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   font-family: "Roboto", Helvetica, sans-serif !important; }
 
 .is-family-monospace {
-  font-family: monospace !important; }
+  font-family: "Roboto Mono", monospace !important; }
 
 .is-family-code {
-  font-family: monospace !important; }
+  font-family: "Roboto Mono", monospace !important; }
 
 .is-block {
   display: block !important; }
@@ -7170,6 +7170,14 @@ a:hover {
 .title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
   font-weight: 300; }
 
+button.is-primary svg,
+button.is-link svg,
+button.is-info svg,
+button.is-danger svg,
+button.is-dark svg,
+button.is-black svg {
+  fill: white; }
+
 /*
  * DATAWRAPPER ICONS
  */
@@ -7261,6 +7269,6 @@ a:hover {
   width: 30px;
   height: 30px; }
 
-.svg-typerwriter-dims {
+.svg-typewriter-dims {
   width: 30px;
   height: 30px; }

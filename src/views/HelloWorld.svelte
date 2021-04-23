@@ -128,9 +128,14 @@
                             ><span class="icon"><i class="fa fa-plus" /></span>
                             <span>Add area fill</span></button
                         >
-                        <button class="button">Normal</button>
-                        <button class="button is-medium">Medium</button>
-                        <button class="button is-large is-primary">Publish chart</button>
+                        <button class="button"><SvgIcon icon="rocket" /> <span>Normal</span></button
+                        >
+                        <button class="button is-medium"
+                            ><SvgIcon icon="rocket" /> <span>Medium</span></button
+                        >
+                        <button class="button is-large is-primary"
+                            ><SvgIcon icon="rocket" /> <span>Publish chart</span></button
+                        >
                     </div>
                 </div>
             </div>
