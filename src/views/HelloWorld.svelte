@@ -15,31 +15,7 @@
 
     let knocked = false;
 
-    const ICONS = [
-        'api',
-        'business-building',
-        'business-report',
-        'communication',
-        'cv',
-        'documents',
-        'dw-chart',
-        'dw-map',
-        'dw-river',
-        'dw-table',
-        'embassy',
-        'graduation',
-        'high-five',
-        'info-circle',
-        'mail',
-        'new',
-        'news',
-        'privacy',
-        'questions',
-        'rocket',
-        'staff',
-        'training',
-        'typerwriter'
-    ];
+    export let icons;
 
     const colors = ['#222222', '#18a1cd', '#c71e1d', '#1d81a2', '#15607a', '#39f3bb', '#09bb9f'];
 
@@ -91,7 +67,7 @@
                     <h3 class="title is-3">Icons!</h3>
                 </div>
                 <div class="column">
-                    {#each ICONS as icon}
+                    {#each icons as icon}
                         <SvgIcon
                             className="mb-4 mr-4"
                             color={colors[Math.floor(Math.random() * colors.length)]}
