@@ -341,6 +341,12 @@
   src: local("Roboto Mono"), local("RobotoMono-Regular"), url(fonts/roboto-mono/hMqPNLsu_dywMa4C_DEpY44P5ICox8Kq3LLUNMylGO4.woff2) format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215; }
 
+@font-face {
+  font-family: 'Bitter';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Bitter Bold"), local("Bitter-Bold"), url("fonts/bitter/bitter_700.woff2") format("woff2"), url("fonts/bitter/bitter_700.woff") format("woff"), url("fonts/bitter/bitter_700.eot?#iefix") format("embedded-opentype"), url("fonts/bitter/bitter_700.svg#Bitter") format("svg"), url("fonts/bitter/bitter_700.ttf") format("truetype"); }
+
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name, .pagination-previous,
