@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-    <title>Datawrapper{title ? ` - ${title}` : ''}</title>
+    <title>{title ? `${title} - ` : ''}Datawrapper</title>
 </svelte:head>
 
 <PageHeader />
