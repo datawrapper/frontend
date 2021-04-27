@@ -125,17 +125,20 @@ module.exports = {
                             .pattern(/[a-z][a-z](-[A-Z][A-Z])?/)
                             .optional()
                             .default('en-US'),
-                        metadata: Joi.string().optional(),
+                        metadata: Joi.string().optional().allow(''),
                         last_edit_step: Joi.number().integer().min(2).max(4).optional().default(3),
-                        data: Joi.string().optional(),
-                        external_data: Joi.string().optional()
+                        data: Joi.string().optional().allow(''),
+                        external_data: Joi.string().optional().allow('')
                     })
                 }
             },
             async handler(request, h) {
                 const { payload } = request;
                 if (!payload) throw Boom.badRequest('you need to send form-encoded data');
-
+                if (!payload.data && !payload.external_data)
+                    throw Boom.badRequest(
+                        'you need to provide either data or an external_data url'
+                    );
                 const chartData = {
                     title: payload.title,
                     theme: payload.theme || 'datawrapper-data',
@@ -143,13 +146,18 @@ module.exports = {
                     language: payload.language,
                     external_data: payload.external_data,
                     last_edit_step: payload.last_edit_step || 3,
-                    metadata: payload.metadata ? JSON.parse(payload.metadata) : undefined
+                    metadata: payload.metadata ? JSON.parse(payload.metadata) : {}
                 };
                 Object.keys(additionalFields).forEach(key => {
                     if (payload[key]) {
                         set(chartData, additionalFields[key], payload[key]);
                     }
                 });
+                if (payload.external_data) {
+                    set(chartData, 'metadata.data.upload-method', 'external-data');
+                    set(chartData, 'metadata.data.external-data', payload.external_data);
+                    set(chartData, 'metadata.data.use-datawrapper-cdn', true);
+                }
                 const dataset = payload.data || '';
                 const props = { chartData, dataset };
                 return h.view('Create.svelte', { props });

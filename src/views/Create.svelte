@@ -71,23 +71,28 @@
                 payload: chartData
             })
             .then(res => {
-                // upload data
-                httpReq
-                    .put(`/v3/charts/${res.id}/data`, {
-                        headers: {
-                            'Content-Type': 'text/csv'
-                        },
-                        body: dataset
-                    })
-                    .then(res2 => {
-                        setTimeout(() => {
-                            // redirect to chart
-                            window.location.href =
-                                res.type === 'locator-maps'
-                                    ? `/edit/${res.id}`
-                                    : `/chart/${res.id}/edit`;
-                        }, 400);
-                    });
+                function redirect() {
+                    setTimeout(() => {
+                        // redirect to chart
+                        window.location.href =
+                            res.type === 'locator-maps'
+                                ? `/edit/${res.id}`
+                                : `/chart/${res.id}/edit`;
+                    }, 400);
+                }
+                if (dataset) {
+                    // upload data
+                    httpReq
+                        .put(`/v3/charts/${res.id}/data`, {
+                            headers: {
+                                'Content-Type': 'text/csv'
+                            },
+                            body: dataset
+                        })
+                        .then(redirect);
+                } else {
+                    redirect();
+                }
             });
     }
 
@@ -154,33 +159,35 @@
                 >
             {/if}
         {/each}
-        <tr
-            ><th>{__('create / field / dataset columns')}:</th><td>
-                {#if ds}
-                    {#each columns as col}
-                        <div class="cols t-{col.type}">
-                            <div class="name">{col.name}</div>
-                            <div class="type">{col.type}</div>
-                            <div class="range">({col.range.join(' - ')})</div>
-                        </div>
-                    {/each}
-                    {#if ds.numColumns() > 10}
-                        and {ds.numColumns() - 1} more
+        {#if ds && ds.numRows() > 0}
+            <tr
+                ><th>{__('create / field / dataset columns')}:</th><td>
+                    {#if ds}
+                        {#each columns as col}
+                            <div class="cols t-{col.type}">
+                                <div class="name">{col.name}</div>
+                                <div class="type">{col.type}</div>
+                                <div class="range">({col.range.join(' - ')})</div>
+                            </div>
+                        {/each}
+                        {#if ds.numColumns() > 10}
+                            and {ds.numColumns() - 1} more
+                        {/if}
                     {/if}
-                {/if}
-            </td></tr
-        >
-        <tr
-            ><th>{__('create / field / dataset rows')}:</th><td>
-                {#if ds}
-                    {ds.numRows()} (<button
-                        on:click={() => (showData = !showData)}
-                        class="plain-link"
-                        >{__('create / ' + (showData ? 'hide' : 'show') + ' dataset')}</button
-                    >)
-                {/if}
-            </td></tr
-        >
+                </td></tr
+            >
+            <tr
+                ><th>{__('create / field / dataset rows')}:</th><td>
+                    {#if ds}
+                        {ds.numRows()} (<button
+                            on:click={() => (showData = !showData)}
+                            class="plain-link"
+                            >{__('create / ' + (showData ? 'hide' : 'show') + ' dataset')}</button
+                        >)
+                    {/if}
+                </td></tr
+            >
+        {/if}
         {#if showData && ds}
             <tr
                 ><th>{__('create / field / dataset')}:</th><td>
