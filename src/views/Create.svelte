@@ -124,6 +124,10 @@
         {
             key: 'metadata.describe.source-url',
             label: __('Source URL')
+        },
+        {
+            key: 'external_data',
+            label: __('External data')
         }
     ];
 

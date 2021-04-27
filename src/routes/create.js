@@ -127,7 +127,8 @@ module.exports = {
                             .default('en-US'),
                         metadata: Joi.string().optional(),
                         last_edit_step: Joi.number().integer().min(2).max(4).optional().default(3),
-                        data: Joi.string().optional()
+                        data: Joi.string().optional(),
+                        external_data: Joi.string().optional()
                     })
                 }
             },
@@ -140,6 +141,7 @@ module.exports = {
                     theme: payload.theme || 'datawrapper-data',
                     type: payload.type,
                     language: payload.language,
+                    external_data: payload.external_data,
                     last_edit_step: payload.last_edit_step || 3,
                     metadata: payload.metadata ? JSON.parse(payload.metadata) : undefined
                 };
