@@ -49,7 +49,7 @@
             if (res.language !== 'en-US') {
                 // request language
                 httpReq
-                    .get('/v2/stores/messages.json', { baseUrl: `//${window.location.host}` })
+                    .get('/lib/stores/messages.json', { baseUrl: `//${window.location.host}` })
                     .then(res => {
                         msg.set(res);
                     });

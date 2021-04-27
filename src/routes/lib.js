@@ -1,6 +1,7 @@
 const path = require('path');
 const chartCore = require('@datawrapper/chart-core');
 const Boom = require('@hapi/boom');
+const { allScopes } = require('@datawrapper/service-utils/l10n');
 
 module.exports = {
     name: 'routes/lib',
@@ -71,6 +72,15 @@ module.exports = {
                     directory: {
                         path: 'static'
                     }
+                }
+            },
+            {
+                path: '/stores/messages.json',
+                method: 'GET',
+                async handler(request, h) {
+                    const { auth } = request;
+                    const lang = server.methods.getUserLanguage(auth);
+                    return allScopes(lang || 'en-US');
                 }
             },
             {
