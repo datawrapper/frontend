@@ -16,8 +16,4 @@
         align-items: center;
         height: 100%;
     }
-    nav ul li {
-        list-style: none;
-        margin-bottom: 0;
-    }
 </style>

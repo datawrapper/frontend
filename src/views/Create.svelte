@@ -165,7 +165,10 @@
             <p>{__('template / confirm')}</p>
         </div>
         <div class="mt-3">
-            <img src="{template.public_url}../full.png" />
+            <img
+                alt="Screenshot of pubished visualization"
+                src="{template.public_url}../full.png"
+            />
         </div>
     {:else}
         <h1 class="title is-3">{__('create / hed')}</h1>
@@ -292,14 +295,6 @@
     img {
         max-width: 100%;
     }
-
-    pre {
-        background: #eee;
-        margin-top: 0;
-        padding: 10px;
-        max-height: 200px;
-        overflow-y: scroll;
-    }
     table {
         width: 100%;
     }
@@ -309,10 +304,6 @@
         font-weight: normal;
         color: #777;
         font-size: 14px;
-    }
-    hr {
-        border: none;
-        border-bottom: 1px solid #eee;
     }
     table.data th {
         color: #222;
