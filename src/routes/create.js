@@ -3,6 +3,7 @@ const Boom = require('@hapi/boom');
 const get = require('lodash/get');
 const set = require('lodash/set');
 const createChart = require('@datawrapper/service-utils/createChart');
+const { Chart } = require('@datawrapper/orm/models');
 
 module.exports = {
     name: 'routes/create',
@@ -111,56 +112,79 @@ module.exports = {
             options: {
                 auth: false,
                 validate: {
-                    payload: Joi.object({
-                        title: Joi.string().optional().allow(''),
-                        description: Joi.string().optional().allow(''),
-                        aria_description: Joi.string().optional().allow(''),
-                        type: Joi.string().optional(),
-                        theme: Joi.string().optional(),
-                        source_name: Joi.string().optional().allow(''),
-                        source_url: Joi.string().optional().allow(''),
-                        notes: Joi.string().optional().allow(''),
-                        byline: Joi.string().optional().allow(''),
-                        language: Joi.string()
-                            .pattern(/[a-z][a-z](-[A-Z][A-Z])?/)
-                            .optional()
-                            .default('en-US'),
-                        metadata: Joi.string().optional().allow(''),
-                        last_edit_step: Joi.number().integer().min(2).max(4).optional().default(3),
-                        data: Joi.string().optional().allow(''),
-                        external_data: Joi.string().optional().allow('')
-                    })
+                    payload: Joi.alternatives().try(
+                        Joi.object({
+                            title: Joi.string().optional().allow(''),
+                            description: Joi.string().optional().allow(''),
+                            aria_description: Joi.string().optional().allow(''),
+                            type: Joi.string().optional(),
+                            theme: Joi.string().optional(),
+                            source_name: Joi.string().optional().allow(''),
+                            source_url: Joi.string().optional().allow(''),
+                            notes: Joi.string().optional().allow(''),
+                            byline: Joi.string().optional().allow(''),
+                            language: Joi.string()
+                                .pattern(/[a-z][a-z](-[A-Z][A-Z])?/)
+                                .optional()
+                                .default('en-US'),
+                            metadata: Joi.string().optional().allow(''),
+                            last_edit_step: Joi.number()
+                                .integer()
+                                .min(2)
+                                .max(4)
+                                .optional()
+                                .default(3),
+                            data: Joi.string().optional().allow(''),
+                            external_data: Joi.string().optional().allow('')
+                        }),
+                        Joi.object({
+                            template: Joi.string()
+                                .optional()
+                                .regex(/[a-zA-Z0-9]{5}/)
+                        })
+                    )
                 }
             },
             async handler(request, h) {
                 const { payload } = request;
                 if (!payload) throw Boom.badRequest('you need to send form-encoded data');
-                if (!payload.data && !payload.external_data)
-                    throw Boom.badRequest(
-                        'you need to provide either data or an external_data url'
-                    );
-                const chartData = {
-                    title: payload.title,
-                    theme: payload.theme || 'datawrapper-data',
-                    type: payload.type,
-                    language: payload.language,
-                    external_data: payload.external_data,
-                    last_edit_step: payload.last_edit_step || 3,
-                    metadata: payload.metadata ? JSON.parse(payload.metadata) : {}
-                };
-                Object.keys(additionalFields).forEach(key => {
-                    if (payload[key]) {
-                        set(chartData, additionalFields[key], payload[key]);
+                if (payload.template) {
+                    // check if chart is forkable
+                    const chart = await Chart.findByPk(payload.template);
+
+                    if (!chart || !chart.published_at || !chart.forkable) {
+                        throw Boom.notFound('visualization not found');
                     }
-                });
-                if (payload.external_data) {
-                    set(chartData, 'metadata.data.upload-method', 'external-data');
-                    set(chartData, 'metadata.data.external-data', payload.external_data);
-                    set(chartData, 'metadata.data.use-datawrapper-cdn', true);
+                    const props = { template: chart };
+                    return h.view('Create.svelte', { props });
+                } else {
+                    if (!payload.data && !payload.external_data)
+                        throw Boom.badRequest(
+                            'you need to provide either data or an external_data url'
+                        );
+                    const chartData = {
+                        title: payload.title,
+                        theme: payload.theme || 'datawrapper-data',
+                        type: payload.type,
+                        language: payload.language,
+                        external_data: payload.external_data,
+                        last_edit_step: payload.last_edit_step || 3,
+                        metadata: payload.metadata ? JSON.parse(payload.metadata) : {}
+                    };
+                    Object.keys(additionalFields).forEach(key => {
+                        if (payload[key]) {
+                            set(chartData, additionalFields[key], payload[key]);
+                        }
+                    });
+                    if (payload.external_data) {
+                        set(chartData, 'metadata.data.upload-method', 'external-data');
+                        set(chartData, 'metadata.data.external-data', payload.external_data);
+                        set(chartData, 'metadata.data.use-datawrapper-cdn', true);
+                    }
+                    const dataset = payload.data || '';
+                    const props = { chartData, dataset };
+                    return h.view('Create.svelte', { props });
                 }
-                const dataset = payload.data || '';
-                const props = { chartData, dataset };
-                return h.view('Create.svelte', { props });
             }
         });
     }

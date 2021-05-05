@@ -1,11 +1,13 @@
 <script>
     export let dataset = '';
     export let chartData = {};
+    export let template = null;
 
     import { onMount, getContext, setContext } from 'svelte';
 
     // dynamic language
     const msg = getContext('messages');
+    const config = getContext('config');
     export let __;
 
     import get from '@datawrapper/shared/get';
@@ -44,25 +46,42 @@
         : null;
 
     onMount(async () => {
-        httpReq.get('/v3/me').then(res => {
-            loggedIn = res.role !== 'guest';
-            if (res.language !== 'en-US') {
-                // request language
-                httpReq
-                    .get('/lib/stores/messages.json', { baseUrl: `//${window.location.host}` })
-                    .then(res => {
-                        msg.set(res);
-                    });
-            }
-        });
+        if (template) {
+            // forward to editor immediately
+            httpReq.post(`/v3/charts/${template.id}/fork`).then(res => {
+                function redirect() {
+                    setTimeout(() => {
+                        // redirect to chart
+                        window.location.href =
+                            res.type === 'locator-maps'
+                                ? `/edit/${res.id}`
+                                : `/chart/${res.id}/edit`;
+                    }, 400);
+                }
+                // console.log(res);
+                redirect();
+            });
+        } else {
+            httpReq.get('/v3/me').then(res => {
+                loggedIn = res.role !== 'guest';
+                if (res.language !== 'en-US') {
+                    // request language
+                    httpReq
+                        .get('/lib/stores/messages.json', { baseUrl: `//${window.location.host}` })
+                        .then(res => {
+                            msg.set(res);
+                        });
+                }
+            });
 
-        httpReq.get(`/v3/visualizations/${chartData.type || 'd3-lines'}`).then(res => {
-            chartData.niceType = `<img style="vertical-align:middle;height:20px" alt="" src="/static/plugins/${
-                res.__plugin
-            }/${res.id}.svg" /> ${res.__title || ''}`;
-        });
+            httpReq.get(`/v3/visualizations/${chartData.type || 'd3-lines'}`).then(res => {
+                chartData.niceType = `<img style="vertical-align:middle;height:20px" alt="" src="/static/plugins/${
+                    res.__plugin
+                }/${res.id}.svg" /> ${res.__title || ''}`;
+            });
 
-        ds = await delimited({ csv: dataset }).dataset();
+            ds = await delimited({ csv: dataset }).dataset();
+        }
     });
 
     function openInDatawrapper() {
@@ -140,84 +159,95 @@
 </script>
 
 <SignInPageLayout title="Edit Visualization in Datawrapper">
-    <h1 class="title is-3">{__('create / hed')}</h1>
+    {#if template}
+        <h1 class="title is-3">{__('template / hed')}</h1>
+        <div class="content">
+            <p>{__('template / confirm')}</p>
+        </div>
+        <div class="mt-3">
+            <img src="{template.public_url}../full.png" />
+        </div>
+    {:else}
+        <h1 class="title is-3">{__('create / hed')}</h1>
 
-    <div class="content">
-        <p>{__('create / confirm')}</p>
-    </div>
+        <div class="content">
+            <p>{__('create / confirm')}</p>
+        </div>
 
-    <table class="mt-3">
-        {#each fields as field}
-            {#if get(chartData, field.key)}
+        <table class="mt-3">
+            {#each fields as field}
+                {#if get(chartData, field.key)}
+                    <tr
+                        ><th>{field.label}:</th><td class={field.key.split('.').slice(-1)[0]}
+                            >{#if field.html}{@html get(chartData, field.key)}{:else}{get(
+                                    chartData,
+                                    field.key
+                                )}{/if}</td
+                        ></tr
+                    >
+                {/if}
+            {/each}
+            {#if ds && ds.numRows() > 0}
                 <tr
-                    ><th>{field.label}:</th><td class={field.key.split('.').slice(-1)[0]}
-                        >{#if field.html}{@html get(chartData, field.key)}{:else}{get(
-                                chartData,
-                                field.key
-                            )}{/if}</td
-                    ></tr
+                    ><th>{__('create / field / dataset columns')}:</th><td>
+                        {#if ds}
+                            {#each columns as col}
+                                <div class="cols t-{col.type}">
+                                    <div class="name">{col.name}</div>
+                                    <div class="type">{col.type}</div>
+                                    <div class="range">({col.range.join(' - ')})</div>
+                                </div>
+                            {/each}
+                            {#if ds.numColumns() > 10}
+                                and {ds.numColumns() - 1} more
+                            {/if}
+                        {/if}
+                    </td></tr
+                >
+                <tr
+                    ><th>{__('create / field / dataset rows')}:</th><td>
+                        {#if ds}
+                            {ds.numRows()} (<button
+                                on:click={() => (showData = !showData)}
+                                class="plain-link"
+                                >{__(
+                                    'create / ' + (showData ? 'hide' : 'show') + ' dataset'
+                                )}</button
+                            >)
+                        {/if}
+                    </td></tr
                 >
             {/if}
-        {/each}
-        {#if ds && ds.numRows() > 0}
-            <tr
-                ><th>{__('create / field / dataset columns')}:</th><td>
-                    {#if ds}
-                        {#each columns as col}
-                            <div class="cols t-{col.type}">
-                                <div class="name">{col.name}</div>
-                                <div class="type">{col.type}</div>
-                                <div class="range">({col.range.join(' - ')})</div>
-                            </div>
-                        {/each}
-                        {#if ds.numColumns() > 10}
-                            and {ds.numColumns() - 1} more
-                        {/if}
-                    {/if}
-                </td></tr
-            >
-            <tr
-                ><th>{__('create / field / dataset rows')}:</th><td>
-                    {#if ds}
-                        {ds.numRows()} (<button
-                            on:click={() => (showData = !showData)}
-                            class="plain-link"
-                            >{__('create / ' + (showData ? 'hide' : 'show') + ' dataset')}</button
-                        >)
-                    {/if}
-                </td></tr
-            >
-        {/if}
-        {#if showData && ds}
-            <tr
-                ><th>{__('create / field / dataset')}:</th><td>
-                    <div
-                        style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px; max-width: 490px;"
-                    >
-                        <table class="data">
-                            <thead>
-                                <tr>
-                                    {#each ds.columns() as col}
-                                        <th>{col.name()}</th>
-                                    {/each}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#each ds.column(0).values() as v, i}
+            {#if showData && ds}
+                <tr
+                    ><th>{__('create / field / dataset')}:</th><td>
+                        <div
+                            style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px; max-width: 490px;"
+                        >
+                            <table class="data">
+                                <thead>
                                     <tr>
                                         {#each ds.columns() as col}
-                                            <td>{col.raw(i) || '-'}</td>
+                                            <th>{col.name()}</th>
                                         {/each}
                                     </tr>
-                                {/each}
-                            </tbody>
-                        </table>
-                    </div>
-                </td></tr
-            >
-        {/if}
-    </table>
-
+                                </thead>
+                                <tbody>
+                                    {#each ds.column(0).values() as v, i}
+                                        <tr>
+                                            {#each ds.columns() as col}
+                                                <td>{col.raw(i) || '-'}</td>
+                                            {/each}
+                                        </tr>
+                                    {/each}
+                                </tbody>
+                            </table>
+                        </div>
+                    </td></tr
+                >
+            {/if}
+        </table>
+    {/if}
     <div class="content mt-4">
         <p class="is-size-5">{__('create / confirm-q')}</p>
 
