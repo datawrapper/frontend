@@ -133,7 +133,8 @@ module.exports = {
                     __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
                         isScriptContext: true,
                         json: true,
-                        wrap: true
+                        wrap: true,
+                        frontendDomain
                     }),
                     CHART_HTML: html,
                     CHART_HEAD: head,
