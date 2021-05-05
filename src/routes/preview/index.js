@@ -124,7 +124,8 @@ module.exports = {
                         polyfillUri: `/lib/polyfills`
                     },
                     theme,
-                    translations: vis.locale
+                    translations: vis.locale,
+                    frontendDomain: config.frontend.domain
                 };
 
                 const { html, head } = chartCore.svelte.render(props);
@@ -133,8 +134,7 @@ module.exports = {
                     __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
                         isScriptContext: true,
                         json: true,
-                        wrap: true,
-                        frontendDomain
+                        wrap: true
                     }),
                     CHART_HTML: html,
                     CHART_HEAD: head,
