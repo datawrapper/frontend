@@ -46,34 +46,19 @@
         : null;
 
     onMount(async () => {
-        if (template) {
-            // forward to editor immediately
-            httpReq.post(`/v3/charts/${template.id}/fork`).then(res => {
-                function redirect() {
-                    setTimeout(() => {
-                        // redirect to chart
-                        window.location.href =
-                            res.type === 'locator-maps'
-                                ? `/edit/${res.id}`
-                                : `/chart/${res.id}/edit`;
-                    }, 400);
-                }
-                // console.log(res);
-                redirect();
-            });
-        } else {
-            httpReq.get('/v3/me').then(res => {
-                loggedIn = res.role !== 'guest';
-                if (res.language !== 'en-US') {
-                    // request language
-                    httpReq
-                        .get('/lib/stores/messages.json', { baseUrl: `//${window.location.host}` })
-                        .then(res => {
-                            msg.set(res);
-                        });
-                }
-            });
+        httpReq.get('/v3/me').then(res => {
+            loggedIn = res.role !== 'guest';
+            if (res.language !== 'en-US') {
+                // request language
+                httpReq
+                    .get('/lib/stores/messages.json', { baseUrl: `//${window.location.host}` })
+                    .then(res => {
+                        msg.set(res);
+                    });
+            }
+        });
 
+        if (!template) {
             httpReq.get(`/v3/visualizations/${chartData.type || 'd3-lines'}`).then(res => {
                 chartData.niceType = `<img style="vertical-align:middle;height:20px" alt="" src="/static/plugins/${
                     res.__plugin
@@ -85,34 +70,42 @@
     });
 
     function openInDatawrapper() {
-        httpReq
-            .post('/v3/charts', {
-                payload: chartData
-            })
-            .then(res => {
-                function redirect() {
-                    setTimeout(() => {
-                        // redirect to chart
-                        window.location.href =
-                            res.type === 'locator-maps'
-                                ? `/edit/${res.id}`
-                                : `/chart/${res.id}/edit`;
-                    }, 400);
-                }
-                if (dataset) {
-                    // upload data
-                    httpReq
-                        .put(`/v3/charts/${res.id}/data`, {
-                            headers: {
-                                'Content-Type': 'text/csv'
-                            },
-                            body: dataset
-                        })
-                        .then(redirect);
-                } else {
-                    redirect();
-                }
+        function redirect(chart) {
+            return () =>
+                setTimeout(() => {
+                    // redirect to chart
+                    window.location.href =
+                        chart.type === 'locator-maps'
+                            ? `/edit/${chart.id}`
+                            : `/chart/${chart.id}/edit`;
+                }, 400);
+        }
+        if (template) {
+            // forward to editor immediately
+            httpReq.post(`/v3/charts/${template.id}/fork`).then(res => {
+                redirect(res)();
             });
+        } else {
+            httpReq
+                .post('/v3/charts', {
+                    payload: chartData
+                })
+                .then(res => {
+                    if (dataset) {
+                        // upload data
+                        httpReq
+                            .put(`/v3/charts/${res.id}/data`, {
+                                headers: {
+                                    'Content-Type': 'text/csv'
+                                },
+                                body: dataset
+                            })
+                            .then(redirect(res));
+                    } else {
+                        redirect(res)();
+                    }
+                });
+        }
     }
 
     function dontOpen() {
@@ -158,17 +151,32 @@
     const noFormat = s => s;
 </script>
 
-<SignInPageLayout title="Edit Visualization in Datawrapper">
+<SignInPageLayout title={__('template / hed')}>
     {#if template}
         <h1 class="title is-3">{__('template / hed')}</h1>
         <div class="content">
-            <p>{__('template / confirm')}</p>
+            <p class="is-size-5">{__('template / confirm')}</p>
+        </div>
+        <div class="content mt-4">
+            <p>
+                <button class="button is-large is-primary" on:click={openInDatawrapper}
+                    ><span class="icon mr-0"><i class="fa fa-code-fork" /></span><span
+                        >{__('create / confirm-q / yes')}</span
+                    ></button
+                >
+                <button class="button is-large" on:click={dontOpen}
+                    >{__('create / confirm-q / no')}</button
+                >
+            </p>
         </div>
         <div class="mt-3">
+            <hr />
             <img
                 alt="Screenshot of pubished visualization"
                 src="{template.public_url}../full.png"
             />
+            <hr />
+            <p class="has-text-grey">{@html __('create / footer')}</p>
         </div>
     {:else}
         <h1 class="title is-3">{__('create / hed')}</h1>
@@ -250,18 +258,18 @@
                 >
             {/if}
         </table>
-    {/if}
-    <div class="content mt-4">
-        <p class="is-size-5">{__('create / confirm-q')}</p>
+        <div class="content mt-4">
+            <p class="is-size-5">{__('create / confirm-q')}</p>
 
-        <p>
-            <button class="button is-primary" on:click={openInDatawrapper}
-                >{__('create / confirm-q / yes')}</button
-            >
-            <button class="button" on:click={dontOpen}>{__('create / confirm-q / no')}</button>
-        </p>
-        <p class="has-text-grey">{@html __('create / footer')}</p>
-    </div>
+            <p>
+                <button class="button is-primary" on:click={openInDatawrapper}
+                    >{__('create / confirm-q / yes')}</button
+                >
+                <button class="button" on:click={dontOpen}>{__('create / confirm-q / no')}</button>
+            </p>
+            <p class="has-text-grey">{@html __('create / footer')}</p>
+        </div>
+    {/if}
 </SignInPageLayout>
 
 <style>
