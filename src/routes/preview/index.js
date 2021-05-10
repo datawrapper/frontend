@@ -1,5 +1,6 @@
 const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
 const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
+const { Team } = require('@datawrapper/orm/models');
 const chartCore = require('@datawrapper/chart-core');
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
@@ -14,8 +15,9 @@ module.exports = {
         const { getStyles, getVis, getTheme } = initCaches(server);
         const locales = await loadLocales();
         const config = server.methods.config();
-        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${config.api.domain
-            }/v3`;
+        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
+            config.api.domain
+        }/v3`;
 
         server.route({
             method: 'GET',
@@ -58,7 +60,6 @@ module.exports = {
                     .map(([key, value]) => `${key}=${value}`)
                     .join('&');
 
-
                 let publishData, vis, theme, css, csv;
 
                 try {
@@ -88,7 +89,9 @@ module.exports = {
                     vis.locale = publishData.locales;
                     delete publishData.locales;
                 } catch (error) {
-                    server.logger.error(`Error fetching information for ${chart.id}: ${error.message}`);
+                    server.logger.error(
+                        `Error fetching information for ${chart.id}: ${error.message}`
+                    );
                     return Boom.badImplementation();
                 }
 
@@ -101,6 +104,8 @@ module.exports = {
 
                 const libraries = vis.libraries.map(lib => lib.uri);
 
+                const team = await Team.findByPk(chart.organizationId);
+
                 const props = {
                     data: {
                         visJSON: vis,
@@ -110,8 +115,8 @@ module.exports = {
                         isPreview: true,
                         chartLocale,
                         locales: {
-                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
-                            numeral: loadVendorLocale(locales, 'numeral', chartLocale)
+                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
+                            numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
                         },
                         metricPrefix: {} /* NOTE: What about this? */,
                         themeId: theme.id,
@@ -125,7 +130,7 @@ module.exports = {
 
                 const { html, head } = chartCore.svelte.render(props);
 
-                return h.view('preview', {
+                return h.view('preview.pug', {
                     __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
                         isScriptContext: true,
                         json: true,
@@ -147,7 +152,5 @@ module.exports = {
                 });
             }
         });
-
-
     }
 };

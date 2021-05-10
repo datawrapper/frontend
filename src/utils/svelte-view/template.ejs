@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <meta name="theme-color" content="#333333" />
+
+        <link rel="stylesheet" href="/lib/static/datawrapper.css" />
+        <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="/static/vendor/iconicfont/css/iconmonstr-iconic-font.min.css" />
+        <link
+            rel="manifest"
+            href="manifest.json"
+            crossorigin="use-credentials"
+        />
+        <link rel="icon" type="image/png" href="/static/img/icon/favicon<%= NODE_ENV !== 'production' ? '-dev' : '' %>.png" />
+
+        <style type="text/css">
+        <%- SSR_CSS %>
+        </style>
+
+        <script type="text/javascript">
+            window.dw = {
+                backend: {
+                    __api_domain: location.host.replace('app.', 'api.')
+                }
+            }
+        </script>
+
+        <style type="text/css">
+            @font-face {
+                font-family: 'Roboto';
+                font-style: normal;
+                font-weight: 500;
+                src: local('Roboto Medium'), local('Roboto-Medium'), url('https://static.dwcdn.net/css/fonts/roboto/roboto_500.woff2') format('woff2'), url('https://static.dwcdn.net/css/fonts/roboto/roboto_500.woff') format('woff'), url('https://static.dwcdn.net/css/fonts/roboto/roboto_500.eot?#iefix') format('embedded-opentype'), url('https://static.dwcdn.net/css/fonts/roboto/roboto_500.svg#Roboto') format('svg'), url('https://static.dwcdn.net/css/fonts/roboto/roboto_500.ttf') format('truetype');
+            }
+        </style>
+
+        <script>window.__DW_SVELTE_PROPS__ = { data: { polyfillUri: '/lib/polyfills' }}</script>
+        <script src="/lib/chart-core/load-polyfills.js"></script>
+        <script src="/lib/static/js/svg4everybody.js"></script>
+        <script>if (window.document.documentMode) { svg4everybody(); }</script>
+
+        <script type="text/javascript" src="/lib/requirejs/require.js"></script>
+        <script type="text/javascript">
+            requirejs.config({
+                paths: {
+                    lib: '/lib/csr',
+                    dayjs: '/static/vendor/dayjs/dayjs.min',
+                }
+            });
+        </script>
+
+        <!-- This contains the contents of the <svelte:head> component, if
+         the current page has one -->
+        <%- SSR_HEAD %>
+    </head>
+    <body>
+        <!-- The application will be rendered inside this element,
+         because `src/client.js` references it -->
+        <%- SSR_HTML %>
+
+
+         <script>
+             document.write('<script type="text/javascript" src="/lib/csr/<%= PAGE %>.'+(window.document.documentMode ? 'ie.' : '')+'js"></s'+'cript>');
+         </script>
+         <script async defer>
+            require(['App'], function(App) {
+                var props = JSON.parse(<%- PAGE_PROPS %>);
+
+                // client-side caching
+                var storeHashes = JSON.parse(<%- STORE_HASHES %>);
+                if (window.localStorage && window.localStorage.getItem) {
+                    Object.keys(storeHashes).forEach(function(key) {
+                        // check if message hash is newer
+                        var oldHash = window.localStorage.getItem('dw_hash_'+key);
+                        var oldValue = window.localStorage.getItem('dw_value_'+key);
+                        var hasNewValue = (props.stores[key] && Object.keys(props.stores[key]).length);
+                        if (!hasNewValue && !oldValue) {
+                            // problem: local storage might have been cleared but the
+                            // cookie  is still set, let's unset the cookie and reload
+                            document.cookie = 'DW-HASH-'+key.toUpperCase()+'=';
+                            window.location.reload();
+                            return;
+                        }
+                        if (storeHashes[key] !== oldHash || !oldValue) {
+                            // yes, the hash is newer, let's store new value
+                            window.localStorage.setItem('dw_hash_'+key, storeHashes[key]);
+                            window.localStorage.setItem('dw_value_'+key, JSON.stringify(props.stores[key]));
+                            // also set cookie so server knows we have stored this version
+                            window.document.cookie = 'DW-HASH-'+key.toUpperCase()+'='+storeHashes[key];
+                        } else if (oldHash && !hasNewValue) {
+                            // restore value from cache
+                            props.stores[key] = JSON.parse(oldValue);
+                        }
+                    });
+                }
+
+                var app = new App({
+                    target: document.body,
+                    props: props,
+                    hydrate: true
+                });
+
+                <% if (DW_DEV_MODE) { %>
+                new WebSocket(location.origin.replace('http', 'ws')+'/ws').onmessage = function(msg) {
+                    var page = (JSON.parse(msg.data)).page;
+                    if (page === '<%= PAGE %>') {
+                        require(['/lib/csr/<%= PAGE %>.js?anonymous=1&rev='+Math.random()], function(App) {
+                            // update props to keep state
+                            Object.keys(props).forEach(function(key) {
+                                if (app.getValue && key !== 'stores') {
+                                    props[key] = app.getValue(key);
+                                }
+                            })
+                            // destroy old component
+                            app.$destroy();
+                            // initiate new component
+                            app = new App({
+                                target: document.body,
+                                props: props,
+                                hydrate: true
+                            });
+                        });
+                    }
+                }
+                <% } %>
+            });
+         </script>
+    </body>
+</html>
