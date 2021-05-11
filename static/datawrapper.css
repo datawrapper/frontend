@@ -7176,6 +7176,9 @@ a:hover {
 .title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
   font-weight: 300; }
 
+.title.is-3 {
+  font-weight: 500; }
+
 button.is-primary svg,
 button.is-link svg,
 button.is-info svg,
@@ -7183,3 +7186,6 @@ button.is-danger svg,
 button.is-dark svg,
 button.is-black svg {
   fill: white; }
+
+.button.is-large {
+  font-weight: 500; }

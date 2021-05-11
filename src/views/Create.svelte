@@ -164,7 +164,7 @@
                         >{__('create / confirm-q / yes')}</span
                     ></button
                 >
-                <button class="button is-large" on:click={dontOpen}
+                <button class="button ml-5 is-large" on:click={dontOpen}
                     >{__('create / confirm-q / no')}</button
                 >
             </p>
@@ -182,8 +182,22 @@
         <h1 class="title is-3">{__('create / hed')}</h1>
 
         <div class="content">
-            <p>{__('create / confirm')}</p>
+            <p class="is-size-5">{__('create / confirm')}</p>
         </div>
+
+        <div class="content mt-4">
+            <p class="is-size-5">{__('create / confirm-q')}</p>
+
+            <p>
+                <button class="button is-large is-primary" on:click={openInDatawrapper}
+                    >{__('create / confirm-q / yes')}</button
+                >
+                <button class="button is-large ml-5" on:click={dontOpen}
+                    >{__('create / confirm-q / no')}</button
+                >
+            </p>
+        </div>
+        <hr />
 
         <table class="mt-3">
             {#each fields as field}
@@ -258,17 +272,8 @@
                 >
             {/if}
         </table>
-        <div class="content mt-4">
-            <p class="is-size-5">{__('create / confirm-q')}</p>
-
-            <p>
-                <button class="button is-primary" on:click={openInDatawrapper}
-                    >{__('create / confirm-q / yes')}</button
-                >
-                <button class="button" on:click={dontOpen}>{__('create / confirm-q / no')}</button>
-            </p>
-            <p class="has-text-grey">{@html __('create / footer')}</p>
-        </div>
+        <hr />
+        <p class="has-text-grey">{@html __('create / footer')}</p>
     {/if}
 </SignInPageLayout>
 
