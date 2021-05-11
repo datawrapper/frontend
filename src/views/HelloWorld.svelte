@@ -72,7 +72,7 @@
                             className="mb-4 mr-4"
                             color={colors[Math.floor(Math.random() * colors.length)]}
                             {icon}
-                            size="60"
+                            size="60px"
                         />
                     {/each}
                 </div>
