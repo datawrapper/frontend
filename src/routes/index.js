@@ -27,5 +27,11 @@ module.exports = {
                 }
             });
         }
+
+        await server.register(require('./create'), {
+            routes: {
+                prefix: '/create'
+            }
+        });
     }
 };

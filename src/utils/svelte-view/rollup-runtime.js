@@ -18,7 +18,7 @@ module.exports.build = async function (page, ssr) {
 
     const { output } = await bundle.generate({
         sourcemap: true,
-        format: ssr ? 'iife' : 'amd',
+        format: ssr || page.endsWith('.element.svelte') ? 'iife' : 'amd',
         name: 'App',
         amd: {
             id: page.endsWith('.svelte') ? 'App' : null // page
@@ -99,7 +99,8 @@ function buildOptions(page, ssr) {
                     dev: !production,
                     generate: ssr ? 'ssr' : 'csr',
                     hydratable: true,
-                    accessors: !production
+                    accessors: !production,
+                    customElement: page.endsWith('.element.svelte')
                 },
                 preprocess: {
                     style: less({
@@ -113,7 +114,7 @@ function buildOptions(page, ssr) {
                 dedupe: ['svelte']
             }),
             commonjs(),
-            terser()
+            production && terser()
         ]
     };
 }
