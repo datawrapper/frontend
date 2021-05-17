@@ -14,7 +14,7 @@
         "@babel/preset-env": "^7.12.11",
         "@datawrapper/chart-core": "^8.32.3",
         "@datawrapper/icons": "^1.1.2",
-        "@datawrapper/locales": "^1.2.3",
+        "@datawrapper/locales": "^1.2.4",
         "@datawrapper/orm": "^3.22.2",
         "@datawrapper/schemas": "^1.8.0",
         "@datawrapper/service-utils": "^0.6.3",
