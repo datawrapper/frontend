@@ -28,6 +28,7 @@ module.exports = function (request) {
                 url: request.url,
                 path: request.path,
                 params: request.params,
+                referrer: request.info.referrer,
                 query: request.query
             },
             user:
