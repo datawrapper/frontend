@@ -183,10 +183,6 @@
 
         <div class="content">
             <p class="is-size-5">{__('create / confirm')}</p>
-        </div>
-
-        <div class="content mt-4">
-            <p class="is-size-5">{__('create / confirm-q')}</p>
 
             <p>
                 <button class="button is-large is-primary" on:click={openInDatawrapper}
