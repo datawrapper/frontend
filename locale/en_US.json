@@ -888,5 +888,6 @@
   "upgrade-info": "Features with this symbol become available after upgrading your account.  <a target=\"_blank\" href=\"/account/subscription\">Learn out more about the plan options.</a>",
   "chart-notification / download / png": "Image file is being prepared for download…",
   "chart-notification / download / svg": "SVG file is being prepared for download…",
-  "chart-notification / download / fail / png": "There was a problem with the image download. Please contact support@datawrapper.de if the issue persists."
+  "chart-notification / download / fail / png": "There was a problem with the image download. Please contact support@datawrapper.de if the issue persists.",
+  "template / confirm-q / yes": "Yes, copy visualization"
 }
