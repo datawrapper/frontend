@@ -852,7 +852,7 @@
   "create / confirm-q": "Do you want to create a visualization with this data now?",
   "create / confirm-q / yes": "Yes, create new visualization",
   "create / confirm-q / no": "No",
-  "create / footer": "Datawrapper lets you create and publish charts, maps & tables for free. <a href=\"https://www.datawrapper.de/\" target=\"_blank\"><b>Learn more about Datawrapper.</b></a>",
+  "create / footer": "Datawrapper lets you show your data as beautiful charts, maps or tables with a few clicks. It’s free & no sign-up is required. <a href=\"https://www.datawrapper.de/\" target=\"_blank\"><b>Learn more about Datawrapper.</b></a>",
   "create / field / type": "Visualization type",
   "create / field / dataset columns": "Dataset columns",
   "create / field / dataset rows": "Dataset rows",

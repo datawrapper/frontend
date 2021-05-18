@@ -161,7 +161,7 @@
             <p>
                 <button class="button is-large is-primary" on:click={openInDatawrapper}
                     ><span class="icon mr-0"><i class="fa fa-code-fork" /></span><span
-                        >{__('create / confirm-q / yes')}</span
+                        >{__('template / confirm-q / yes')}</span
                     ></button
                 >
                 <button class="button ml-5 is-large" on:click={dontOpen}
