@@ -98,8 +98,14 @@ a:hover {
 }
 
 .title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
-	font-weight: 300;
+	font-weight: $weight-light;
 }
+
+
+.title.is-3 {
+	font-weight: $weight-medium;
+}
+
 
 button.is-primary,
 button.is-link,
@@ -110,4 +116,8 @@ button.is-black {
 	svg {
 		fill: white;
 	}
+}
+
+.button.is-large {
+	font-weight: $weight-medium;
 }

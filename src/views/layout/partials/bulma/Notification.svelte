@@ -1,7 +1,6 @@
 <script>
     export let deletable = true;
     export let type = '';
-    export let content = '';
     export let visible = true;
 </script>
 

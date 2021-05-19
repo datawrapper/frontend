@@ -124,7 +124,8 @@ module.exports = {
                         polyfillUri: `/lib/polyfills`
                     },
                     theme,
-                    translations: vis.locale
+                    translations: vis.locale,
+                    frontendDomain: config.frontend.domain
                 };
 
                 const { html, head } = chartCore.svelte.render(props);

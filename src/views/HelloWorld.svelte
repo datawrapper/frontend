@@ -72,7 +72,7 @@
                             className="mb-4 mr-4"
                             color={colors[Math.floor(Math.random() * colors.length)]}
                             {icon}
-                            size="60"
+                            size="60px"
                         />
                     {/each}
                 </div>
@@ -461,9 +461,10 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Username</label>
+                        <label for="t1" class="label">Username</label>
                         <div class="control has-icons-left has-icons-right">
                             <input
+                                id="t1"
                                 class="input is-success"
                                 type="text"
                                 placeholder="Text input"
@@ -480,9 +481,10 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Email</label>
+                        <label for="t2" class="label">Email</label>
                         <div class="control has-icons-left has-icons-right">
                             <input
+                                id="t2"
                                 class="input is-danger"
                                 type="email"
                                 placeholder="Email input"
@@ -499,10 +501,10 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Subject</label>
+                        <label for="t3" class="label">Subject</label>
                         <div class="control">
                             <div class="select">
-                                <select>
+                                <select id="t3">
                                     <option>Select dropdown</option>
                                     <option>With options</option>
                                 </select>
@@ -511,16 +513,16 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Message</label>
+                        <label for="t4" class="label">Message</label>
                         <div class="control">
-                            <textarea class="textarea" placeholder="Textarea" />
+                            <textarea id="t4" class="textarea" placeholder="Textarea" />
                         </div>
                     </div>
 
                     <div class="field">
                         <div class="control">
-                            <label class="checkbox">
-                                <input type="checkbox" />
+                            <label for="t5" class="checkbox">
+                                <input id="t5" type="checkbox" />
                                 I agree to the <a href="#/link">terms and conditions</a>
                             </label>
                         </div>
@@ -552,12 +554,12 @@
                     <h2 class="title is-4">Horizontal</h2>
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label">From</label>
+                            <label for="t6" class="label">From</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <p class="control is-expanded has-icons-left">
-                                    <input class="input" type="text" placeholder="Name" />
+                                    <input id="t6" class="input" type="text" placeholder="Name" />
                                     <span class="icon is-small is-left">
                                         <i class="fa fa-user" />
                                     </span>
@@ -588,7 +590,7 @@
                             <div class="field is-expanded">
                                 <div class="field has-addons">
                                     <p class="control">
-                                        <a class="button is-static"> +44 </a>
+                                        <a class="button is-static" href="#/"> +44 </a>
                                     </p>
                                     <p class="control is-expanded">
                                         <input
@@ -605,13 +607,13 @@
 
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label">Department</label>
+                            <label for="t7" class="label">Department</label>
                         </div>
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <div class="control">
                                     <div class="select is-fullwidth">
-                                        <select>
+                                        <select id="t7">
                                             <option>Business development</option>
                                             <option>Marketing</option>
                                             <option>Sales</option>
@@ -624,11 +626,11 @@
 
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Already a member?</label>
+                            <label for="t8" class="label">Already a member?</label>
                         </div>
                         <div class="field-body">
                             <div class="field is-narrow">
-                                <div class="control">
+                                <div class="control" id="t8">
                                     <label class="radio">
                                         <input type="radio" name="member" />
                                         Yes
@@ -644,12 +646,13 @@
 
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label">Subject</label>
+                            <label for="t9" class="label">Subject</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
                                     <input
+                                        id="t9"
                                         class="input is-danger"
                                         type="text"
                                         placeholder="e.g. Partnership opportunity"
@@ -662,12 +665,13 @@
 
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label">Question</label>
+                            <label for="t10" class="label">Question</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
                                     <textarea
+                                        id="t10"
                                         class="textarea"
                                         placeholder="Explain how we can help you"
                                     />

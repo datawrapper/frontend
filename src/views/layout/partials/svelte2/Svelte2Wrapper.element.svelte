@@ -43,7 +43,6 @@
     }
 
     onMount(async () => {
-        console.log('svelte component mounted');
         await Promise.all([
             loadCSS('/static/vendor/bootstrap/css/bootstrap.css'),
             loadCSS('/static/vendor/bootstrap/css/bootstrap-responsive.css'),
@@ -72,7 +71,7 @@
                     dispatch('update', current);
                 });
             } catch (err) {
-                console.error('x', err);
+                console.error(err);
             }
         });
     });

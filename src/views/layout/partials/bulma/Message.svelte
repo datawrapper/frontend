@@ -1,6 +1,5 @@
 <script>
     export let title = '';
-    export let deletable = true;
     export let type = 'info';
 
     let visible = true;

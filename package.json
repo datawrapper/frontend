@@ -74,7 +74,11 @@
         "trailingComma": "none"
     },
     "lint-staged": {
-        "*.{js,svelte}": "prettier --write",
+        "*.{js,svelte}": [
+            "prettier --write",
+            "eslint",
+            "prettier --check"
+        ],
         "*.js": "eslint --cache --fix"
     }
 }

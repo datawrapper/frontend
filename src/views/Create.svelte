@@ -1,11 +1,13 @@
 <script>
     export let dataset = '';
     export let chartData = {};
+    export let template = null;
 
     import { onMount, getContext, setContext } from 'svelte';
 
     // dynamic language
     const msg = getContext('messages');
+    const config = getContext('config');
     export let __;
 
     import get from '@datawrapper/shared/get';
@@ -56,44 +58,54 @@
             }
         });
 
-        httpReq.get(`/v3/visualizations/${chartData.type || 'd3-lines'}`).then(res => {
-            chartData.niceType = `<img style="vertical-align:middle;height:20px" alt="" src="/static/plugins/${
-                res.__plugin
-            }/${res.id}.svg" /> ${res.__title || ''}`;
-        });
+        if (!template) {
+            httpReq.get(`/v3/visualizations/${chartData.type || 'd3-lines'}`).then(res => {
+                chartData.niceType = `<img style="vertical-align:middle;height:20px" alt="" src="/static/plugins/${
+                    res.__plugin
+                }/${res.id}.svg" /> ${res.__title || ''}`;
+            });
 
-        ds = await delimited({ csv: dataset }).dataset();
+            ds = await delimited({ csv: dataset }).dataset();
+        }
     });
 
     function openInDatawrapper() {
-        httpReq
-            .post('/v3/charts', {
-                payload: chartData
-            })
-            .then(res => {
-                function redirect() {
-                    setTimeout(() => {
-                        // redirect to chart
-                        window.location.href =
-                            res.type === 'locator-maps'
-                                ? `/edit/${res.id}`
-                                : `/chart/${res.id}/edit`;
-                    }, 400);
-                }
-                if (dataset) {
-                    // upload data
-                    httpReq
-                        .put(`/v3/charts/${res.id}/data`, {
-                            headers: {
-                                'Content-Type': 'text/csv'
-                            },
-                            body: dataset
-                        })
-                        .then(redirect);
-                } else {
-                    redirect();
-                }
+        function redirect(chart) {
+            return () =>
+                setTimeout(() => {
+                    // redirect to chart
+                    window.location.href =
+                        chart.type === 'locator-maps'
+                            ? `/edit/${chart.id}`
+                            : `/chart/${chart.id}/edit`;
+                }, 400);
+        }
+        if (template) {
+            // forward to editor immediately
+            httpReq.post(`/v3/charts/${template.id}/fork`).then(res => {
+                redirect(res)();
             });
+        } else {
+            httpReq
+                .post('/v3/charts', {
+                    payload: chartData
+                })
+                .then(res => {
+                    if (dataset) {
+                        // upload data
+                        httpReq
+                            .put(`/v3/charts/${res.id}/data`, {
+                                headers: {
+                                    'Content-Type': 'text/csv'
+                                },
+                                body: dataset
+                            })
+                            .then(redirect(res));
+                    } else {
+                        redirect(res)();
+                    }
+                });
+        }
     }
 
     function dontOpen() {
@@ -139,96 +151,126 @@
     const noFormat = s => s;
 </script>
 
-<SignInPageLayout title="Edit Visualization in Datawrapper">
-    <h1 class="title is-3">{__('create / hed')}</h1>
+<SignInPageLayout title={__('template / hed')}>
+    {#if template}
+        <h1 class="title is-3">{__('template / hed')}</h1>
+        <div class="content">
+            <p class="is-size-5">{__('template / confirm')}</p>
+        </div>
+        <div class="content mt-4">
+            <p>
+                <button class="button is-large is-primary" on:click={openInDatawrapper}
+                    ><span class="icon mr-0"><i class="fa fa-code-fork" /></span><span
+                        >{__('template / confirm-q / yes')}</span
+                    ></button
+                >
+                <button class="button ml-5 is-large" on:click={dontOpen}
+                    >{__('create / confirm-q / no')}</button
+                >
+            </p>
+        </div>
+        <div class="mt-3">
+            <hr />
+            <img
+                alt="Screenshot of pubished visualization"
+                src="{template.public_url}../full.png"
+            />
+            <hr />
+            <p class="has-text-grey">{@html __('create / footer')}</p>
+        </div>
+    {:else}
+        <h1 class="title is-3">{__('create / hed')}</h1>
 
-    <div class="content">
-        <p>{__('create / confirm')}</p>
-    </div>
+        <div class="content">
+            <p class="is-size-5">{__('create / confirm')}</p>
 
-    <table class="mt-3">
-        {#each fields as field}
-            {#if get(chartData, field.key)}
+            <p>
+                <button class="button is-large is-primary" on:click={openInDatawrapper}
+                    >{__('create / confirm-q / yes')}</button
+                >
+                <button class="button is-large ml-5" on:click={dontOpen}
+                    >{__('create / confirm-q / no')}</button
+                >
+            </p>
+        </div>
+        <hr />
+
+        <table class="mt-3">
+            {#each fields as field}
+                {#if get(chartData, field.key)}
+                    <tr
+                        ><th>{field.label}:</th><td class={field.key.split('.').slice(-1)[0]}
+                            >{#if field.html}{@html get(chartData, field.key)}{:else}{get(
+                                    chartData,
+                                    field.key
+                                )}{/if}</td
+                        ></tr
+                    >
+                {/if}
+            {/each}
+            {#if ds && ds.numRows() > 0}
                 <tr
-                    ><th>{field.label}:</th><td class={field.key.split('.').slice(-1)[0]}
-                        >{#if field.html}{@html get(chartData, field.key)}{:else}{get(
-                                chartData,
-                                field.key
-                            )}{/if}</td
-                    ></tr
+                    ><th>{__('create / field / dataset columns')}:</th><td>
+                        {#if ds}
+                            {#each columns as col}
+                                <div class="cols t-{col.type}">
+                                    <div class="name">{col.name}</div>
+                                    <div class="type">{col.type}</div>
+                                    <div class="range">({col.range.join(' - ')})</div>
+                                </div>
+                            {/each}
+                            {#if ds.numColumns() > 10}
+                                and {ds.numColumns() - 1} more
+                            {/if}
+                        {/if}
+                    </td></tr
+                >
+                <tr
+                    ><th>{__('create / field / dataset rows')}:</th><td>
+                        {#if ds}
+                            {ds.numRows()} (<button
+                                on:click={() => (showData = !showData)}
+                                class="plain-link"
+                                >{__(
+                                    'create / ' + (showData ? 'hide' : 'show') + ' dataset'
+                                )}</button
+                            >)
+                        {/if}
+                    </td></tr
                 >
             {/if}
-        {/each}
-        {#if ds && ds.numRows() > 0}
-            <tr
-                ><th>{__('create / field / dataset columns')}:</th><td>
-                    {#if ds}
-                        {#each columns as col}
-                            <div class="cols t-{col.type}">
-                                <div class="name">{col.name}</div>
-                                <div class="type">{col.type}</div>
-                                <div class="range">({col.range.join(' - ')})</div>
-                            </div>
-                        {/each}
-                        {#if ds.numColumns() > 10}
-                            and {ds.numColumns() - 1} more
-                        {/if}
-                    {/if}
-                </td></tr
-            >
-            <tr
-                ><th>{__('create / field / dataset rows')}:</th><td>
-                    {#if ds}
-                        {ds.numRows()} (<button
-                            on:click={() => (showData = !showData)}
-                            class="plain-link"
-                            >{__('create / ' + (showData ? 'hide' : 'show') + ' dataset')}</button
-                        >)
-                    {/if}
-                </td></tr
-            >
-        {/if}
-        {#if showData && ds}
-            <tr
-                ><th>{__('create / field / dataset')}:</th><td>
-                    <div
-                        style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px; max-width: 490px;"
-                    >
-                        <table class="data">
-                            <thead>
-                                <tr>
-                                    {#each ds.columns() as col}
-                                        <th>{col.name()}</th>
-                                    {/each}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#each ds.column(0).values() as v, i}
+            {#if showData && ds}
+                <tr
+                    ><th>{__('create / field / dataset')}:</th><td>
+                        <div
+                            style="max-height: 300px; overflow: auto; background: #f5f5f5; padding: 10px 20px; max-width: 490px;"
+                        >
+                            <table class="data">
+                                <thead>
                                     <tr>
                                         {#each ds.columns() as col}
-                                            <td>{col.raw(i) || '-'}</td>
+                                            <th>{col.name()}</th>
                                         {/each}
                                     </tr>
-                                {/each}
-                            </tbody>
-                        </table>
-                    </div>
-                </td></tr
-            >
-        {/if}
-    </table>
-
-    <div class="content mt-4">
-        <p class="is-size-5">{__('create / confirm-q')}</p>
-
-        <p>
-            <button class="button is-primary" on:click={openInDatawrapper}
-                >{__('create / confirm-q / yes')}</button
-            >
-            <button class="button" on:click={dontOpen}>{__('create / confirm-q / no')}</button>
-        </p>
+                                </thead>
+                                <tbody>
+                                    {#each ds.column(0).values() as v, i}
+                                        <tr>
+                                            {#each ds.columns() as col}
+                                                <td>{col.raw(i) || '-'}</td>
+                                            {/each}
+                                        </tr>
+                                    {/each}
+                                </tbody>
+                            </table>
+                        </div>
+                    </td></tr
+                >
+            {/if}
+        </table>
+        <hr />
         <p class="has-text-grey">{@html __('create / footer')}</p>
-    </div>
+    {/if}
 </SignInPageLayout>
 
 <style>
@@ -262,14 +304,6 @@
     img {
         max-width: 100%;
     }
-
-    pre {
-        background: #eee;
-        margin-top: 0;
-        padding: 10px;
-        max-height: 200px;
-        overflow-y: scroll;
-    }
     table {
         width: 100%;
     }
@@ -279,10 +313,6 @@
         font-weight: normal;
         color: #777;
         font-size: 14px;
-    }
-    hr {
-        border: none;
-        border-bottom: 1px solid #eee;
     }
     table.data th {
         color: #222;
