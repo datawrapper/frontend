@@ -24,6 +24,13 @@ module.exports = {
             path: '/{chartId}',
             options: {
                 validate: {
+                    params: Joi.object({
+                        chartId: Joi.string()
+                            .alphanum()
+                            .length(5)
+                            .required()
+                            .description('5 character long chart ID.')
+                    }),
                     query: Joi.object({
                         theme: Joi.string().optional(),
                         ott: Joi.string().optional(),
