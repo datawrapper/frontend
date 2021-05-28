@@ -91,6 +91,10 @@
                 chartData.externalData = chartData.external_data;
                 delete chartData.external_data;
             }
+            if (chartData.last_edit_step) {
+                chartData.lastEditStep = chartData.last_edit_step;
+                delete chartData.last_edit_step;
+            }
             httpReq
                 .post('/v3/charts', {
                     payload: chartData
