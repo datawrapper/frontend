@@ -62,6 +62,42 @@
         "prettier": "^2.2.1",
         "prettier-plugin-svelte": "^2.1.0"
     },
+    "nodemonConfig": {
+        "ignore": [
+            "d3*/src/*",
+            "d3*/static/*",
+            "d3*/tests/*",
+            "locator-maps/src/*",
+            "locator-maps/static/*",
+            "locator-maps/tests/*",
+            "tables/src/*",
+            "tables/static/*",
+            "tables/tests/*",
+            "team-*/src/*",
+            "team-*/static/*",
+            "admin-*/src/*",
+            "admin-*/static/*",
+            "visualization*/src/*",
+            "visualization*/static/*",
+            "visualization*/tests/*",
+            "export-*/src/*",
+            "export-*/static/*",
+            "export-*/tests/*",
+            "external-data/src/*",
+            "external-data/static/*",
+            "simple-maps/src/*",
+            "simple-maps/static/*",
+            "image-publishing/src/*",
+            "image-publishing/static/*",
+            "subscriptions/src/*",
+            "subscriptions/static/*",
+            "social-sharing/src/*",
+            "social-sharing/static/*",
+            "chart-locale-select/src/*",
+            "chart-locale-select/static/*",
+            "themes/static/*"
+        ]
+    },
     "eslintIgnore": [
         "src/node_modules"
     ],
