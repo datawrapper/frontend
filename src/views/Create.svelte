@@ -86,18 +86,35 @@
                 redirect(res)();
             });
         } else {
-            if (chartData.external_data) {
-                // API now only accepts camelCase version
-                chartData.externalData = chartData.external_data;
-                delete chartData.external_data;
+            // only keep whitelisted keys in payload
+            const payload = { ...chartData };
+            const allowed = [
+                'title',
+                'theme',
+                'type',
+                'forkable',
+                'organizationId',
+                'folderId',
+                'externalData',
+                'language',
+                'lastEditStep',
+                'metadata'
+            ];
+            if (payload.external_data) {
+                payload.externalData = payload.external_data;
+                delete payload.external_data;
             }
-            if (chartData.last_edit_step) {
-                chartData.lastEditStep = chartData.last_edit_step;
-                delete chartData.last_edit_step;
+            if (payload.last_edit_step) {
+                payload.lastEditStep = payload.last_edit_step;
+                delete payload.last_edit_step;
             }
+            // remove unknown keys
+            Object.keys(payload).forEach(k => {
+                if (!allowed.includes(k)) delete payload[k];
+            });
             httpReq
                 .post('/v3/charts', {
-                    payload: chartData
+                    payload
                 })
                 .then(res => {
                     if (dataset) {
