@@ -86,6 +86,11 @@
                 redirect(res)();
             });
         } else {
+            if (chartData.external_data) {
+                // API now only accepts camelCase version
+                chartData.externalData = chartData.external_data;
+                delete chartData.external_data;
+            }
             httpReq
                 .post('/v3/charts', {
                     payload: chartData
