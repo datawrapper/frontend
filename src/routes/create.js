@@ -179,7 +179,7 @@ module.exports = {
                     if (payload.external_data) {
                         set(chartData, 'metadata.data.upload-method', 'external-data');
                         set(chartData, 'metadata.data.external-data', payload.external_data);
-                        set(chartData, 'metadata.data.use-datawrapper-cdn', true);
+                        set(chartData, 'metadata.data.use-datawrapper-cdn', false);
                     }
                     const dataset = payload.data || '';
                     const props = { chartData, dataset };
