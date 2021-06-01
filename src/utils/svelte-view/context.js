@@ -11,6 +11,7 @@ module.exports = function (request) {
     const { events, event } = server.app;
     const apiConfig = server.methods.config('api');
     const frontendConfig = server.methods.config('frontend');
+    const generalConfig = server.methods.config('general');
     const isAdmin = server.methods.isAdmin(request);
     const userLang = server.methods.getUserLanguage(auth);
     const context = {
@@ -18,6 +19,7 @@ module.exports = function (request) {
             config: {
                 apiDomain: `${apiConfig.subdomain}.${apiConfig.domain}`,
                 frontendDomain: `${frontendConfig.domain}`,
+                imageDomain: `${generalConfig.imageDomain}`,
                 dev: process.env.DW_DEV_MODE,
                 footerLinks: frontendConfig.footerLinks || []
             },
@@ -26,6 +28,7 @@ module.exports = function (request) {
                 url: request.url,
                 path: request.path,
                 params: request.params,
+                referrer: request.info.referrer,
                 query: request.query
             },
             user:

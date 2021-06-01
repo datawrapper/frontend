@@ -22,6 +22,13 @@ module.exports = {
             path: '/{chartId}',
             options: {
                 validate: {
+                    params: Joi.object({
+                        chartId: Joi.string()
+                            .alphanum()
+                            .length(5)
+                            .required()
+                            .description('5 character long chart ID.')
+                    }),
                     query: Joi.object({
                         theme: Joi.string().optional(),
                         ott: Joi.string().optional(),
@@ -94,6 +101,8 @@ module.exports = {
                 props.assets = assets;
 
                 const libraries = props.visualization.libraries.map(lib => lib.uri);
+              
+                props.frontendDomain = config.frontend.domain;
 
                 const { html, head } = chartCore.svelte.render(props);
 

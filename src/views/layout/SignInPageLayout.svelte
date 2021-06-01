@@ -10,7 +10,7 @@
 
 <div class="container" style="max-width: 50rem">
     <DatawrapperLogo color="#ffffff" height="40" />
-    <div class="box mt-6">
+    <div class="box mt-6 p-6">
         <slot />
     </div>
 </div>

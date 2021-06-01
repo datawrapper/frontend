@@ -102,6 +102,12 @@ module.exports = {
                         : isJS
                         ? file
                         : `${file}.js`;
+                    // check that view is inside /src/views
+                    const pathViews = path.resolve(__dirname, '../views');
+                    const relPath = path.relative(pathViews, path.resolve(pathViews, page));
+                    if (relPath.startsWith('..')) {
+                        return Boom.forbidden();
+                    }
                     const view = await server.methods.getView(page);
                     const { csr, csrMap, error } = view;
                     if (error) {

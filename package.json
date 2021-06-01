@@ -12,12 +12,12 @@
     "dependencies": {
         "@babel/core": "^7.12.10",
         "@babel/preset-env": "^7.12.11",
-        "@datawrapper/chart-core": "^8.32.3",
+        "@datawrapper/chart-core": "^8.35.4",
         "@datawrapper/icons": "^1.1.2",
-        "@datawrapper/locales": "^1.2.3",
+        "@datawrapper/locales": "^1.2.4",
         "@datawrapper/orm": "^3.22.2",
         "@datawrapper/schemas": "^1.8.0",
-        "@datawrapper/service-utils": "^0.6.3",
+        "@datawrapper/service-utils": "^0.6.7",
         "@datawrapper/shared": "^0.28.6",
         "@hapi/bell": "^12.1.1",
         "@hapi/catbox-memory": "^5.0.0",
@@ -62,6 +62,42 @@
         "prettier": "^2.2.1",
         "prettier-plugin-svelte": "^2.1.0"
     },
+    "nodemonConfig": {
+        "ignore": [
+            "d3*/src/*",
+            "d3*/static/*",
+            "d3*/tests/*",
+            "locator-maps/src/*",
+            "locator-maps/static/*",
+            "locator-maps/tests/*",
+            "tables/src/*",
+            "tables/static/*",
+            "tables/tests/*",
+            "team-*/src/*",
+            "team-*/static/*",
+            "admin-*/src/*",
+            "admin-*/static/*",
+            "visualization*/src/*",
+            "visualization*/static/*",
+            "visualization*/tests/*",
+            "export-*/src/*",
+            "export-*/static/*",
+            "export-*/tests/*",
+            "external-data/src/*",
+            "external-data/static/*",
+            "simple-maps/src/*",
+            "simple-maps/static/*",
+            "image-publishing/src/*",
+            "image-publishing/static/*",
+            "subscriptions/src/*",
+            "subscriptions/static/*",
+            "social-sharing/src/*",
+            "social-sharing/static/*",
+            "chart-locale-select/src/*",
+            "chart-locale-select/static/*",
+            "themes/static/*"
+        ]
+    },
     "eslintIgnore": [
         "src/node_modules"
     ],
@@ -74,7 +110,11 @@
         "trailingComma": "none"
     },
     "lint-staged": {
-        "*.{js,svelte}": "prettier --write",
+        "*.{js,svelte}": [
+            "prettier --write",
+            "eslint",
+            "prettier --check"
+        ],
         "*.js": "eslint --cache --fix"
     }
 }
