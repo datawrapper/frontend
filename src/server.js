@@ -15,7 +15,6 @@ const { requireConfig } = require('@datawrapper/service-utils/findConfig');
 const registerVisualizations = require('@datawrapper/service-utils/registerVisualizations');
 const config = requireConfig();
 const path = require('path');
-const Joi = require('joi');
 const { getUserLanguage } = require('./utils');
 const {
     SvelteView,
@@ -143,7 +142,6 @@ const start = async () => {
     // hooks
     server.app.event = eventList;
     server.app.events = new FrontendEventEmitter({ logger: server.logger, eventList });
-    server.app.Joi = Joi;
 
     server.views({
         engines: {
