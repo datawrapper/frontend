@@ -2,8 +2,8 @@
     import MainLayout from 'layout/MainLayout.svelte';
     import Menu from './partials/Menu.svelte';
     import { getContext } from 'svelte';
-    import groupBy from 'underscore/modules/groupBy';
-    import pairs from 'underscore/modules/pairs';
+    import groupBy from 'underscore/modules/groupBy.js';
+    import pairs from 'underscore/modules/pairs.js';
 
     const adminPages = getContext('adminPages');
 

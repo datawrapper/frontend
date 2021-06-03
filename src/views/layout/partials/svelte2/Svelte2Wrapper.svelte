@@ -1,7 +1,7 @@
 <script>
     import { onMount, getContext, beforeUpdate } from 'svelte';
     import clone from '@datawrapper/shared/clone';
-    import isEqual from 'underscore/modules/isEqual';
+    import isEqual from 'underscore/modules/isEqual.js';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     export let id;
@@ -88,17 +88,15 @@
 
 {#if isIE}
     <div class="svelte-2" bind:this={container} />
-{:else}
-    {#if ready}
-        <svelte2-wrapper
-            bind:this={component}
-            {id}
-            {js}
-            {css}
-            on:update={update}
-            data={JSON.stringify(data)}
-        />
-    {/if}
+{:else if ready}
+    <svelte2-wrapper
+        bind:this={component}
+        {id}
+        {js}
+        {css}
+        on:update={update}
+        data={JSON.stringify(data)}
+    />
 {/if}
 
 <style>
