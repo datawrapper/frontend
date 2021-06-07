@@ -17,7 +17,7 @@
         "@datawrapper/locales": "^1.2.4",
         "@datawrapper/orm": "^3.22.4",
         "@datawrapper/schemas": "^1.11.2",
-        "@datawrapper/service-utils": "^0.6.8",
+        "@datawrapper/service-utils": "^1.0.1",
         "@datawrapper/shared": "^0.34.2",
         "@hapi/bell": "^12.2.0",
         "@hapi/catbox-memory": "^5.0.1",
@@ -45,7 +45,7 @@
         "lodash": "^4.17.20",
         "pug": "^3.0.1",
         "requirejs": "^2.3.6",
-        "rollup": "^2.36.2",
+        "rollup": "^2.51.0",
         "rollup-plugin-svelte": "^7.0.0",
         "rollup-plugin-terser": "^7.0.2",
         "svelte": "^3.31.2",
@@ -56,11 +56,11 @@
     "devDependencies": {
         "babel-eslint": "^10.1.0",
         "bulma": "^0.9.2",
-        "eslint": "^7.18.0",
+        "eslint": "^7.28.0",
         "husky": "^6.0.0",
         "lint-staged": "^11.0.0",
         "node-sass": "^6.0.0",
-        "prettier": "^2.2.1",
+        "prettier": "^2.3.1",
         "prettier-plugin-svelte": "^2.1.0"
     },
     "nodemonConfig": {
