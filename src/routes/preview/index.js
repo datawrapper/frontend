@@ -74,9 +74,7 @@ module.exports = {
 
                 const chartLocale = props.chart.language || 'en-US';
 
-                const dependencies = [
-                    'dw-2.0.min.js',
-                ];
+                const dependencies = ['dw-2.0.min.js'];
 
                 const team = await Team.findByPk(props.chart.organizationId);
                 props = Object.assign(props, {
@@ -86,7 +84,7 @@ module.exports = {
                     locales: {
                         dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
                         numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
-                    },
+                    }
                 });
 
                 const css = props.styles;
@@ -101,7 +99,7 @@ module.exports = {
                 props.assets = assets;
 
                 const libraries = props.visualization.libraries.map(lib => lib.uri);
-              
+
                 props.frontendDomain = config.frontend.domain;
 
                 const { html, head } = chartCore.svelte.render(props);
@@ -114,6 +112,7 @@ module.exports = {
                     }),
                     CHART_HTML: html,
                     CHART_HEAD: head,
+                    CHART_LOCALE: chartLocale,
                     VIS_SCRIPT: `${apiBase}/visualizations/${props.visualization.id}/script.js`,
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
