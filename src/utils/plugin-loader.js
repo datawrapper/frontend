@@ -17,14 +17,31 @@ module.exports = {
         const pluginRoot = config.general.localPluginRoot || path.join(process.cwd(), 'plugins');
 
         const plugins = Object.keys(config.plugins || [])
-            .filter(name => fs.existsSync(path.join(pluginRoot, name, 'frontend.js')))
+            .reduce(getPluginPath, [])
             .map(registerPlugin);
 
-        function registerPlugin(name) {
-            try {
-                const pluginPath = path.join(pluginRoot, name, 'frontend.js');
-                const { options = {}, ...plugin } = require(pluginPath);
+        function getPluginPath(plugins, name) {
+            // If available, use .cjs file (ES Module plugin):
+            const cjsConfig = path.join(pluginRoot, name, 'frontend.cjs');
+            if (fs.existsSync(cjsConfig)) {
+                plugins.push({ name, pluginPath: cjsConfig });
+                return plugins;
+            }
 
+            // Else, use .js file (legacy plugin):
+            const jsConfig = path.join(pluginRoot, name, 'frontend.js');
+            if (fs.existsSync(jsConfig)) {
+                plugins.push({ name, pluginPath: jsConfig });
+                return plugins;
+            }
+
+            // No plugin file — don't add anything:
+            return plugins;
+        }
+
+        function registerPlugin({ name, pluginPath }) {
+            try {
+                const { options = {}, ...plugin } = require(pluginPath);
                 const { routes, ...opts } = options;
                 return [
                     {
@@ -94,7 +111,7 @@ module.exports = {
 function logError(pluginRoot, name, error) {
     if (error.code === 'MODULE_NOT_FOUND') {
         return `- skipped
-    Reason: \`frontend.js\` doesn't exist or a dependency is not installed (${error})`;
+    Reason: \`frontend.[cjs,js]\` doesn't exist or a dependency is not installed (${error})`;
     }
 
     return `
