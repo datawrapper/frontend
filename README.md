@@ -2,19 +2,17 @@
 
 This repository contains the `frontend` service for Datawrapper. It is intended to be run together with other Datawrapper components.
 
-
-
 ## Development
 
 Repository overview:
 
-* [`locale`](locale/) - translation files, automatically updated through the Lokalise API. Run `npm update-translations` in the `api` repository to update all translations.
-* [`src/auth`](src/auth/) - our authentication adapter for Hapi, handles cookie sessions etc.
-* [`src/routes`](src/routes/) - controller for the individual frontend routes (e.g. [routes/preview/index.js](src/routes/preview/index.js) for the `GET /preview/:chartid:` route)
-* [`src/utils/`](src/utils) - some utilities such as the [plugin loader](src/utils/plugin-loader.js) or our custom [Svelte view adapter](src/utils/svelte-view)
-* [`src/views`](src/views) - the view templates (currently we support `pug` and `Svelte3` views)
-* [`src/server.js`](src/server.js) - where all the fun begins ;-)
-* [`src/styles`](src/styles) - the LESS sources for `static/datawrapper.css` (use `npm run build:css` to update)
+-   [`locale`](locale/) - translation files, automatically updated through the Lokalise API. Run `npm update-translations` in the `api` repository to update all translations.
+-   [`src/auth`](src/auth/) - our authentication adapter for Hapi, handles cookie sessions etc.
+-   [`src/routes`](src/routes/) - controller for the individual frontend routes (e.g. [routes/preview/index.js](src/routes/preview/index.js) for the `GET /preview/:chartid:` route)
+-   [`src/utils/`](src/utils) - some utilities such as the [plugin loader](src/utils/plugin-loader.js) or our custom [Svelte view adapter](src/utils/svelte-view)
+-   [`src/views`](src/views) - the view templates (currently we support `pug` and `Svelte3` views)
+-   [`src/server.js`](src/server.js) - where all the fun begins ;-)
+-   [`src/styles`](src/styles) - the LESS sources for `static/datawrapper.css` (use `npm run build:css` to update)
 
 ## Quick introduction of the new Svelte views
 
@@ -30,7 +28,6 @@ server.route({
         return h.view('HelloWorld.svelte', { props });
     }
 });
-
 ```
 
 The views are simple Svelte3 components that live inside `src/views`
@@ -46,7 +43,6 @@ The views are simple Svelte3 components that live inside `src/views`
 </script>
 
 <h1 on:click="{knock}">Hello {name}</h1>
-
 ```
 
 ### Server-side rendering + client-side hydration + IE transpiling
@@ -91,18 +87,15 @@ Views want to re-use "layouts". I decided to move all of this logic into Svelte,
 
 <AdminPage title="Hello world">
     <h1>This is the main content</h1>
-   <div slot="belowNav">
-      This goes below the nav sidebar
-   </div>
+    <div slot="belowNav">This goes below the nav sidebar</div>
 </AdminPage>
-
 ```
 
 ### Global stores
 
 For "global" variables such as the api domain or information about the signed-in user we don't want to use view props, as they would have to be passed on in too many places. Instead we're using Svelte stores which are accessible through Svelte's `getContext` method.
 
-In `src/utils/svelte-view/context.js` we can define a set of global stores which can be used in any Svelte template via `getContext()`. The initial values are passed to the views as `stores` property. 
+In `src/utils/svelte-view/context.js` we can define a set of global stores which can be used in any Svelte template via `getContext()`. The initial values are passed to the views as `stores` property.
 
 Svelte views can now use these stores like regular Svelte stores:
 
@@ -119,12 +112,12 @@ Svelte views can now use these stores like regular Svelte stores:
 
 ###Plugins!
 
-Plugins can now hook into the frontend service and add their own views. To do so a plugin needs to do two things: provide a `frontend.js` that acts as hapi plugin interface (similar to our api plugins), and store Svelte views into `src/frontend/views/`.
+Plugins can now hook into the frontend service and add their own views. To do so a plugin needs to do two things: provide a `frontend.cjs` that acts as hapi plugin interface (similar to our api plugins), and store Svelte views into `src/frontend/views/`.
 
-Example plugin `frontend.js`
+Example plugin `frontend.cjs`
 
 ```jsx
-// plugins/example/frontend.js
+// plugins/example/frontend.cjs
 const { version, name } = require('./package.json');
 
 module.exports = {
@@ -141,7 +134,6 @@ module.exports = {
         });
     }
 };
-
 ```
 
 Example plugin `ExampleView.svelte`:
@@ -160,10 +152,11 @@ Example plugin `ExampleView.svelte`:
     <div class="container">
         <h1>Example plugin!</h1>
         <p>Hello {$user.name}. The value of <tt>test</tt> is: "{test}"</p>
-        <button on:click="{() => count++}">{count ? `You clicked me ${count} times!` : 'Click me'}</button>
+        <button on:click="{() => count++}">
+            {count ? `You clicked me ${count} times!` : 'Click me'}
+        </button>
     </div>
 </MainLayout>
-
 ```
 
 This works because of two changes:
@@ -178,7 +171,7 @@ This works because of two changes:
 Frontend plugins can not only define routes but also use our event hook system to modify the frontend server. Here's an example of a plugin using a hook to add an entry to the admin pages navigation:
 
 ```jsx
-// admin-users/frontend.js
+// admin-users/frontend.cjs
 
 module.exports = {
     name,
@@ -202,14 +195,14 @@ module.exports = {
 
 This is the exact system we’re using in our API server, but I’m open to adjustments.
 
-###  Translations
+### Translations
 
 To use (dynamic) translations in Svelte views you need to load the `messages` context. Unfortunately Svelte won't trigger DOM updates unless we define our own reactive `__()` method in each view, or pass it around.
 
 ```html
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
-    
+
     export let __;
 </script>
 
@@ -221,7 +214,7 @@ To use (dynamic) translations in Svelte views you need to load the `messages` co
 </MainLayout>
 ```
 
-Behind the scenes, `translate` is using the `messages` store which contains all available translatable strings for the currently active language. By using a store we *could* even hot swap languages should we decide this is a cool feature.
+Behind the scenes, `translate` is using the `messages` store which contains all available translatable strings for the currently active language. By using a store we _could_ even hot swap languages should we decide this is a cool feature.
 
 If you don't want to pass around the `__` method you can also define your own reactive version anywhere you want:
 
@@ -231,14 +224,14 @@ If you don't want to pass around the `__` method you can also define your own re
     const messages = getContext('messages');
     let __;
     $: {
-        __ = (key, scope='core') => messages.translate(key, scope, $messages);
-    };
+        __ = (key, scope = 'core') => messages.translate(key, scope, $messages);
+    }
 </script>
 ```
 
 ### Client-side localStorage caching + cookie-based validation
 
-For large and fairly static data like translations 
+For large and fairly static data like translations
 
 ### Svelte 2 adapter
 
