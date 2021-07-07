@@ -58,7 +58,8 @@ module.exports = {
 
                 const queryString = Object.entries({
                     published: request.query.published,
-                    ott: request.query.ott
+                    ott: request.query.ott,
+                    theme: request.query.theme
                 })
                     .filter(([, value]) => Boolean(value))
                     .map(([key, value]) => `${key}=${value}`)
