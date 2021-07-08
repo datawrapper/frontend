@@ -88,7 +88,7 @@ module.exports = {
                     }
                 });
 
-                const css = props.styles;
+                const { css, fonts } = props.styles;
                 delete props.styles;
 
                 const assets = {};
@@ -118,7 +118,7 @@ module.exports = {
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
                     DEPS: dependencies.map(el => `/lib/chart-core/${el}`),
                     LIBRARIES: libraries,
-                    CSS: `${props.styles.fonts}\n${props.styles.css}`,
+                    CSS: `${fonts}\n${css}`,
                     CHART_CLASS: [
                         `vis-height-${get(props.visualization, 'height', 'fit')}`,
                         `theme-${get(props.theme, 'id')}`,
