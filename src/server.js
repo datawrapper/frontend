@@ -169,6 +169,7 @@ const start = async () => {
     server.logger.info('loading plugins...');
     await server.register([require('./utils/plugin-loader')]);
 
+    /*
     // custom HTML error pages
     server.ext('onPreResponse', (request, h) => {
         if (request.response.isBoom) {
@@ -181,6 +182,7 @@ const start = async () => {
         }
         return h.continue;
     });
+    */
 
     if (!process.env.DW_DEV_MODE) {
         // wait for all prepared views
