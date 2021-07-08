@@ -18,11 +18,13 @@ module.exports = {
         const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
             config.api.domain
         }/v3`;
+        const frontendBase = `${config.frontend.https ? 'https' : 'http'}://${
+            config.frontend.domain
+        }`;
         const webComponentJS = await fs.readFile(
             path.join(chartCore.path.dist, 'web-component.js'),
             'utf-8'
         );
-
         const validate = {
             params: Joi.object({
                 chartId: Joi.string()
@@ -46,6 +48,36 @@ module.exports = {
             })
         };
 
+        async function getChart(chartId, query, credentials) {
+            const api = createAPI(
+                apiBase,
+                config.api.sessionID,
+                credentials && credentials.data ? credentials.data.id : ''
+            );
+
+            let chart;
+
+            const queryString = Object.entries({
+                published: query.published,
+                ott: query.ott,
+                theme: query.theme,
+                transparent: query.transparent
+            })
+                .filter(([, value]) => Boolean(value))
+                .map(([key, value]) => `${key}=${value}`)
+                .join('&');
+
+            let props;
+
+            try {
+                props = await api(`/charts/${chartId}/publish/data?${queryString}`);
+            } catch (ex) {
+                return Boom.unauthorized();
+            }
+
+            return props;
+        }
+
         server.route({
             method: 'GET',
             path: '/{chartId}',
@@ -54,36 +86,8 @@ module.exports = {
             },
             handler: async (request, h) => {
                 const { auth, params } = request;
-                const { chartId } = params;
-
-                const api = createAPI(
-                    apiBase,
-                    config.api.sessionID,
-                    auth.credentials && auth.credentials.data ? auth.credentials.data.id : ''
-                );
-
-                let chart;
-
-                const queryString = Object.entries({
-                    published: request.query.published,
-                    ott: request.query.ott,
-                    theme: request.query.theme,
-                    transparent: request.query.transparent
-                })
-                    .filter(([, value]) => Boolean(value))
-                    .map(([key, value]) => `${key}=${value}`)
-                    .join('&');
-
-                let props;
-
-                try {
-                    props = await api(`/charts/${chartId}/publish/data?${queryString}`);
-                } catch (ex) {
-                    return Boom.unauthorized();
-                }
-
+                let props = await getChart(params.chartId, request.query, auth.credentials);
                 const chartLocale = props.chart.language || 'en-US';
-                const dependencies = ['dw-2.0.min.js'];
                 const team = await Team.findByPk(props.chart.organizationId);
 
                 props = Object.assign(props, {
@@ -119,7 +123,7 @@ module.exports = {
                     VIS_SCRIPT: `${apiBase}/visualizations/${props.visualization.id}/script.js`,
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
-                    DEPS: dependencies.map(el => `/lib/chart-core/${el}`),
+                    DEPS: ['/lib/chart-core/dw-2.0.min.js'],
                     LIBRARIES: props.visualization.libraries.map(lib => lib.uri),
                     CSS: `${fonts}\n${css}`,
                     CHART_CLASS: [
@@ -139,43 +143,12 @@ module.exports = {
             },
             handler: async (request, h) => {
                 const { auth, params } = request;
-                const { chartId } = params;
-                const frontendBase = `${config.frontend.https ? 'https' : 'http'}://${
-                    config.frontend.domain
-                }`;
-
-                const api = createAPI(
-                    apiBase,
-                    config.api.sessionID,
-                    auth.credentials && auth.credentials.data ? auth.credentials.data.id : ''
-                );
-
-                let chart;
-
-                const queryString = Object.entries({
-                    published: request.query.published,
-                    ott: request.query.ott,
-                    theme: request.query.theme,
-                    transparent: request.query.transparent
-                })
-                    .filter(([, value]) => Boolean(value))
-                    .map(([key, value]) => `${key}=${value}`)
-                    .join('&');
-
-                let props;
-
-                try {
-                    props = await api(`/charts/${chartId}/publish/data?${queryString}`);
-                } catch (ex) {
-                    return Boom.unauthorized();
-                }
-
+                let props = await getChart(params.chartId, request.query, auth.credentials);
                 const chartLocale = props.chart.language || 'en-US';
-                const dependencies = ['dw-2.0.min.js'];
                 const team = await Team.findByPk(props.chart.organizationId);
 
                 props = Object.assign(props, {
-                    isIframe: true,
+                    isIframe: false,
                     isPreview: true,
                     polyfillUri: '/lib/polyfills',
                     locales: {
@@ -202,9 +175,9 @@ module.exports = {
                     })
                 });
 
-                const embedJS = webComponentJS + `\n\n__dw.render(${JSON.stringify(props)});`;
-
-                return h.response(embedJS).header('Content-Type', 'application/javascript');
+                return h
+                    .response(webComponentJS + `\n\n__dw.render(${JSON.stringify(props)});`)
+                    .header('Content-Type', 'application/javascript');
             }
         });
     }
