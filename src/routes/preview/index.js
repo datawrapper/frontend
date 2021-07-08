@@ -1,6 +1,7 @@
 const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
+const { Team } = require('@datawrapper/orm/models');
 const chartCore = require('@datawrapper/chart-core');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const Boom = require('@hapi/boom');
 const jsesc = require('jsesc');
 const get = require('lodash/get');
@@ -12,14 +13,22 @@ module.exports = {
         const { loadLocales, loadVendorLocale, createAPI, initCaches } = require('./utils');
         const locales = await loadLocales();
         const config = server.methods.config();
-        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${config.api.domain
-            }/v3`;
+        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
+            config.api.domain
+        }/v3`;
 
         server.route({
             method: 'GET',
             path: '/{chartId}',
             options: {
                 validate: {
+                    params: Joi.object({
+                        chartId: Joi.string()
+                            .alphanum()
+                            .length(5)
+                            .required()
+                            .description('5 character long chart ID.')
+                    }),
                     query: Joi.object({
                         theme: Joi.string().optional(),
                         ott: Joi.string().optional(),
@@ -50,12 +59,12 @@ module.exports = {
                 const queryString = Object.entries({
                     published: request.query.published,
                     ott: request.query.ott,
-                    theme: request.query.theme
+                    theme: request.query.theme,
+                    transparent: request.query.transparent
                 })
                     .filter(([, value]) => Boolean(value))
                     .map(([key, value]) => `${key}=${value}`)
                     .join('&');
-
 
                 let props;
 
@@ -66,26 +75,36 @@ module.exports = {
                 }
 
                 const chartLocale = props.chart.language || 'en-US';
+                const dependencies = ['dw-2.0.min.js'];
 
-                const dependencies = [
-                    'dw-2.0.min.js',
-                ];
-
+                const team = await Team.findByPk(props.chart.organizationId);
                 props = Object.assign(props, {
                     isIframe: true,
                     isPreview: true,
-                    // @todo: load from  config
                     polyfillUri: '/lib/polyfills',
                     locales: {
-                        dayjs: loadVendorLocale(locales, 'dayjs', chartLocale),
-                        numeral: loadVendorLocale(locales, 'numeral', chartLocale)
-                    },
+                        dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
+                        numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
+                    }
                 });
+
+                const css = props.styles;
+                delete props.styles;
+
+                const assets = {};
+                props.assets.forEach(({ name, value }) => {
+                    assets[name] = {
+                        value
+                    };
+                });
+                props.assets = assets;
+
+                props.frontendDomain = config.frontend.domain;
 
                 const libraries = props.visualization.libraries.map(lib => lib.uri);
                 const { html, head } = chartCore.svelte.render(props);
 
-                return h.view('preview', {
+                return h.view('preview.pug', {
                     __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
                         isScriptContext: true,
                         json: true,
@@ -93,6 +112,7 @@ module.exports = {
                     }),
                     CHART_HTML: html,
                     CHART_HEAD: head,
+                    CHART_LOCALE: chartLocale,
                     VIS_SCRIPT: `${apiBase}/visualizations/${props.visualization.id}/script.js`,
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
@@ -107,7 +127,5 @@ module.exports = {
                 });
             }
         });
-
-
     }
 };

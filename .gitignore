@@ -3,3 +3,6 @@ node_modules
 yarn-error.log
 /cypress/screenshots/
 config.js
+src/views/plugins/*
+!src/views/plugins/.gitkeep
+.eslintcache

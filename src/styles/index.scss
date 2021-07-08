@@ -1,0 +1,123 @@
+@charset "utf-8";
+
+@import "./fonts";
+@import "./colors";
+
+// colors
+$primary: $dw_blue_medium;
+$red: $dw_red;
+$green: $dw_green;
+$link: $dw_blue;
+$link-hover: $dw_blue_dark;
+$background: $dw_lightgray;
+$body-background-color: $dw_background;
+$light: $dw_gray;
+$tabs-boxed-link-active-background-color: $dw_background;
+$table-background-color: transparent;
+$table-striped-row-even-background-color: hsla(0,0,0, 0.03);
+
+// font styles
+$family-sans-serif: "Roboto", Helvetica, sans-serif;
+$family-monospace: "Roboto Mono", monospace;
+$body-size: 14px;
+$size-1: 2.75rem;
+$size-3: 1.75rem;
+$title-weight: 400;
+$content-heading-weight: 400;
+
+$footer-padding: 3rem 0rem 6rem;
+
+@import "../../node_modules/bulma/sass/utilities/_all.sass";
+@import "../../node_modules/bulma/sass/base/_all.sass";
+
+/*
+ * BULMA ELEMENTS
+ * https://bulma.io/documentation/elements/
+ */
+// @import "../../node_modules/bulma/sass/elements/_all.sass";
+@import "../../node_modules/bulma/sass/elements/box.sass";
+@import "../../node_modules/bulma/sass/elements/button.sass";
+@import "../../node_modules/bulma/sass/elements/container.sass";
+@import "../../node_modules/bulma/sass/elements/content.sass";
+@import "../../node_modules/bulma/sass/elements/icon.sass";
+// @import "../../node_modules/bulma/sass/elements/image.sass";
+@import "../../node_modules/bulma/sass/elements/notification.sass";
+@import "../../node_modules/bulma/sass/elements/other.sass";
+@import "../../node_modules/bulma/sass/elements/progress.sass";
+@import "../../node_modules/bulma/sass/elements/table.sass";
+@import "../../node_modules/bulma/sass/elements/tag.sass";
+@import "../../node_modules/bulma/sass/elements/title.sass";
+
+/*
+ * BULMA FORM
+ * https://bulma.io/documentation/form/
+ */
+@import "../../node_modules/bulma/sass/form/_all.sass";
+
+/*
+ * BULMA COMPONENTS
+ * https://bulma.io/documentation/components/
+ */
+// @import "../../node_modules/bulma/sass/components/_all.sass";
+@import "../../node_modules/bulma/sass/components/breadcrumb.sass";
+// @import "../../node_modules/bulma/sass/components/card.sass";
+@import "../../node_modules/bulma/sass/components/dropdown.sass";
+@import "../../node_modules/bulma/sass/components/level.sass";
+// @import "../../node_modules/bulma/sass/components/media.sass";
+@import "../../node_modules/bulma/sass/components/menu.sass";
+@import "../../node_modules/bulma/sass/components/message.sass";
+// @import "../../node_modules/bulma/sass/components/modal.sass";
+@import "../../node_modules/bulma/sass/components/navbar.sass";
+@import "../../node_modules/bulma/sass/components/pagination.sass";
+// @import "../../node_modules/bulma/sass/components/panel.sass";
+@import "../../node_modules/bulma/sass/components/tabs.sass";
+
+/*
+ * BULMA GRID
+ * https://bulma.io/documentation/columns/
+ */
+@import "../../node_modules/bulma/sass/grid/_all.sass";
+
+/*
+ * BULMA HELPERS
+ * https://bulma.io/documentation/helpers/
+ */
+@import "../../node_modules/bulma/sass/helpers/_all.sass";
+
+/*
+ * BULMA LAYOUT
+ * https://bulma.io/documentation/layout/
+ */
+// @import "../../node_modules/bulma/sass/layout/_all.sass";
+@import "../../node_modules/bulma/sass/layout/footer.sass";
+// @import "../../node_modules/bulma/sass/layout/hero.sass";
+@import "../../node_modules/bulma/sass/layout/section.sass";
+
+a:hover {
+	text-decoration: underline;
+}
+
+.title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
+	font-weight: $weight-light;
+}
+
+
+.title.is-3 {
+	font-weight: $weight-medium;
+}
+
+
+button.is-primary,
+button.is-link,
+button.is-info,
+button.is-danger,
+button.is-dark,
+button.is-black {
+	svg {
+		fill: white;
+	}
+}
+
+.button.is-large {
+	font-weight: $weight-medium;
+}
