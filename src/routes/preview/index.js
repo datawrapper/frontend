@@ -141,6 +141,10 @@ module.exports = {
             handler: async (request, h) => {
                 const { auth, params } = request;
                 const { chartId } = params;
+                const frontendBase = `${config.frontend.https ? 'https' : 'http'}://${
+                    config.frontend.domain
+                }`;
+                const chartCoreBase = `${frontendBase}/lib/chart-core`;
 
                 const api = createAPI(
                     apiBase,
@@ -170,8 +174,8 @@ module.exports = {
 
                 const chartLocale = props.chart.language || 'en-US';
                 const dependencies = ['dw-2.0.min.js'];
-
                 const team = await Team.findByPk(props.chart.organizationId);
+
                 props = Object.assign(props, {
                     isIframe: true,
                     isPreview: true,
@@ -179,36 +183,25 @@ module.exports = {
                     locales: {
                         dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
                         numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
-                    }
-                });
-
-                const assets = {};
-                props.assets.forEach(({ name, value }) => {
-                    assets[name] = {
-                        value
-                    };
-                });
-                props.assets = assets;
-                props.frontendDomain = config.frontend.domain;
-
-                const libraries = props.visualization.libraries.map(lib => lib.uri);
-                const frontendBase = `${config.frontend.https ? 'https' : 'http'}://${
-                    config.frontend.domain
-                }`;
-                const chartCoreBase = `${frontendBase}/lib/chart-core`;
-
-                props.dependencies = [
-                    `${chartCoreBase}/dw-2.0.min.js`,
-                    ...props.visualization.libraries,
-                    `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
-                        config.api.domain
-                    }/v3/visualizations/${props.visualization.id}/script.js`
-                ];
-
-                props.blocks = props.blocks.map(block => {
-                    block.source.js = `${frontendBase}${block.source.js}`;
-                    block.source.css = `${frontendBase}${block.source.css}`;
-                    return block;
+                    },
+                    assets: props.assets.reduce((acc, item) => {
+                        const { name, value } = item;
+                        acc[item.name] = { value };
+                        return acc;
+                    }, {}),
+                    fontendDomain: config.frontend.domain,
+                    dependencies: [
+                        `${chartCoreBase}/dw-2.0.min.js`,
+                        ...props.visualization.libraries.map(lib => `${frontendBase}${lib.uri}`),
+                        `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
+                            config.api.domain
+                        }/v3/visualizations/${props.visualization.id}/script.js`
+                    ],
+                    blocks: props.blocks.map(block => {
+                        block.source.js = `${frontendBase}${block.source.js}`;
+                        block.source.css = `${frontendBase}${block.source.css}`;
+                        return block;
+                    })
                 });
 
                 const webComponentJS = await fs.readFile(
