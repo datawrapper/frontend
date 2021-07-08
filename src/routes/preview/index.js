@@ -18,6 +18,10 @@ module.exports = {
         const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
             config.api.domain
         }/v3`;
+        const webComponentJS = await fs.readFile(
+            path.join(chartCore.path.dist, 'web-component.js'),
+            'utf-8'
+        );
 
         const validate = {
             params: Joi.object({
@@ -80,8 +84,8 @@ module.exports = {
 
                 const chartLocale = props.chart.language || 'en-US';
                 const dependencies = ['dw-2.0.min.js'];
-
                 const team = await Team.findByPk(props.chart.organizationId);
+
                 props = Object.assign(props, {
                     isIframe: true,
                     isPreview: true,
@@ -89,22 +93,17 @@ module.exports = {
                     locales: {
                         dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
                         numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
-                    }
+                    },
+                    assets: props.assets.reduce((acc, item) => {
+                        const { name, value } = item;
+                        acc[item.name] = { value };
+                        return acc;
+                    }, {}),
+                    fontendDomain: config.frontend.domain
                 });
 
                 const { css, fonts } = props.styles;
                 delete props.styles;
-
-                const assets = {};
-                props.assets.forEach(({ name, value }) => {
-                    assets[name] = {
-                        value
-                    };
-                });
-                props.assets = assets;
-
-                const libraries = props.visualization.libraries.map(lib => lib.uri);
-                props.frontendDomain = config.frontend.domain;
 
                 const { html, head } = chartCore.svelte.render(props);
 
@@ -121,7 +120,7 @@ module.exports = {
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
                     DEPS: dependencies.map(el => `/lib/chart-core/${el}`),
-                    LIBRARIES: libraries,
+                    LIBRARIES: props.visualization.libraries.map(lib => lib.uri),
                     CSS: `${fonts}\n${css}`,
                     CHART_CLASS: [
                         `vis-height-${get(props.visualization, 'height', 'fit')}`,
@@ -144,7 +143,6 @@ module.exports = {
                 const frontendBase = `${config.frontend.https ? 'https' : 'http'}://${
                     config.frontend.domain
                 }`;
-                const chartCoreBase = `${frontendBase}/lib/chart-core`;
 
                 const api = createAPI(
                     apiBase,
@@ -191,7 +189,7 @@ module.exports = {
                     }, {}),
                     fontendDomain: config.frontend.domain,
                     dependencies: [
-                        `${chartCoreBase}/dw-2.0.min.js`,
+                        `${frontendBase}/lib/chart-core/dw-2.0.min.js`,
                         ...props.visualization.libraries.map(lib => `${frontendBase}${lib.uri}`),
                         `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
                             config.api.domain
@@ -204,31 +202,8 @@ module.exports = {
                     })
                 });
 
-                const webComponentJS = await fs.readFile(
-                    path.join(chartCore.path.dist, 'web-component.js'),
-                    'utf-8'
-                );
+                const embedJS = webComponentJS + `\n\n__dw.render(${JSON.stringify(props)});`;
 
-                // be careful: this needs to run in IE11, too
-                const embedJS = `(function() {
-// determine the script origin
-var scripts = document.getElementsByTagName('script');
-var origin = scripts[scripts.length - 1]
-    .getAttribute('src')
-    .split('/')
-    .slice(0, -1)
-    .join('/');
-if (!document.head.attachShadow) {
-    // all bets are off, back to iframe
-    var responsiveEmbed = 'FALLBACK';
-    document.write(responsiveEmbed.replace(/src="null"/g, 'src="' + origin + '/index.html"'));
-} else {
-    ${webComponentJS}
-    __dw.render(Object.assign(
-        ${JSON.stringify(props)},
-        { origin: origin }
-    ));
-}})()`;
                 return h.response(embedJS).header('Content-Type', 'application/javascript');
             }
         });
