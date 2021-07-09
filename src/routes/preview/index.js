@@ -43,6 +43,16 @@ module.exports = {
                 const { auth, params } = request;
                 const { chartId } = params;
 
+                let last;
+
+                function logProgress(msg) {
+                    const now = new Date();
+                    if (last) server.logger.info(`Time spent: ${now - last}`);
+                    last = now;
+
+                    server.logger.info(msg);
+                }
+
                 const api = createAPI(
                     apiBase,
                     config.api.sessionID,
@@ -61,6 +71,8 @@ module.exports = {
 
                 let publishData, vis, theme, css, csv;
 
+                logProgress('Fetching chart information');
+
                 try {
                     publishData = await api(`/charts/${chartId}/publish/data?${queryString}`);
                     chart = publishData.chart;
@@ -72,6 +84,8 @@ module.exports = {
                 }
 
                 const themeName = request.query.theme || chart.theme;
+
+                logProgress('Loading visualization, theme, styles');
 
                 try {
                     const results = await Promise.all([
@@ -93,6 +107,8 @@ module.exports = {
                     );
                     return Boom.badImplementation();
                 }
+
+                logProgress('Preparing dependencies');
 
                 const chartLocale = chart.language || 'en-US';
 
@@ -127,7 +143,11 @@ module.exports = {
                     translations: vis.locale
                 };
 
+                logProgress('Rendering entrypoint');
+
                 const { html, head } = chartCore.svelte.render(props);
+
+                logProgress('Returning view');
 
                 return h.view('preview.pug', {
                     __DW_SVELTE_PROPS__: jsesc(JSON.stringify(props), {
