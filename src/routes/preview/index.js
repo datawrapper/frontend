@@ -89,8 +89,10 @@ module.exports = {
                     }
                 });
 
-                const { fonts, css } = props.styles;
+                const css = props.styles;
+                const fonts = props.theme.fontsCSS;
                 delete props.styles;
+                delete props.theme.fontsCSS;
 
                 const assets = {};
                 props.assets.forEach(({ name, value }) => {
