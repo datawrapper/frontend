@@ -5,6 +5,7 @@
     import Notification from 'layout/partials/bulma/Notification.svelte';
     import SvgIcon from 'layout/partials/SvgIcon.svelte';
     import Tabs from 'layout/partials/bulma/Tabs.svelte';
+    import Menu from 'layout/partials/bulma/Menu.svelte';
     import { onMount, onDestroy, getContext } from 'svelte';
 
     export let magicNumber;
@@ -207,6 +208,37 @@
                             { id: 'refine', title: 'Refine' },
                             { id: 'annotate', title: 'Annotate' },
                             { id: 'design', title: 'Design' }
+                        ]}
+                        active="refine"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-fifth">
+                    <h3 class="title is-3">Menu</h3>
+                </div>
+                <div class="column is-one-third">
+                    <Menu
+                        groups={[
+                            {
+                                title: 'First group',
+                                items: [
+                                    { url: '/v2/hello', title: 'Annotate' },
+                                    { url: '#design', title: 'Design' }
+                                ]
+                            },
+                            {
+                                title: 'Second group',
+                                items: [
+                                    { url: '#annotate', title: 'Annotate' },
+                                    { url: '#design', title: 'Design' }
+                                ]
+                            }
                         ]}
                         active="refine"
                     />
