@@ -64,7 +64,7 @@ module.exports = {
         if (plugins.length) {
             for (const [{ plugin, options, error, name }, pluginOptions] of plugins) {
                 if (error) {
-                    server.logger.warn(`[Plugin] ${name}`, logError(pluginRoot, name, error));
+                    server.logger.warn(`[Plugin] ${name}\n\n${logError(pluginRoot, name, error)}`);
                 } else {
                     const version = get(plugin, ['pkg', 'version'], plugin.version);
                     server.logger.info(`[Plugin] ${name}@${version}`);
@@ -110,8 +110,8 @@ module.exports = {
 
 function logError(pluginRoot, name, error) {
     if (error.code === 'MODULE_NOT_FOUND') {
-        return `- skipped
-    Reason: \`frontend.[cjs,js]\` doesn't exist or a dependency is not installed (${error})`;
+        return `- skipped plugin ${name}
+    Reason: \`frontend.[cjs,js]\` doesn't exist or a dependency is not installed.\n    Error: ${error.message}\n`;
     }
 
     return `
