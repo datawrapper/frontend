@@ -1,8 +1,8 @@
 <script>
     export let icon = 'api';
     export let size = '1em';
-    export let color = 'inherit';
-    export let valign = 'baseline';
+    export let color = 'currentColor';
+    export let valign = 'sub';
 
     export let className = '';
 </script>

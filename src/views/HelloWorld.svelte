@@ -90,6 +90,8 @@
         }
     ];
 
+    let iconPreview = 'dw-map';
+
     $: message = !knocked ? `Knock, knock. Who's there? (click me!)` : `Hello ${$user.name}!`;
 </script>
 
@@ -124,14 +126,43 @@
                 <div class="section pl-0 pt-0">
                     <h3 class="title is-3" id="icons">Icons!</h3>
 
-                    {#each icons as icon}
-                        <SvgIcon
-                            className="mb-4 mr-4"
-                            color={colors[Math.floor(Math.random() * colors.length)]}
-                            {icon}
-                            size="60px"
-                        />
-                    {/each}
+                    <div class="columns">
+                        <div class="column">
+                            {#each icons as icon, i}
+                                <span title={icon} on:mouseenter={() => (iconPreview = icon)}>
+                                    <SvgIcon
+                                        className="mb-4 mr-4"
+                                        color={colors[i % colors.length]}
+                                        {icon}
+                                        size="32px"
+                                    />
+                                </span>
+                            {/each}
+                        </div>
+                        <div class="column">
+                            <div>
+                                {#each [16, 24, 32, 48, 64, 96, 128] as size, i}
+                                    <SvgIcon
+                                        className="mr-1"
+                                        valign="sub"
+                                        color={colors[i % colors.length]}
+                                        icon={iconPreview}
+                                        size="{size}px"
+                                    />
+                                {/each}
+                            </div>
+                            <div class="content mt-4">
+                                <p>
+                                    Icons can be used <SvgIcon icon={iconPreview} /> inline in text,
+                                    too!
+                                </p>
+                                <p class="is-size-3 has-text-danger">
+                                    Icons can be used <SvgIcon icon={iconPreview} /> inline in text,
+                                    too!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="section pl-0 pt-0">
