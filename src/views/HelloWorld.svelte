@@ -134,32 +134,42 @@
                                         className="mb-4 mr-4"
                                         color={colors[i % colors.length]}
                                         {icon}
-                                        size="32px"
+                                        size="42px"
                                     />
                                 </span>
                             {/each}
                         </div>
                         <div class="column">
+                            <div class="content mt-4">
+                                <p class="is-size-4 has-text-danger">
+                                    Icons can be used <SvgIcon icon={iconPreview} /> inline in text,
+                                    too! And they can spin!
+                                    <SvgIcon
+                                        valign="sub"
+                                        className="mr-2"
+                                        icon="refresh"
+                                        size="32px"
+                                        spin
+                                    /><SvgIcon
+                                        valign="sub"
+                                        icon="loading-spinner"
+                                        size="32px"
+                                        timing="steps(12)"
+                                        duration="1s"
+                                        spin
+                                    />
+                                </p>
+                            </div>
                             <div>
                                 {#each [16, 24, 32, 48, 64, 96, 128] as size, i}
                                     <SvgIcon
                                         className="mr-1"
-                                        valign="sub"
+                                        valign="top"
                                         color={colors[i % colors.length]}
                                         icon={iconPreview}
                                         size="{size}px"
                                     />
                                 {/each}
-                            </div>
-                            <div class="content mt-4">
-                                <p>
-                                    Icons can be used <SvgIcon icon={iconPreview} /> inline in text,
-                                    too!
-                                </p>
-                                <p class="is-size-3 has-text-danger">
-                                    Icons can be used <SvgIcon icon={iconPreview} /> inline in text,
-                                    too!
-                                </p>
                             </div>
                         </div>
                     </div>
