@@ -39,27 +39,27 @@ module.exports = {
                 {
                     id: 'create-new',
                     fontIcon: 'fa fa-fw fa-plus',
-                    title: __('Create new...'),
+                    title: __('Create new <span style="color:#A7A7A7">…</span>'),
                     order: 10,
                     submenuItems: [
                         {
                             id: 'create-chart',
                             svgIcon: 'dw-chart',
-                            title: __('New chart'),
+                            title: __('Chart'),
                             url: '/create/chart',
                             order: 10
                         },
                         {
                             id: 'create-map',
                             svgIcon: 'dw-map',
-                            title: __('New chart'),
+                            title: __('Map'),
                             url: '/select/map',
                             order: 20
                         },
                         {
                             id: 'create-table',
                             svgIcon: 'dw-table',
-                            title: __('New chart'),
+                            title: __('Table'),
                             url: '/create/table',
                             order: 30
                         }
