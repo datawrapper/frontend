@@ -13,7 +13,8 @@ $background: $dw_lightgray;
 $body-background-color: $dw_background;
 $light: $dw_gray;
 $tabs-boxed-link-active-background-color: $dw_background;
-$navbar-background-color: transparent;
+$navbar-background-color: white;
+$navbar-tab-active-background-color: $dw_blue_light;
 $table-background-color: transparent;
 $table-striped-row-even-background-color: hsla(0,0,0, 0.03);
 
@@ -28,6 +29,10 @@ $title-weight: 400;
 $content-heading-weight: 400;
 
 $footer-padding: 3rem 0rem 6rem;
+
+$navbar-height: 2rem;
+$navbar-burger-color: $dw_blue_medium;
+$navbar-padding-horizontal: 2rem;
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -122,4 +127,52 @@ button.is-black {
 
 .button.is-large {
 	font-weight: $weight-medium;
+}
+
+.navbar-burger > span {
+	height: 2px;
+	width: 20px;
+}
+.navbar-item.is-active {
+	background: $dw_blue_light!important;
+	border-radius: 4px;
+}
+.navbar-item {
+	font-size: 16px;
+	font-family: Roboto;
+	font-weight: 500;
+	margin: 0 0.2rem;
+	padding: 0.25rem 1rem!important;
+	transition: all 0.5s ease-in-out;
+	.icon {
+		margin-right: 1ex;
+		color: $dw_blue_medium;
+	}
+}
+
+.navbar-brand .navbar-item {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.navbar-separator span {
+	border-left: 1px solid #E5E5E5;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	display: inline-block;
+	height: 2.2rem;
+	transition: all 0.5s ease-in-out;
+}
+
+.navbar-compact {
+	.navbar-item {
+		padding: 0.15rem 1rem!important;
+	}
+	.navbar-separator span {
+		border-left: 1px solid #E5E5E5;
+		margin-top: 0.23rem;
+		margin-bottom: 0.23rem;
+		display: inline-block;
+		height: 2.2rem;
+	}
 }

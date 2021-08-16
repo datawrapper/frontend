@@ -7,8 +7,7 @@
 <svg
     alt="Datawrapper logo"
     viewBox="0 0 335 80"
-    width={height * ratio}
-    {height}
+    style="width:{height * ratio}px; height: {height}px"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     ><g fill={color}
@@ -17,3 +16,9 @@
         /></g
     ></svg
 >
+
+<style>
+    svg {
+        transition: all 0.2s ease-in-out;
+    }
+</style>

@@ -13,10 +13,12 @@
     <div class="navbar-end">
         {#each $config.headerLinks as link}
             {#if link.id === 'separator'}
-                <div class="navbar-separator mx-3" />
+                <div class="navbar-separator mx-3">
+                    <span aria-hidden="true" />
+                </div>
             {:else if link.submenuItems}
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link is-arrowless"
+                    <a href="#/dropdown" class="navbar-link is-arrowless"
                         >{#if link.svgIcon}<SvgIcon
                                 size="1.2rem"
                                 valign="top"
@@ -45,7 +47,9 @@
                 </div>
             {:else}
                 <a
-                    class:is-active={$request.path.startsWith(link.url)}
+                    class:is-active={link.url === '/'
+                        ? $request.path === '/'
+                        : $request.path.startsWith(link.url)}
                     class="navbar-item"
                     href={link.url}
                     >{#if link.svgIcon}<SvgIcon
@@ -62,15 +66,4 @@
 </div>
 
 <style>
-    .navbar-separator {
-        border-left: 1px solid #d7d7d7;
-        border-right: 1px solid #ffffff;
-    }
-    nav ul {
-        margin: 0;
-        display: flex;
-        column-gap: 3ex;
-        align-items: center;
-        height: 100%;
-    }
 </style>
