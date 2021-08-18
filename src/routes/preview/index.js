@@ -41,7 +41,7 @@ module.exports = {
                         svgonly: fakeBoolean,
                         map2svg: fakeBoolean,
                         transparent: fakeBoolean,
-                        logo: Joi.string().optional().valid('forceOn', 'forceOff', 'auto')
+                        logo: fakeBoolean
                     })
                 }
             },
