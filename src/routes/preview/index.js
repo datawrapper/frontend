@@ -40,7 +40,8 @@ module.exports = {
                         fitheight: fakeBoolean,
                         svgonly: fakeBoolean,
                         map2svg: fakeBoolean,
-                        transparent: fakeBoolean
+                        transparent: fakeBoolean,
+                        logo: Joi.string().optional().valid('auto', 'on', 'off').default('auto')
                     })
                 }
             },
@@ -60,7 +61,8 @@ module.exports = {
                     published: request.query.published,
                     ott: request.query.ott,
                     theme: request.query.theme,
-                    transparent: request.query.transparent
+                    transparent: request.query.transparent,
+                    logo: request.query.logo
                 })
                     .filter(([, value]) => Boolean(value))
                     .map(([key, value]) => `${key}=${value}`)

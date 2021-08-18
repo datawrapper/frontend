@@ -15,7 +15,9 @@ html(lang=CHART_LOCALE)
       window.__DW_SVELTE_PROPS__ = JSON.parse(!{__DW_SVELTE_PROPS__});
       window.__DW_SVELTE_PROPS__.isStylePlain = /[?&]plain=1/.test(window.location.search);
       window.__DW_SVELTE_PROPS__.isStyleStatic = /[?&]static=1/.test(window.location.search);
-
+      if (/[?&]logo=(auto|on|off)/.test(window.location.search)) {
+        window.__DW_SVELTE_PROPS__.forceLogo = (window.location.search).match(/[?&]logo=(auto|on|off)/)[1];
+      }
     each src in DEPS
       script(src=src)
 
