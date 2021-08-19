@@ -1,4 +1,3 @@
-
 $dw_blue: #18a1cd;
 $dw_red: #c71e1d;
 $dw_blue_medium: #1d81a2;
@@ -7,4 +6,20 @@ $dw_green: #39f3bb;
 $dw_green_dark: #09bb9f;
 $dw_background: #f9f9f9;
 $dw_lightgray: #eaeaea;
-$dw_gray: #e3e3e3;
+$dw_gray: #e5e5e5;
+$dw_gray_30: #4F4F4F;
+
+html {
+    --color-dw-blue: #18a1cd;
+    --color-dw-red: #c71e1d;
+    --color-dw-blue-medium: #1d81a2;
+    --color-dw-blue-dark: #15607a;
+    --color-dw-blue-light: #e9f3f6;
+    --color-dw-green: #39f3bb;
+    --color-dw-green-dark: #09bb9f;
+    --color-dw-background: #f9f9f9;
+    --color-dw-lightgray: #eaeaea;
+    --color-dw-gray: #e5e5e5;
+    --color-dw-gray-30: #4f4f4f;
+}
+
