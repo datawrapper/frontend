@@ -8,7 +8,8 @@
 
     let scrollY = 0;
     $: scrolledDown = scrollY > 0;
-    $: logoSize = scrolledDown ? 34 : 43;
+    const logoSize = 43;
+    $: logoScale = scrolledDown ? 34 / 43 : 1;
 </script>
 
 <svelte:window bind:scrollY />
@@ -22,13 +23,17 @@
             aria-label="main navigation"
         >
             <div class="navbar-brand">
-                {#if $request.path === '/'}
-                    <DatawrapperLogo height={logoSize} />
-                {:else}
-                    <a class="navbar-item" href="/" style="line-height: 1">
+                <div
+                    style="transform:scale({logoScale}); transform-origin: left center; transition: transform 0.2s ease-in-out"
+                >
+                    {#if $request.path === '/'}
                         <DatawrapperLogo height={logoSize} />
-                    </a>
-                {/if}
+                    {:else}
+                        <a class="navbar-item" href="/" style="line-height: 1">
+                            <DatawrapperLogo height={logoSize} />
+                        </a>
+                    {/if}
+                </div>
 
                 <a
                     role="button"
@@ -53,10 +58,24 @@
     header {
         background: white;
         border-bottom: 1px solid #eee;
-        border-top: 3px solid #1d81a2;
+        border-top: 3px solid var(--color-dw-blue-medium);
         position: sticky;
         top: 0px;
         z-index: 1000;
         transition: all 0.2s ease-in-out;
+    }
+
+    .navbar-burger > span {
+        height: 2px;
+        width: 20px;
+    }
+
+    .navbar-brand .navbar-item {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .navbar-compact .navbar-item {
+        padding: 0.15rem 1rem !important;
     }
 </style>

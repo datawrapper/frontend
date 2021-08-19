@@ -31,14 +31,15 @@ module.exports = {
             return [
                 {
                     id: 'dashboard',
-                    fontIcon: 'fa fa-fw fa-bar-chart-o',
+                    svgIcon: 'rocket',
+                    // fontIcon: 'fa fa-fw fa-bar-chart-o',
                     title: __('Dashboard'),
                     url: '/',
                     order: 5
                 },
                 {
                     id: 'create-new',
-                    fontIcon: 'fa fa-fw fa-plus',
+                    svgIcon: 'add',
                     title: __('Create new <span style="color:#A7A7A7">…</span>'),
                     order: 10,
                     submenuItems: [
@@ -62,52 +63,75 @@ module.exports = {
                             title: __('Table'),
                             url: '/create/table',
                             order: 30
+                        },
+                        {
+                            type: 'activeTeam',
+                            order: 999
                         }
                     ]
                 },
                 {
                     id: 'my-charts',
-                    fontIcon: 'fa fa-fw fa-bar-chart-o',
+                    svgIcon: 'cabinet',
                     title: __('Archive'),
                     url: '/mycharts',
+                    type: 'visArchive',
+                    submenuItems: true,
                     order: 60
                 },
                 {
-                    id: 'separator',
+                    type: 'separator',
                     order: 69
                 },
+                // {
+                //     id: 'settings',
+                //     // fontIcon: 'im im-globe',
+                //     title: language.substr(0, 2).toLowerCase(),
+                //     order: 90,
+                //
+                // },
                 {
                     id: 'settings',
-                    // fontIcon: 'im im-globe',
-                    title: language.substr(0, 2).toLowerCase(),
-                    order: 90,
-                    submenuItems: (frontendConfig.languages || []).map(({ id, title, flag }) => ({
-                        id,
-                        title: `<span class="icon">${flag}</span> <span>${title}</span>`
-                    }))
-                },
-                {
-                    id: 'settings',
-                    fontIcon: 'fa-fw fa fa fa-bars',
+                    svgIcon: 'menu',
+                    svgIconSize: '30px',
+                    // svgIconCrisp: true,
                     order: 95,
                     submenuItems: [
                         {
                             url: '/account',
-                            title: 'Settings'
+                            title: 'Settings',
+                            svgIcon: 'user-menu'
                         },
                         {
                             url: '/account/teams',
-                            title: 'My teams'
+                            title: 'My teams',
+                            svgIcon: 'team'
                         },
                         {
                             url: '/account/teams',
-                            title: 'Language'
+                            title: 'Language',
+                            svgIcon: 'globe',
+                            submenuItems: (frontendConfig.languages || []).map(
+                                ({ id, title, flag }) => ({
+                                    id,
+                                    title: `<span class="icon">${flag}</span> <span>${title}</span>`
+                                })
+                            )
                         },
                         {
-                            id: 'separator'
+                            type: 'separator'
+                        },
+                        {
+                            type: 'html',
+                            content:
+                                '<span class="has-text-grey is-size-7" style="font-weight:normal">Select active team</span>'
+                        },
+                        {
+                            type: 'separator'
                         },
                         {
                             url: '/account/teams',
+                            svgIcon: 'signout',
                             title: 'Logout'
                         }
                     ]
