@@ -1,0 +1,14 @@
+{
+    "verbose": true,
+    "ignore": [
+        "node_modules/*",
+        "**/*.svelte",
+        "/app/src/views/plugins/*",
+        "/plugins/*/src/frontend/views/**/*.js"
+    ],
+    "watch": [
+        "/app",
+        "/plugins",
+        "/etc/datawrapper/config.js"
+    ]
+}
