@@ -16,6 +16,7 @@ const registerVisualizations = require('@datawrapper/service-utils/registerVisua
 const config = requireConfig();
 const path = require('path');
 const { getUserLanguage } = require('./utils');
+const headerLinks = require('./utils/header-links');
 const {
     SvelteView,
     getView,
@@ -138,6 +139,8 @@ const start = async () => {
     server.method('logAction', require('@datawrapper/orm/utils/action').logAction);
     server.method('isDevMode', () => process.env.DW_DEV_MODE);
     server.method('registerVisualization', registerVisualizations(server));
+
+    await server.register(headerLinks);
 
     // hooks
     server.app.event = eventList;

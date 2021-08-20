@@ -1,15 +1,18 @@
 <script>
     export let color = '#333333';
     export let height = 50;
+    $: width = Math.ceil(height * ratio);
     const ratio = 3.16;
+
+    let height_ = height;
 </script>
 
 <svg
     alt="Datawrapper logo"
-    viewBox="0 0 335 80"
-    width={height * ratio}
-    {height}
+    viewBox="0 0 336 90"
     fill="none"
+    {width}
+    {height}
     xmlns="http://www.w3.org/2000/svg"
     ><g fill={color}
         ><path d="M5 0H0v91h335v-5H5V0z" shape-rendering="crispEdges" /><path
@@ -17,3 +20,9 @@
         /></g
     ></svg
 >
+
+<style>
+    svg {
+        transition: all 0.2s ease-in-out;
+    }
+</style>

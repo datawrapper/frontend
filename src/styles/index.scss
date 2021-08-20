@@ -3,6 +3,10 @@
 @import "./fonts";
 @import "./colors";
 
+html {
+	--box-border-radius: 4px;
+}
+
 // colors
 $primary: $dw_blue_medium;
 $red: $dw_red;
@@ -13,6 +17,8 @@ $background: $dw_lightgray;
 $body-background-color: $dw_background;
 $light: $dw_gray;
 $tabs-boxed-link-active-background-color: $dw_background;
+$navbar-background-color: white;
+$navbar-tab-active-background-color: $dw_blue_light;
 $table-background-color: transparent;
 $table-striped-row-even-background-color: hsla(0,0,0, 0.03);
 
@@ -27,6 +33,11 @@ $title-weight: 400;
 $content-heading-weight: 400;
 
 $footer-padding: 3rem 0rem 6rem;
+
+$navbar-height: 2rem;
+$navbar-burger-color: $dw_blue_medium;
+$navbar-padding-horizontal: 2rem;
+$navbar-dropdown-arrow: $dw_gray_30;
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -121,4 +132,12 @@ button.is-black {
 
 .button.is-large {
 	font-weight: $weight-medium;
+}
+
+// adjust navbar arrow
+.select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
+	border-width: 2px;
+	border-radius: 0;
+	width: 0.5em;
+	height: 0.5em;
 }
