@@ -9,12 +9,13 @@ module.exports = {
 
         server.route({
             method: 'GET',
-            path: '/{id}',
+            path: '/{id}/{step?}',
             options: {
                 // auth: false,
                 async handler(request, h) {
                     return h.view('edit/Edit.svelte', {
                         props: {
+                            initUrlStep: request.params.step,
                             visualizations: Array.from(server.app.visualizations.keys()).map(key =>
                                 server.app.visualizations.get(key)
                             )
