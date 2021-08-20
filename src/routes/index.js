@@ -26,6 +26,12 @@ module.exports = {
                     prefix: '/v2/hello'
                 }
             });
+
+            await server.register(require('./edit'), {
+                routes: {
+                    prefix: '/v2/edit'
+                }
+            });
         }
 
         await server.register(require('./create'), {
