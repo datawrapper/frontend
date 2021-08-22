@@ -1,12 +1,17 @@
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
     import Breadcrumbs from 'layout/partials/bulma/Breadcrumbs.svelte';
+    import SvgIcon from 'layout/partials/SvgIcon.svelte';
+    import { onMount } from 'svelte';
+
     import VisArchive from '../layout/partials/header/VisArchive.svelte';
     import Describe from './Describe.svelte';
     import Publish from './Publish.svelte';
     import Step from './Step.svelte';
     import UploadData from './UploadData.svelte';
     import Visualize from './Visualize.svelte';
+
+    import { chart, unsavedChanges, hasUnsavedChanges } from './stores';
 
     export let initUrlStep;
 
@@ -39,6 +44,13 @@
     let activeStep = steps.find(s => s.id === initUrlStep) || steps[0];
     let lastActiveStep = 1;
 
+    export let chartData;
+
+    onMount(() => {
+        chart.set(chartData);
+        navigateTo(activeStep, initUrlStep !== activeStep.id);
+    });
+
     let bcPath = [
         {
             title: 'My Charts',
@@ -55,7 +67,8 @@
     function navigateTo(step, pushState = true) {
         activeStep = step;
         if (step.index > lastActiveStep) lastActiveStep = step.index;
-        if (pushState) window.history.pushState(step, '', step.id);
+        if (pushState)
+            window.history.pushState({ id: step.id }, '', `/v2/edit/${chart.id}/${step.id}`);
     }
 
     function onPopState(event) {
@@ -64,14 +77,49 @@
             false
         );
     }
+
+    function onBeforeUnload(event) {
+        if (Object.keys(unsavedChanges).length) {
+            event.preventDefault();
+            return (event.returnValue =
+                'There are unsaved changes. Do you really want to leave this page.');
+        }
+    }
 </script>
 
-<svelte:window on:popstate={onPopState} />
+<svelte:window
+    on:popstate={onPopState}
+    on:beforeunload={onBeforeUnload}
+    on:pagehide={onBeforeUnload}
+    on:unload={onBeforeUnload}
+/>
 
 <MainLayout>
     <!-- step nav -->
     <div class="container block">
-        <Breadcrumbs title="This chart is in" path={bcPath} />
+        <div class="columns is-2 is-variable">
+            <div class="column is-narrow pr-0 breadcrumbs-pre">This chart is in</div>
+            <div class="column pl-0">
+                <Breadcrumbs path={bcPath} />
+            </div>
+            <div class="column is-narrow is-size-7 has-text-grey-light">
+                {#if $hasUnsavedChanges}
+                    <em
+                        ><SvgIcon
+                            valign="sub"
+                            icon="loading-spinner"
+                            timing="steps(12)"
+                            duration="1s"
+                            color="var(--color-dw-gray-30)"
+                            className="ml-2 mr-0"
+                            size="1.1rem"
+                            spin
+                        /> storing changes...</em
+                    >
+                {/if}
+            </div>
+        </div>
+
         <div class="columns step-nav">
             {#each steps as step}
                 <div class="column">
@@ -94,4 +142,7 @@
 </MainLayout>
 
 <style>
+    .breadcrumbs-pre {
+        color: var(--color-dw-gray-60);
+    }
 </style>
