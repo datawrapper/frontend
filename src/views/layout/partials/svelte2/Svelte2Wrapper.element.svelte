@@ -16,6 +16,7 @@
     export let js;
     export let css;
     export let data;
+    export let module = 'App';
 
     export function update(data) {
         if (_app) _app.set(data);
@@ -58,10 +59,10 @@
     }`;
         parent.appendChild(style);
 
-        require([id], ({ App }) => {
+        require([id], mod => {
             try {
                 loading = false;
-                _app = new App({
+                _app = new mod[module]({
                     target: container,
                     data: JSON.parse(data)
                 });
@@ -87,12 +88,11 @@
     </div>
 </div>
 
-<style lang="less">
+<style>
     .svelte-2 {
         position: relative;
-
-        .loading {
-            color: #888;
-        }
+    }
+    .loading {
+        color: #888;
     }
 </style>
