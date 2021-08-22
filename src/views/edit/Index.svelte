@@ -41,13 +41,17 @@
             ui: Publish
         }
     ];
+    $: lastActiveStep = $chart.last_edit_step || 1;
     let activeStep = steps.find(s => s.id === initUrlStep) || steps[0];
-    let lastActiveStep = 1;
 
     export let chartData;
 
     onMount(() => {
         chart.set(chartData);
+        if (!initUrlStep && chartData.last_edit_step) {
+            activeStep =
+                steps[Math.max(1, Math.min(steps.length - 1, chartData.last_edit_step - 1))];
+        }
         navigateTo(activeStep, initUrlStep !== activeStep.id);
     });
 
@@ -66,9 +70,11 @@
 
     function navigateTo(step, pushState = true) {
         activeStep = step;
-        if (step.index > lastActiveStep) lastActiveStep = step.index;
+        if (lastActiveStep && step.index > lastActiveStep) {
+            $chart.last_edit_step = step.index;
+        }
         if (pushState)
-            window.history.pushState({ id: step.id }, '', `/v2/edit/${chart.id}/${step.id}`);
+            window.history.pushState({ id: step.id }, '', `/v2/edit/${$chart.id}/${step.id}`);
     }
 
     function onPopState(event) {
@@ -94,7 +100,7 @@
     on:unload={onBeforeUnload}
 />
 
-<MainLayout>
+<MainLayout title="{$chart.title} - [{$chart.id}] - {activeStep.title}">
     <!-- step nav -->
     <div class="container block">
         <div class="columns is-2 is-variable">
@@ -136,7 +142,7 @@
     <!-- step content -->
     <div class="block">
         {#if activeStep}
-            <svelte:component this={activeStep.ui} />
+            <svelte:component this={activeStep.ui} {chart} />
         {/if}
     </div>
 </MainLayout>

@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store';
 import isEqual from 'lodash/isEqual';
-import clone from 'lodash/clone';
+import cloneDeep from 'lodash/cloneDeep';
 import debounce from 'lodash/debounce';
 import httpReq from '@datawrapper/shared/httpReq';
 
@@ -14,7 +14,8 @@ const allowedChartKeys = new Set([
     'type',
     'metadata',
     'language',
-    'external_data'
+    'external_data',
+    'last_edit_step'
 ]);
 
 export const unsavedChanges = {};
@@ -42,7 +43,7 @@ const patchChartSoon = debounce(async function (id) {
 chart.subscribe(value => {
     if (!prevState && value.id) {
         // initial set
-        prevState = clone(value);
+        prevState = cloneDeep(value);
     } else if (prevState && !isEqual(prevState, value)) {
         const payload = {};
         let newUnsaved = false;
@@ -50,14 +51,14 @@ chart.subscribe(value => {
             if (!isEqual(value[key], prevState[key])) {
                 if (allowedChartKeys.has(key)) {
                     newUnsaved = true;
-                    unsavedChanges[key] = clone(value[key]);
+                    unsavedChanges[key] = cloneDeep(value[key]);
                 } else {
                     // restore prev value
                     value[key] = prevState[key];
                 }
             }
         });
-        prevState = clone(value);
+        prevState = cloneDeep(value);
         if (newUnsaved) {
             hasUnsavedChanges.set(true);
             patchChartSoon(value.id);
