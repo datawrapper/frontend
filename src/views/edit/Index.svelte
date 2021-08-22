@@ -7,12 +7,14 @@
     import VisArchive from '../layout/partials/header/VisArchive.svelte';
     import Describe from './Describe.svelte';
     import Publish from './Publish.svelte';
-    import Step from './Step.svelte';
+    import Step from './nav/Step.svelte';
     import UploadData from './UploadData.svelte';
     import Visualize from './Visualize.svelte';
 
     import { chart, unsavedChanges, hasUnsavedChanges } from './stores';
 
+    export let chartData;
+    export let visualizations;
     export let initUrlStep;
 
     let steps = [
@@ -43,8 +45,6 @@
     ];
     $: lastActiveStep = $chart.last_edit_step || 1;
     let activeStep = steps.find(s => s.id === initUrlStep) || steps[0];
-
-    export let chartData;
 
     onMount(() => {
         chart.set(chartData);
@@ -142,7 +142,7 @@
     <!-- step content -->
     <div class="block">
         {#if activeStep}
-            <svelte:component this={activeStep.ui} {chart} />
+            <svelte:component this={activeStep.ui} {chart} {visualizations} />
         {/if}
     </div>
 </MainLayout>
