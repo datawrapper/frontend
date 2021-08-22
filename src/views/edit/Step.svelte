@@ -4,7 +4,8 @@
     const dispatch = createEventDispatcher();
 
     export let active = false;
-    export let visited = false;
+    export let lastActiveStep;
+    $: visited = step.index <= lastActiveStep;
     export let step = { index: 0, title: 'foo' };
 
     // internals
@@ -22,40 +23,45 @@
     } L ${width - halfHeight + br},${height - br} q ${-br},${br} ${-br * 2},${br} L 0,${height} z`;
 </script>
 
-<div
+<a
+    href={step.id}
+    on:click|preventDefault={() => !active && dispatch('navigate', step)}
     bind:offsetHeight={height}
     bind:offsetWidth={width}
-    class="px-4 py-4 is-size-5"
+    class="px-4 py-2 is-size-5"
     class:active
     class:visited
     style="clip-path: path('{clipPath}');"
 >
-    <span class="step mr-2">{step.index}</span>
-    {#if !active}
-        <a href={step.id} on:click|preventDefault={() => dispatch('navigate', step)}
-            >{@html step.title}</a
-        >
-    {:else}
-        {@html step.title}
+    <span class="step ml-1 mr-3">{step.index}</span>{@html step.title}
+    {#if !active && visited}
+        <i class="fa fa-check" />
     {/if}
-</div>
+</a>
 
-<style>
-    div {
-        background: var(--color-dw-gray);
+<style lang="less">
+    a {
+        background: var(--color-dw-gray-80);
         border-radius: var(--box-border-radius);
         display: inline-block;
         width: 100%;
+
+        &.active {
+            background: var(--color-dw-red);
+            color: white;
+            cursor: default;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
     .step {
         display: inline-block;
         font-weight: bold;
-    }
-    .active {
-        background: var(--color-dw-red);
         color: white;
-    }
-    .visited {
-        color: var(--color-dw-gray-30);
+        font-size: 2rem;
+        vertical-align: -0.2rem;
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
     }
 </style>

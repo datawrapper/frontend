@@ -11,9 +11,10 @@ html {
 $primary: $dw_blue_medium;
 $red: $dw_red;
 $green: $dw_green;
-$link: $dw_blue;
+$link: $dw_blue_medium;
 $link-hover: $dw_blue_dark;
 $background: $dw_lightgray;
+$text: $dw_gray_20;
 $body-background-color: $dw_background;
 $light: $dw_gray;
 $tabs-boxed-link-active-background-color: $dw_background;
@@ -38,6 +39,10 @@ $navbar-height: 2rem;
 $navbar-burger-color: $dw_blue_medium;
 $navbar-padding-horizontal: 2rem;
 $navbar-dropdown-arrow: $dw_gray_30;
+
+$breadcrumb-item-color: $dw_gray_60;
+$breadcrumb-item-active-color: $dw_gray_50;
+$breadcrumb-item-hover-color: $dw_blue_medium;
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";

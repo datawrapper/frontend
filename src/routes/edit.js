@@ -13,7 +13,7 @@ module.exports = {
             options: {
                 // auth: false,
                 async handler(request, h) {
-                    return h.view('edit/Edit.svelte', {
+                    return h.view('edit/Index.svelte', {
                         props: {
                             initUrlStep: request.params.step,
                             visualizations: Array.from(server.app.visualizations.keys()).map(key =>
@@ -25,6 +25,6 @@ module.exports = {
             }
         });
 
-        server.methods.prepareView('edit/Edit.svelte');
+        server.methods.prepareView('edit/Index.svelte');
     }
 };
