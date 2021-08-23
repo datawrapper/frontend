@@ -3,6 +3,9 @@
     import DatawrapperLogo from './header/DatawrapperLogo.svelte';
     import NavBar from './header/NavBar.svelte';
 
+    const config = getContext('config');
+    $: stickyHeaderThreshold = $config.stickyHeaderThreshold;
+
     const request = getContext('request');
     let isActive = false;
 
@@ -18,7 +21,7 @@
 
 <header
     class={scrolledDown ? 'py-3 mb-3' : 'py-5 mb-5'}
-    class:is-sticky={innerHeight > 700}
+    class:is-sticky={innerHeight > stickyHeaderThreshold}
     id="top"
 >
     <div class="container">
