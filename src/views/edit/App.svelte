@@ -1,25 +1,14 @@
 <script type="text/javascript">
+    import { onMount } from 'svelte';
+
     import MainLayout from 'layout/MainLayout.svelte';
-    import Breadcrumbs from 'layout/partials/bulma/Breadcrumbs.svelte';
-    import SvgIcon from 'layout/partials/SvgIcon.svelte';
-    import { onMount, getContext } from 'svelte';
+    import Header from './nav/Header.svelte';
     import Describe from './Describe.svelte';
     import Publish from './Publish.svelte';
-    import Step from './nav/Step.svelte';
     import UploadData from './UploadData.svelte';
     import Visualize from './Visualize.svelte';
 
-    import {
-        data,
-        chart,
-        unsavedChanges,
-        hasUnsavedChanges,
-        initChartStore,
-        initDataStore
-    } from './stores';
-
-    const config = getContext('config');
-    $: stickyHeaderThreshold = $config.stickyHeaderThreshold;
+    import { data, chart, unsavedChanges, initChartStore, initDataStore } from './stores';
 
     export let rawData; // the csv dataset
     export let rawChart; // the JSON chart object
@@ -102,8 +91,6 @@
                 'There are unsaved changes. Do you really want to leave this page.');
         }
     }
-
-    let innerHeight = 0;
 </script>
 
 <svelte:window
@@ -111,50 +98,17 @@
     on:beforeunload={onBeforeUnload}
     on:pagehide={onBeforeUnload}
     on:unload={onBeforeUnload}
-    bind:innerHeight
 />
 
 <MainLayout title="{$chart.title} - [{$chart.id}] - {activeStep.title}">
     <!-- step nav -->
-    <div class="container block" class:is-sticky={innerHeight > stickyHeaderThreshold}>
-        <div class="columns is-2 is-variable">
-            <div class="column is-narrow pr-0 breadcrumbs-pre">This chart is in</div>
-            <div class="column pl-0">
-                <Breadcrumbs path={bcPath} />
-            </div>
-            <div class="column is-narrow is-size-7 has-text-grey-light">
-                {#if $hasUnsavedChanges}
-                    <em
-                        ><SvgIcon
-                            valign="sub"
-                            icon="loading-spinner"
-                            timing="steps(12)"
-                            duration="1s"
-                            color="var(--color-dw-gray-30)"
-                            className="ml-2 mr-0"
-                            size="1.1rem"
-                            spin
-                        /> storing changes...</em
-                    >
-                {/if}
-            </div>
-        </div>
-
-        <div class="editor-step-nav">
-            <div class="columns step-nav">
-                {#each steps as step}
-                    <div class="column">
-                        <Step
-                            {step}
-                            {lastActiveStep}
-                            on:navigate={evt => navigateTo(evt.detail)}
-                            active={step === activeStep}
-                        />
-                    </div>
-                {/each}
-            </div>
-        </div>
-    </div>
+    <Header
+        {steps}
+        {bcPath}
+        bind:activeStep
+        bind:lastActiveStep
+        on:navigate={evt => navigateTo(evt.detail)}
+    />
     <!-- step content -->
     <div class="block">
         {#if activeStep}
@@ -162,15 +116,3 @@
         {/if}
     </div>
 </MainLayout>
-
-<style>
-    .breadcrumbs-pre {
-        color: var(--color-dw-gray-60);
-    }
-    .is-sticky {
-        position: sticky;
-        top: 40px;
-        z-index: 900;
-        background: var(--color-dw-background);
-    }
-</style>

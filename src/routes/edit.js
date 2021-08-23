@@ -35,7 +35,7 @@ module.exports = {
 
                     const data = await api(`/charts/${chart.id}/data`, { json: false });
 
-                    return h.view('edit/Index.svelte', {
+                    return h.view('edit/App.svelte', {
                         props: {
                             rawChart: chart,
                             rawData: data,
@@ -67,6 +67,6 @@ module.exports = {
             return chart;
         }
 
-        server.methods.prepareView('edit/Index.svelte');
+        server.methods.prepareView('edit/App.svelte');
     }
 };
