@@ -103,9 +103,11 @@
             </div>
             <div class="column" bind:this={contentRef}>
                 <div class="section pl-0 pt-0">
-                    <h1 id="welcome" class="title is-1" style="color:#c04" on:click={knock}>
+                    <h1 class="title is-1">Hello world!</h1>
+                    <p class="subtitle is-3 has-text-grey">A Datawrapper demo page</p>
+                    <h3 id="welcome" class="title is-4 mt-3" style="color:#c04" on:click={knock}>
                         {message}
-                    </h1>
+                    </h3>
                     <div class="content">
                         <p class="subtitle">
                             Welcome to the Hello World demo page of our new frontend! The purpose of
