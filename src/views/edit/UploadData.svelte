@@ -1,5 +1,5 @@
 <script>
-    import { chart } from './stores';
+    import { chart, data } from './stores';
 
     let uploadMethods = [
         {
@@ -24,6 +24,8 @@
                 computer.
             </p>
         </div>
-        <div class="column" />
+        <div class="column">
+            <textarea bind:value={$data} />
+        </div>
     </div>
 </div>

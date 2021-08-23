@@ -9,6 +9,7 @@ module.exports = function createAPI(config, auth) {
     const session = get(auth, 'credentials.data.id', '');
 
     async function api(path, { json = true } = {}) {
+        if (!path.startsWith('/')) throw new Error('API request path needs to start with /');
         try {
             const response = await got(`${apiBase}${path}`, {
                 headers: session

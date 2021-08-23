@@ -8,6 +8,7 @@
     export let js;
     export let css;
     export let data;
+    export let store;
     export let module = 'App';
 
     const messages = getContext('messages');
@@ -43,7 +44,8 @@
                 try {
                     _app = new mod[module]({
                         target: container,
-                        data
+                        data,
+                        store
                     });
                     _data = clone(data);
                     _app.on('state', ({ current }) => {
@@ -95,6 +97,7 @@
         {id}
         {js}
         {css}
+        {store}
         {module}
         on:update={update}
         data={JSON.stringify(data)}

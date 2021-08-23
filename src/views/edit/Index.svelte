@@ -11,9 +11,17 @@
     import UploadData from './UploadData.svelte';
     import Visualize from './Visualize.svelte';
 
-    import { chart, unsavedChanges, hasUnsavedChanges } from './stores';
+    import {
+        data,
+        chart,
+        unsavedChanges,
+        hasUnsavedChanges,
+        initChartStore,
+        initDataStore
+    } from './stores';
 
-    export let chartData;
+    export let rawData; // the csv dataset
+    export let rawChart; // the JSON chart object
     export let visualizations;
     export let initUrlStep;
 
@@ -47,10 +55,12 @@
     let activeStep = steps.find(s => s.id === initUrlStep) || steps[0];
 
     onMount(() => {
-        chart.set(chartData);
-        if (!initUrlStep && chartData.last_edit_step) {
+        initChartStore(rawChart);
+        initDataStore(rawChart.id, rawData);
+
+        if (!initUrlStep && rawChart.last_edit_step) {
             activeStep =
-                steps[Math.max(1, Math.min(steps.length - 1, chartData.last_edit_step - 1))];
+                steps[Math.max(1, Math.min(steps.length - 1, rawChart.last_edit_step - 1))];
         }
         navigateTo(activeStep, initUrlStep !== activeStep.id);
     });
@@ -142,7 +152,7 @@
     <!-- step content -->
     <div class="block">
         {#if activeStep}
-            <svelte:component this={activeStep.ui} {chart} {visualizations} />
+            <svelte:component this={activeStep.ui} {chart} {visualizations} {data} />
         {/if}
     </div>
 </MainLayout>

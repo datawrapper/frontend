@@ -10,7 +10,7 @@ module.exports = {
     name: 'routes/edit',
     version: '1.0.0',
     register: async (server, options) => {
-        server.methods.prepareView('HelloWorld.svelte');
+        const config = server.methods.config();
 
         server.route({
             method: 'GET',
@@ -28,12 +28,17 @@ module.exports = {
                 },
                 // auth: false,
                 async handler(request, h) {
-                    const { params } = request;
-                    const chartData = await getChart(params.chartId, request);
+                    const { params, auth } = request;
+                    const chart = await getChart(params.chartId, request);
+
+                    const api = server.methods.createAPI(config, auth);
+
+                    const data = await api(`/charts/${chart.id}/data`, { json: false });
 
                     return h.view('edit/Index.svelte', {
                         props: {
-                            chartData,
+                            rawChart: chart,
+                            rawData: data,
                             initUrlStep: params.step,
                             visualizations: Array.from(server.app.visualizations.keys()).map(key =>
                                 server.app.visualizations.get(key)

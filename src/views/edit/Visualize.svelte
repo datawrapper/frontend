@@ -1,6 +1,9 @@
 <script>
     import Tabs from 'layout/partials/bulma/Tabs.svelte';
+    import RefineTab from './visualize/RefineTab.svelte';
+
     export let chart;
+    export let visualizations;
 
     let active = 'refine';
 </script>
@@ -22,6 +25,8 @@
                 Title: <input type="text" class="input" bind:value={$chart.title} />
                 Description:
                 <input type="text" class="input" bind:value={$chart.metadata.describe.intro} />
+            {:else if active === 'refine'}
+                <RefineTab {chart} {visualizations} />
             {/if}
         </div>
         <div class="column">

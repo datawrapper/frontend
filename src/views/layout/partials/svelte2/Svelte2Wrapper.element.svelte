@@ -1,3 +1,4 @@
+<!-- version for modern browsers -->
 <svelte:options tag="svelte2-wrapper" />
 
 <script>
@@ -16,6 +17,7 @@
     export let js;
     export let css;
     export let data;
+    export let store;
     export let module = 'App';
 
     export function update(data) {
@@ -64,7 +66,8 @@
                 loading = false;
                 _app = new mod[module]({
                     target: container,
-                    data: JSON.parse(data)
+                    data: JSON.parse(data),
+                    store
                 });
                 _data = data;
                 _app.on('state', ({ current }) => {
