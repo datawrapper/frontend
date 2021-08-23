@@ -358,7 +358,16 @@ html {
   --color-dw-background: #f9f9f9;
   --color-dw-lightgray: #eaeaea;
   --color-dw-gray: #e5e5e5;
-  --color-dw-gray-30: #4f4f4f; }
+  --color-dw-gray-20: #333333;
+  --color-dw-gray-30: #4F4F4F;
+  --color-dw-gray-50: #858585;
+  --color-dw-gray-60: #A7A7A7;
+  --color-dw-gray-70: #C9C9C9;
+  --color-dw-gray-80: #E5E5E5;
+  --color-dw-gray-85: #F0F0F0;
+  --color-dw-gray-90: #F5F5F5;
+  --color-dw-gray-95: #F9F9F9;
+  --color-dw-black: var(--dw-gray-20); }
 
 html {
   --box-border-radius: 4px; }
@@ -610,7 +619,7 @@ th {
     text-align: inherit; }
 
 html {
-  background-color: #f9f9f9;
+  background-color: #F9F9F9;
   font-size: 14px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -4556,7 +4565,7 @@ a.navbar-item,
       background-color: #eaeaea;
       border-bottom-color: #dbdbdb; }
   .tabs.is-boxed li.is-active a {
-    background-color: #f9f9f9;
+    background-color: #F9F9F9;
     border-color: #dbdbdb;
     border-bottom-color: transparent !important; }
   .tabs.is-fullwidth li {
