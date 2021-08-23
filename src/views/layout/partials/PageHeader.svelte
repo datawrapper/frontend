@@ -68,7 +68,7 @@
         background: white;
         border-bottom: 1px solid #eee;
         border-top: 3px solid var(--color-dw-blue-medium);
-        transition: all 0.2s ease-in-out;
+        transition: padding 0.2s ease-in-out, margin 0.2s ease-in-out;
     }
 
     header.is-sticky {
@@ -89,5 +89,6 @@
 
     .navbar-compact .navbar-item {
         padding: 0.15rem 1rem !important;
+        transition: padding 0.2s ease-in-out;
     }
 </style>
