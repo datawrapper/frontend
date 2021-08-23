@@ -2,9 +2,7 @@
     import MainLayout from 'layout/MainLayout.svelte';
     import Breadcrumbs from 'layout/partials/bulma/Breadcrumbs.svelte';
     import SvgIcon from 'layout/partials/SvgIcon.svelte';
-    import { onMount } from 'svelte';
-
-    import VisArchive from '../layout/partials/header/VisArchive.svelte';
+    import { onMount, getContext } from 'svelte';
     import Describe from './Describe.svelte';
     import Publish from './Publish.svelte';
     import Step from './nav/Step.svelte';
@@ -19,6 +17,9 @@
         initChartStore,
         initDataStore
     } from './stores';
+
+    const config = getContext('config');
+    $: stickyHeaderThreshold = $config.stickyHeaderThreshold;
 
     export let rawData; // the csv dataset
     export let rawChart; // the JSON chart object
@@ -115,7 +116,7 @@
 
 <MainLayout title="{$chart.title} - [{$chart.id}] - {activeStep.title}">
     <!-- step nav -->
-    <div class="container block" class:is-sticky={innerHeight > 700}>
+    <div class="container block" class:is-sticky={innerHeight > stickyHeaderThreshold}>
         <div class="columns is-2 is-variable">
             <div class="column is-narrow pr-0 breadcrumbs-pre">This chart is in</div>
             <div class="column pl-0">
