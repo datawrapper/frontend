@@ -6,15 +6,28 @@
     const request = getContext('request');
     let isActive = false;
 
+    let scrollingUp = false;
+    let lastScrollY = 0;
     let scrollY = 0;
     $: scrolledDown = scrollY > 0;
     const logoSize = 43;
     $: logoScale = scrolledDown ? 34 / 43 : 1;
+
+    function onScroll() {
+        if (scrollY && lastScrollY) {
+            scrollingUp = scrollY < lastScrollY && Math.abs(scrollY - lastScrollY) < 50;
+        }
+        lastScrollY = scrollY;
+    }
 </script>
 
-<svelte:window bind:scrollY />
+<svelte:window bind:scrollY on:scroll={onScroll} />
 
-<header class={scrolledDown ? 'py-3 mb-3' : 'py-5 mb-5'} id="top">
+<header
+    class={scrolledDown ? 'py-3 mb-3' : 'py-5 mb-5'}
+    id="top"
+    class:hidden={!scrollingUp && scrolledDown}
+>
     <div class="container">
         <nav
             class="navbar"
@@ -63,6 +76,10 @@
         top: 0px;
         z-index: 1000;
         transition: all 0.2s ease-in-out;
+    }
+
+    header.hidden {
+        top: -80px;
     }
 
     .navbar-burger > span {
