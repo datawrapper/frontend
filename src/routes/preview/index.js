@@ -10,12 +10,9 @@ module.exports = {
     name: 'routes/preview',
     version: '1.0.0',
     register: async (server, options) => {
-        const { loadLocales, loadVendorLocale, createAPI, initCaches } = require('./utils');
+        const { loadLocales, loadVendorLocale, initCaches } = require('./utils');
         const locales = await loadLocales();
         const config = server.methods.config();
-        const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
-            config.api.domain
-        }/v3`;
 
         server.route({
             method: 'GET',
@@ -49,11 +46,7 @@ module.exports = {
                 const { auth, params } = request;
                 const { chartId } = params;
 
-                const api = createAPI(
-                    apiBase,
-                    config.api.sessionID,
-                    auth.credentials && auth.credentials.data ? auth.credentials.data.id : ''
-                );
+                const api = server.methods.createAPI(config, auth);
 
                 let chart;
 
@@ -119,7 +112,7 @@ module.exports = {
                     CHART_HTML: html,
                     CHART_HEAD: head,
                     CHART_LOCALE: chartLocale,
-                    VIS_SCRIPT: `${apiBase}/visualizations/${props.visualization.id}/script.js`,
+                    VIS_SCRIPT: `${api.apiBase}/visualizations/${props.visualization.id}/script.js`,
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
                     DEPS: dependencies.map(el => `/lib/chart-core/${el}`),
