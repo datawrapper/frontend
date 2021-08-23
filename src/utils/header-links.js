@@ -75,9 +75,13 @@ module.exports = {
                     svgIcon: 'cabinet',
                     title: __('Archive'),
                     url: '/mycharts',
+                    order: 60
+                },
+                {
+                    id: 'my-charts',
                     type: 'visArchive',
                     submenuItems: true,
-                    order: 60
+                    order: 61
                 },
                 {
                     type: 'separator',

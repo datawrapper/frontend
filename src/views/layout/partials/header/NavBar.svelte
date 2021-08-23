@@ -18,7 +18,14 @@
                     <span aria-hidden="true" />
                 </div>
             {:else if link.submenuItems}
-                <div class="navbar-item has-dropdown is-hoverable">
+                <!-- top level navbar entry with submenu -->
+                <div
+                    class="navbar-item has-dropdown is-hoverable"
+                    class:just-arrow={link.type === 'visArchive' &&
+                        !link.title &&
+                        !link.icon &&
+                        !link.svgIcon}
+                >
                     <a
                         href={link.url || '#/dropdown'}
                         class="navbar-link"
@@ -28,13 +35,16 @@
                                 crisp={!!link.svgIconCrisp}
                                 valign="top"
                                 icon={link.svgIcon}
+                                className={link.title ? '' : 'mr-0'}
                             />{/if}{#if link.fontIcon}<span class="icon"
                                 ><i class={link.fontIcon} /></span
                             >{/if} <span>{@html link.title || ''}</span></a
                     >
                     {#if link.type === 'visArchive'}
+                        <!-- visualization archive is a special component -->
                         <VisArchive />
                     {:else}
+                        <!-- navbar dropdown menu -->
                         <div class="navbar-dropdown is-right">
                             {#each link.submenuItems as subItem}
                                 {#if subItem.type === 'separator'}
@@ -77,6 +87,7 @@
                     {/if}
                 </div>
             {:else}
+                <!-- top-level navbar link/icon -->
                 <a
                     class:is-active={link.url === '/'
                         ? $request.path === '/'
@@ -97,11 +108,42 @@
     </div>
 </div>
 
-<style>
+<style lang="less">
     :global(.navbar-dropdown) {
         border-radius: var(--box-border-radius);
         border: 1px solid var(--color-dw-gray);
         box-shadow: 0px 4px 4px 0px #00000040;
+    }
+
+    div.navbar-item,
+    a.navbar-item {
+        transition: none !important;
+    }
+
+    div.navbar-item {
+        &:hover {
+            background: var(--color-dw-gray-90) !important;
+            border-radius: var(--box-border-radius);
+
+            a.navbar-link:hover {
+                background: none !important;
+            }
+        }
+
+        &.just-arrow {
+            padding: 0 !important;
+            margin: 0 !important;
+            // margin-left: -1.5em!important;
+
+            .navbar-link:after {
+                right: 1.4em;
+            }
+        }
+    }
+
+    a.navbar-item:hover {
+        background: var(--color-dw-gray-90) !important;
+        border-radius: var(--box-border-radius);
     }
     .navbar-item.is-active {
         background: var(--color-dw-blue-light) !important;
@@ -143,6 +185,7 @@
     }
 
     :global(.navbar-compact) .navbar-separator span {
+        transition: height, margin 0.2 ease-in-out;
         margin-top: 0.23rem;
         margin-bottom: 0.23rem;
         height: 2.2rem;
