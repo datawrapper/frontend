@@ -10,38 +10,52 @@
 
     const mockChart = new SvelteChart({});
 
+    export let data;
     export let chart;
     export let visualizations;
-    let ready = false;
+    let chartReady = false;
+    let dataReady = false;
 
     onMount(() => {
-        visualizations.forEach(vis => {
-            dwVisualization.register(vis.id, { meta: vis });
+        // visualizations.forEach(vis => {
+        //     dwVisualization.register(vis.id, { meta: vis });
+        // });
+
+        data.subscribe(csv => {
+            if (csv) {
+                mockChart.load(csv, false).then(ds => {
+                    if (!dataReady) {
+                        dataReady = true;
+                        chart.subscribe(data => {
+                            const cloned = cloneDeep(data);
+                            const vis = dwVisualization('d3-bars');
+                            if (vis && dataReady) {
+                                vis.chart(mockChart);
+                                cloned.vis = vis;
+                                cloned.visualization = vis.meta;
+                                cloned.dataset = ds;
+                                mockChart.set(cloned);
+                                chartReady = true;
+                            }
+                        });
+                    }
+                });
+            }
         });
     });
 
-    chart.subscribe(data => {
-        const cloned = cloneDeep(data);
-        const vis = dwVisualization('d3-bars');
-        if (vis) {
-            vis.chart(mockChart);
-            cloned.vis = vis;
-            mockChart.set(cloned);
-            ready = true;
-        }
-    });
-    let data = {};
+    let state = {};
 </script>
 
 <div>
-    {#if ready}
+    {#if chartReady && dataReady}
         <Svelte2Wrapper
             id="svelte/d3-bars/controls"
             js="/static/plugins/d3-bars/controls.js"
             css="/static/plugins/d3-bars/controls.css"
             module="Refine"
             store={mockChart}
-            bind:data
+            bind:data={state}
         />
     {/if}
 </div>
