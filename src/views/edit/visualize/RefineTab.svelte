@@ -47,15 +47,53 @@
     let state = {};
 </script>
 
-<div>
+<div class="content">
     {#if chartReady && dataReady}
-        <Svelte2Wrapper
+        <!-- <Svelte2Wrapper
             id="svelte/d3-bars/controls"
             js="/static/plugins/d3-bars/controls.js"
             css="/static/plugins/d3-bars/controls.css"
             module="Refine"
             store={mockChart}
             bind:data={state}
-        />
+        /> -->
     {/if}
+    <h3>Group</h3>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus eos corrupti in doloribus
+        dicta accusantium ex ducimus, eum odit odio veniam fuga facere deleniti illum. Qui eveniet
+        veniam voluptatem quam!
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus eos corrupti in doloribus
+        dicta accusantium ex ducimus, eum odit odio veniam fuga facere deleniti illum. Qui eveniet
+        veniam voluptatem quam!
+    </p>
+    <h3>Group</h3>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus eos corrupti in doloribus
+        dicta accusantium ex ducimus, eum odit odio veniam fuga facere deleniti illum. Qui eveniet
+        veniam voluptatem quam!
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus eos corrupti in doloribus
+        dicta accusantium ex ducimus, eum odit odio veniam fuga facere deleniti illum. Qui eveniet
+        veniam voluptatem quam!
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus eos corrupti in doloribus
+        dicta accusantium ex ducimus, eum odit odio veniam fuga facere deleniti illum. Qui eveniet
+        veniam voluptatem quam!
+    </p>
+    <h3>Group</h3>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus eos corrupti in doloribus
+        dicta accusantium ex ducimus, eum odit odio veniam fuga facere deleniti illum. Qui eveniet
+        veniam voluptatem quam!
+    </p>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus eos corrupti in doloribus
+        dicta accusantium ex ducimus, eum odit odio veniam fuga facere deleniti illum. Qui eveniet
+        veniam voluptatem quam!
+    </p>
 </div>

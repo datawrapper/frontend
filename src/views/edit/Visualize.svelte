@@ -18,24 +18,45 @@
 
     let active = 'refine';
     $: activeTab = tabs.find(d => d.id === active) || tabs[0];
+
+    let innerHeight = 0;
 </script>
+
+<svelte:window bind:innerHeight />
 
 <div class="container">
     <div class="columns">
         <div class="column is-one-third">
-            <Tabs items={tabs} bind:active />
-
-            <svelte:component this={activeTab.ui} {data} {chart} {visualizations} />
+            <div class="controls block">
+                <Tabs items={tabs} bind:active />
+            </div>
+            <div class="block">
+                <svelte:component this={activeTab.ui} {data} {chart} {visualizations} />
+            </div>
         </div>
         <div class="column">
-            <div class="box">chart preview</div>
+            <div class="preview" class:sticky-nav={innerHeight > 700}>
+                <div class="box block">chart preview</div>
+                <div class="block" style="text-align: center;">
+                    - - - - - Some more controls - - - - -<br />x x x x x x
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <style>
     .box {
-        margin: 0 auto;
-        width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 600px;
+        height: 500px;
+    }
+    .preview {
+        position: sticky;
+        top: 20px;
+    }
+    .preview.sticky-nav {
+        top: 170px;
     }
 </style>

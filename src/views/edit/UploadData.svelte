@@ -25,7 +25,11 @@
             </p>
         </div>
         <div class="column">
-            <textarea bind:value={$data} />
+            <textarea
+                class="input is-family-monospace"
+                style="width:100%; height: 14rem; padding: 1rem"
+                bind:value={$data}
+            />
         </div>
     </div>
 </div>

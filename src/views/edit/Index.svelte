@@ -101,6 +101,8 @@
                 'There are unsaved changes. Do you really want to leave this page.');
         }
     }
+
+    let innerHeight = 0;
 </script>
 
 <svelte:window
@@ -108,11 +110,12 @@
     on:beforeunload={onBeforeUnload}
     on:pagehide={onBeforeUnload}
     on:unload={onBeforeUnload}
+    bind:innerHeight
 />
 
 <MainLayout title="{$chart.title} - [{$chart.id}] - {activeStep.title}">
     <!-- step nav -->
-    <div class="container block">
+    <div class="container block" class:is-sticky={innerHeight > 700}>
         <div class="columns is-2 is-variable">
             <div class="column is-narrow pr-0 breadcrumbs-pre">This chart is in</div>
             <div class="column pl-0">
@@ -136,17 +139,19 @@
             </div>
         </div>
 
-        <div class="columns step-nav">
-            {#each steps as step}
-                <div class="column">
-                    <Step
-                        {step}
-                        {lastActiveStep}
-                        on:navigate={evt => navigateTo(evt.detail)}
-                        active={step === activeStep}
-                    />
-                </div>
-            {/each}
+        <div class="editor-step-nav">
+            <div class="columns step-nav">
+                {#each steps as step}
+                    <div class="column">
+                        <Step
+                            {step}
+                            {lastActiveStep}
+                            on:navigate={evt => navigateTo(evt.detail)}
+                            active={step === activeStep}
+                        />
+                    </div>
+                {/each}
+            </div>
         </div>
     </div>
     <!-- step content -->
@@ -160,5 +165,11 @@
 <style>
     .breadcrumbs-pre {
         color: var(--color-dw-gray-60);
+    }
+    .is-sticky {
+        position: sticky;
+        top: 40px;
+        z-index: 900;
+        background: var(--color-dw-background);
     }
 </style>
