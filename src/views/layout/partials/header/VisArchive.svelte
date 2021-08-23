@@ -30,7 +30,7 @@
         </div>
     {:else}
         {#each items as item}
-            <a class="navbar-item vis-archive-item" href="/chart/{item.id}/edit">
+            <a class="navbar-item" href="/v2/edit/{item.id}/">
                 <div class="columns is-variable is-0">
                     <div class="column is-narrow">
                         <img width="40" src={item.thumbnails.plain} alt="" class="mr-2" />
