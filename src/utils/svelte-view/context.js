@@ -23,7 +23,8 @@ module.exports = function (request) {
                 dev: process.env.DW_DEV_MODE,
                 footerLinks: frontendConfig.footerLinks || [],
                 languages: frontendConfig.languages || [],
-                headerLinks: server.methods.getHeaderLinks(request)
+                headerLinks: server.methods.getHeaderLinks(request),
+                stickyHeaderThreshold: 800
             },
             request: {
                 method: request.method,
