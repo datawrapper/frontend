@@ -1,12 +1,16 @@
 <script>
     import { onMount } from 'svelte';
     import SvgIcon from '../SvgIcon.svelte';
-    import VisArchiveRow from './VisArchiveRow.svelte';
+    import httpReq from '@datawrapper/shared/httpReq';
+    import purifyHTML from '@datawrapper/shared/purifyHtml';
+    import truncate from '@datawrapper/shared/truncate';
 
     let items = [];
 
-    onMount(() => {
+    onMount(async () => {
         // load recently edited visualizations
+        const { list: charts } = await httpReq.get('/v3/charts?orderBy=lastModifiedAt&limit=10');
+        items = charts;
     });
 </script>
 
@@ -26,7 +30,16 @@
         </div>
     {:else}
         {#each items as item}
-            <VisArchiveRow bind:item />
+            <a class="navbar-item" href="/chart/{item.id}/edit">
+                <div class="columns is-variable is-0">
+                    <div class="column is-narrow">
+                        <img width="40" src={item.thumbnails.plain} alt="" class="mr-2" />
+                    </div>
+                    <div class="column">
+                        {truncate(purifyHTML(item.title, ''), 30, 20)}
+                    </div>
+                </div>
+            </a>
         {/each}
     {/if}
 </div>
@@ -34,5 +47,19 @@
 <style>
     .navbar-dropdown {
         width: 260px;
+    }
+
+    img {
+        vertical-align: baseline;
+        position: relative;
+        top: 2px;
+        max-height: auto;
+    }
+    .navbar-item {
+        display: inline-block;
+        width: 100%;
+        font-weight: normal;
+        padding-right: 1rem !important;
+        white-space: normal;
     }
 </style>
