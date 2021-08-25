@@ -104,79 +104,82 @@
 </div>
 
 <style lang="less">
-    :global(.navbar-dropdown) {
-        border-radius: var(--box-border-radius);
-        border: 1px solid var(--color-dw-gray);
-        box-shadow: 0px 4px 4px 0px #00000040;
-    }
+    .navbar-menu {
+        :global(.navbar-item) {
+            transition: none !important;
+            font-size: 16px;
+            font-family: Roboto;
+            font-weight: 500;
+            margin: 0 0.2rem;
+            padding: 0.25rem 1rem !important;
+            transition: all 0.5s ease-in-out;
 
-    div.navbar-item,
-    a.navbar-item {
-        transition: none !important;
-    }
+            &:hover {
+                background: var(--color-dw-gray-90) !important;
+                border-radius: var(--box-border-radius);
 
-    div.navbar-item {
-        &:hover {
+                a.navbar-link:hover {
+                    background: none !important;
+                }
+            }
+
+            &.is-active {
+                background: var(--color-dw-blue-light) !important;
+                border-radius: var(--box-border-radius);
+            }
+
+            &.just-arrow {
+                padding: 0 !important;
+                margin: 0 !important;
+                // margin-left: -1.5em!important;
+
+                .navbar-link:after {
+                    right: 1.4em;
+                }
+            }
+        }
+
+        :global(.navbar-item .icon) {
+            margin-right: 1ex;
+            color: var(--color-dw-blue-medium);
+        }
+
+        :global(a.navbar-item:hover) {
             background: var(--color-dw-gray-90) !important;
             border-radius: var(--box-border-radius);
-
-            a.navbar-link:hover {
-                background: none !important;
-            }
         }
 
-        &.just-arrow {
-            padding: 0 !important;
-            margin: 0 !important;
-            // margin-left: -1.5em!important;
-
-            .navbar-link:after {
-                right: 1.4em;
-            }
+        :global(.navbar-dropdown) {
+            border-radius: var(--box-border-radius);
+            border: 1px solid var(--color-dw-gray);
+            box-shadow: 0px 4px 4px 0px #00000040;
         }
-    }
 
-    a.navbar-item:hover {
-        background: var(--color-dw-gray-90) !important;
-        border-radius: var(--box-border-radius);
-    }
-    .navbar-item.is-active {
-        background: var(--color-dw-blue-light) !important;
-        border-radius: var(--box-border-radius);
-    }
+        :global(.navbar-dropdown .navbar-item) {
+            font-weight: normal;
+            font-size: 14px;
+        }
 
-    .navbar-item {
-        font-size: 16px;
-        font-family: Roboto;
-        font-weight: 500;
-        margin: 0 0.2rem;
-        padding: 0.25rem 1rem !important;
-        transition: all 0.5s ease-in-out;
-    }
+        :global(.navbar-dropdown .navbar-item.active-team) {
+            background: #f9f9f9;
+            font-weight: normal;
+            color: #a7a7a7;
+            margin: 0;
+            margin-bottom: 0px;
+            margin-bottom: -0.5rem;
+            padding: 0.5rem 1rem !important;
+            border-bottom-left-radius: var(--box-border-radius);
+            border-bottom-right-radius: var(--box-border-radius);
+        }
 
-    .navbar-item :global(.icon) {
-        margin-right: 1ex;
-        color: var(--color-dw-blue-medium);
-    }
-    .navbar-item.active-team {
-        background: #f9f9f9;
-        font-weight: normal;
-        color: #a7a7a7;
-        margin: 0;
-        margin-bottom: 0px;
-        margin-bottom: -0.5rem;
-        padding: 0.5rem 1rem !important;
-        border-bottom-left-radius: var(--box-border-radius);
-        border-bottom-right-radius: var(--box-border-radius);
-    }
-
-    .navbar-separator span {
-        border-left: 1px solid var(--color-dw-gray);
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-        display: inline-block;
-        height: 2.2rem;
-        transition: all 0.5s ease-in-out;
+        .navbar-separator span {
+            border-left: 1px solid var(--color-dw-gray);
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            height: 2.2rem;
+            transition: all 0.5s ease-in-out;
+        }
     }
 
     :global(.navbar-compact) .navbar-separator span {
