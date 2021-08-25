@@ -1,39 +1,48 @@
 <script>
     import SvgIcon from 'layout/partials/SvgIcon.svelte';
     import { getContext } from 'svelte';
+    import { patch } from '@datawrapper/shared/httpReq';
+
     const user = getContext('user');
 
-    function select(team) {
-        // todo
+    async function select(team) {
+        await patch('/v3/me/settings', {
+            payload: {
+                activeTeam: team ? team.id : null
+            }
+        });
+        $user.activeTeam = team;
+        $user.teams.forEach(t => {
+            t.active = team && t.id === team.id;
+        });
+        $user = $user;
     }
 </script>
 
-<div>
-    {#if $user.teams.length}
-        {#each $user.teams as team}
-            <a
-                href="#/select-team/{team.id}"
-                class="navbar-item team-select"
-                class:is-active-team={team.active}
-                on:click|preventDefault={() => select(team)}
-            >
-                <SvgIcon icon="team" size="20px" />
-                {team.name}
-            </a>
-        {/each}
+{#if $user.teams.length}
+    {#each $user.teams as team}
         <a
-            href="#/select-team/none"
-            on:click|preventDefault={() => select(null)}
+            href="#/select-team/{team.id}"
             class="navbar-item team-select"
-            class:is-active-team={!$user.activeTeam}
+            class:is-active-team={team.active}
+            on:click|preventDefault={() => select(team)}
         >
-            <SvgIcon icon="user" size="20px" /> No team
+            <SvgIcon icon="team{team.active ? '-check' : ''}" size="20px" />
+            {team.name}
         </a>
-    {:else}
-        <!-- advertise team feature -->
-        <a class="navbar-item" href="/account/teams"> Create a team </a>
-    {/if}
-</div>
+    {/each}
+    <a
+        href="#/select-team/none"
+        on:click|preventDefault={() => select(null)}
+        class="navbar-item team-select"
+        class:is-active-team={!$user.activeTeam}
+    >
+        <SvgIcon icon="user{!$user.activeTeam ? '-check' : ''}" size="20px" /> No team
+    </a>
+{:else}
+    <!-- advertise team feature -->
+    <a class="navbar-item" href="/account/teams"> Create a team </a>
+{/if}
 
 <style>
     .team-select :global(.icon) {
