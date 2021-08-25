@@ -3,6 +3,7 @@
     export let size = '1em';
     export let color = 'currentColor';
     export let valign = 'sub';
+    export let crisp = false;
 
     export let className = '';
 
@@ -18,7 +19,7 @@
         ? `animation-duration:${duration};  animation-timing-function: ${timing};`
         : ''}"
 >
-    <svg style="height:{size}; width:{size}" class="svg-{icon}-dims">
+    <svg style="height:{size}; width:{size}" class="svg-{icon}-dims" class:crisp>
         <use style="fill: {color}" xlink:href="/lib/icons/symbol/svg/sprite.symbol.svg#{icon}" />
     </svg>
 </span>
@@ -34,5 +35,8 @@
     }
     .spin {
         animation: spin 2s infinite linear;
+    }
+    .crisp {
+        shape-rendering: crispEdges;
     }
 </style>
