@@ -53,11 +53,12 @@
                                 {:else if subItem.type === 'activeTeam'}
                                     <div class="navbar-item active-team is-size-7">
                                         In: <SvgIcon
-                                            icon="folder-shared"
+                                            icon="folder{$user.activeTeam ? '-shared' : ''}"
                                             color="#a7a7a7"
                                             className="mx-1"
                                             size="1.2rem"
-                                        /> TeamName
+                                        />
+                                        {$user.activeTeam ? $user.activeTeam.name : 'My Charts'}
                                     </div>
                                 {:else if subItem.type === 'teamSelector'}
                                     <TeamSelect />
