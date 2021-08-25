@@ -38,6 +38,7 @@
         class:is-active-team={!$user.activeTeam}
     >
         <SvgIcon icon="user{!$user.activeTeam ? '-check' : ''}" size="20px" /> No team
+        <span class="has-text-grey">(private)</span>
     </a>
 {:else}
     <a class="navbar-item" href="/account/teams"> Create a team </a>
