@@ -146,6 +146,7 @@ const start = async () => {
     server.method('logAction', require('@datawrapper/orm/utils/action').logAction);
     server.method('isDevMode', () => process.env.DW_DEV_MODE);
     server.method('registerVisualization', registerVisualizations(server));
+    server.method('createAPI', require('./utils/create-api'));
 
     await server.register(headerLinks);
 

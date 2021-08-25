@@ -1,4 +1,3 @@
-const got = require('got');
 const path = require('path');
 const fs = require('fs-extra');
 const get = require('lodash/get');
@@ -45,26 +44,6 @@ module.exports = {
         }
         // no locale found at all
         return 'null';
-    },
-
-    createAPI(baseUrl, sessionID, session) {
-        async function api(path, { json = true } = {}) {
-            const response = await got(`${baseUrl}${path}`, {
-                headers: session
-                    ? {
-                          Cookie: `${sessionID}=${session}`
-                      }
-                    : undefined
-            });
-
-            if (json) {
-                return JSON.parse(response.body);
-            } else {
-                return response.body;
-            }
-        }
-
-        return api;
     },
 
     initCaches(server) {
