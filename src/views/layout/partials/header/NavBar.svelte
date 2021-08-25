@@ -2,6 +2,7 @@
     import { getContext } from 'svelte';
     import SvgIcon from 'layout/partials/SvgIcon.svelte';
     import VisArchive from './VisArchive.svelte';
+    import TeamSelect from './TeamSelect.svelte';
 
     export let isActive;
 
@@ -58,15 +59,8 @@
                                             size="1.2rem"
                                         /> TeamName
                                     </div>
-                                {:else if subItem.type === 'visArchive'}
-                                    <div class="navbar-item active-team is-size-7">
-                                        In: <SvgIcon
-                                            icon="folder-shared"
-                                            color="#a7a7a7"
-                                            className="mx-1"
-                                            size="1.2rem"
-                                        /> TeamName
-                                    </div>
+                                {:else if subItem.type === 'teamSelector'}
+                                    <TeamSelect />
                                 {:else if subItem.type === 'html'}
                                     <div class="navbar-item" style={subItem.style || ''}>
                                         {@html subItem.content}
