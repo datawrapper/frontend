@@ -19,7 +19,7 @@
     }
 </script>
 
-{#if $user.teams.length}
+{#if $user.teams && $user.teams.length}
     {#each $user.teams as team}
         <a
             href="#/select-team/{team.id}"
@@ -40,7 +40,6 @@
         <SvgIcon icon="user{!$user.activeTeam ? '-check' : ''}" size="20px" /> No team
     </a>
 {:else}
-    <!-- advertise team feature -->
     <a class="navbar-item" href="/account/teams"> Create a team </a>
 {/if}
 
