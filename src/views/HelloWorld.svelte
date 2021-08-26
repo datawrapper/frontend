@@ -107,6 +107,11 @@
                     <p class="subtitle is-3 has-text-grey">A Datawrapper demo page</p>
                     <h3 id="welcome" class="title is-4 mt-3" style="color:#c04" on:click={knock}>
                         {message}
+                        {#if $user && $user.activeTeam}
+                            Your active team is <b>{$user.activeTeam.name}</b>.
+                        {:else}
+                            You don't have an active team.
+                        {/if}
                     </h3>
                     <div class="content">
                         <p class="subtitle">
@@ -117,7 +122,7 @@
                                 >Bulma CSS framework</a
                             >.
                         </p>
-                        <p>{__('team / invite / intro')}</p>
+                        <p>A translation test: {__('team / invite / intro')}</p>
                         <p>
                             The magic number is&nbsp;<b>{magicNumber}</b>, and it keeps increasing
                             because Svelte client-side hydration works!
