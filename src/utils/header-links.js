@@ -137,8 +137,9 @@ module.exports = {
                             type: 'separator'
                         },
                         {
-                            url: '/account/teams',
+                            url: '#/logout',
                             svgIcon: 'signout',
+                            type: 'logout',
                             title: 'Logout'
                         }
                     ]
