@@ -41,7 +41,9 @@ module.exports = function (request) {
                           name: auth.artifacts.email,
                           language: userLang,
                           isAdmin: auth.artifacts.isAdmin(),
-                          isGuest: false
+                          isGuest: false,
+                          teams: auth.artifacts.teams,
+                          activeTeam: auth.artifacts.activeTeam
                       }
                     : {
                           id: -1,
