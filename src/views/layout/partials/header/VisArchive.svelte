@@ -30,7 +30,7 @@
         </div>
     {:else}
         {#each items as item}
-            <a class="navbar-item" href="/chart/{item.id}/edit">
+            <a class="navbar-item vis-archive-item" href="/chart/{item.id}/edit">
                 <div class="columns is-variable is-0">
                     <div class="column is-narrow">
                         <img width="40" src={item.thumbnails.plain} alt="" class="mr-2" />
@@ -55,11 +55,12 @@
         top: 2px;
         max-height: auto;
     }
-    .navbar-item {
+    .vis-archive-item {
         display: inline-block;
-        width: 100%;
-        font-weight: normal;
+        width: 98%;
+        font-weight: normal !important;
         padding-right: 1rem !important;
-        white-space: normal;
+        white-space: normal !important;
+        font-size: 13px !important;
     }
 </style>

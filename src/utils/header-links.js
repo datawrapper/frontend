@@ -131,6 +131,9 @@ module.exports = {
                                 '<span class="has-text-grey is-size-7" style="font-weight:normal">Select active team</span>'
                         },
                         {
+                            type: 'teamSelector'
+                        },
+                        {
                             type: 'separator'
                         },
                         {
