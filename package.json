@@ -17,7 +17,7 @@
         "@datawrapper/locales": "^1.2.6",
         "@datawrapper/orm": "^3.25.0",
         "@datawrapper/schemas": "^1.12.1",
-        "@datawrapper/service-utils": "^1.1.0",
+        "@datawrapper/service-utils": "^1.2.0",
         "@datawrapper/shared": "^0.35.0",
         "@hapi/bell": "^12.2.0",
         "@hapi/catbox-memory": "^5.0.1",
