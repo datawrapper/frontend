@@ -27,7 +27,7 @@ module.exports = {
         // add some core header links
         server.methods.registerHeaderLinks(request => {
             const user = request.auth.artifacts;
-            const isGuest = user.role === 'guest';
+            const isGuest = !user || user.role === 'guest';
             const language = getUserLanguage(request.auth);
             const __ = key => server.methods.translate(key, { scope: 'core' });
             return [
@@ -97,7 +97,8 @@ module.exports = {
                           {
                               fontIcon: 'fa fa-sign-in',
                               title: 'Sign in',
-                              type: 'login'
+                              type: 'login',
+                              url: '/signin'
                           }
                       ]
                     : [
