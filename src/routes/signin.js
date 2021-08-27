@@ -12,6 +12,22 @@ module.exports = {
     register: async (server, options) => {
         const oauth = server.methods.config('general').oauth;
 
+        server.route({
+            method: 'GET',
+            path: '/',
+            options: {
+                auth: false
+            },
+            async handler(request, h) {
+                const { ref } = request.query;
+                return h.view('SignIn.svelte', {
+                    props: {
+                        target: ref
+                    }
+                });
+            }
+        });
+
         for (var provider in oauth) {
             if (!Object.keys(Bell.providers).includes(provider)) continue;
 
