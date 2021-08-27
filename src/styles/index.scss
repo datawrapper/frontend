@@ -73,6 +73,9 @@ $navbar-divider-height: 1px;
 $navbar-divider-background-color: $dw-grey-lighter;
 $navbar-dropdown-arrow: $dw-grey-darker;
 
+$box-radius: 4px;
+$hr-height: 1px;
+
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
 
@@ -146,3 +149,4 @@ $navbar-dropdown-arrow: $dw-grey-darker;
 	width: 0.5em;
 	height: 0.5em;
 }
+
