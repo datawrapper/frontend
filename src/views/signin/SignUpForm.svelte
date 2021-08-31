@@ -9,7 +9,7 @@
     export let __;
     export let target = '/';
 
-    let step = 'signup'; // can also be 'signin', 'password-reset', or 'otp'
+    let step = 'signin'; // can also be 'signin', 'password-reset', or 'otp'
     const providers = ['google', 'okta', 'onelogin', 'twitter', 'facebook', 'github'];
 
     // eslint-disable-next-line
