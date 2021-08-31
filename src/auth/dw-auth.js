@@ -67,7 +67,6 @@ function dwAuth(server, options = {}) {
         authenticate: async (request, h) => {
             let credentials = {};
             let artifacts = {};
-
             try {
                 const cookie = await server.auth.test('session', request);
                 credentials = cookie.credentials;

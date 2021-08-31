@@ -16,7 +16,7 @@ module.exports = {
             method: 'GET',
             path: '/',
             options: {
-                auth: false
+                auth: 'session'
             },
             async handler(request, h) {
                 const { ref } = request.query;

@@ -107,7 +107,7 @@
 
             <hr />
             <p class=" mt-3">
-                <strong>Already have an account?</strong><br />
+                <strong>{__('signin / already-have-account')}</strong><br />
                 <a
                     href="#/signin"
                     class="has-text-weight-bold"
