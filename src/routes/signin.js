@@ -20,7 +20,7 @@ module.exports = {
             },
             async handler(request, h) {
                 const { ref } = request.query;
-                return h.view('signin/SignIn.svelte', {
+                return h.view('signin/Index.svelte', {
                     props: {
                         target: ref
                     }
@@ -28,7 +28,7 @@ module.exports = {
             }
         });
 
-        server.methods.prepareView('signin/SignIn.svelte');
+        server.methods.prepareView('signin/Index.svelte');
 
         for (var provider in oauth) {
             if (!Object.keys(Bell.providers).includes(provider)) continue;
