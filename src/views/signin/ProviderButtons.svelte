@@ -2,6 +2,7 @@
     export let emailOpen;
     export let providers;
     export let signIn = true;
+    export let __;
 
     let showAllProvider = true;
     $: visibleProviders = showAllProvider ? providers : providers.slice(0, 3);
@@ -22,12 +23,14 @@
         <span class="icon mr-1">
             <i class="fa fa-envelope" />
         </span>
-        Sign {signIn ? 'in' : 'up'} using Email</button
+        {__(signIn ? 'signin / sign-in-using' : 'signin / sign-up-using')}
+        {__('email')}</button
     >
 </div>
 
 <hr />
 
+<p>Alternatively, sign in with</p>
 <div class="signup-form" class:two-columns={showAllProvider}>
     {#each visibleProviders as provider}
         <a href="/signin/{provider}" class="button provider-{provider} is-fullwidth mb-2">

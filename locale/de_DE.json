@@ -920,5 +920,8 @@
   "signin / its-free": "Es ist kostenlos und schnell erledigt.",
   "signin / enter-otp": "Bitte das OTP-Gerät (z.B. YubiKey) verbinden und aktivieren oder gib einen Code aus deiner konfigurierten OTP-App ein.",
   "signin / already-have-account": "Du hast bereits ein Nutzerkonto?",
-  "signin / signin-here": "Hier anmelden"
+  "signin / signin-here": "Hier anmelden",
+  "signin / terms": "Durch die Nutzung von Datawrapper stimmst du unseren <a href=\"https://www.datawrapper.de/terms\"> Nutzungsbedingungen </a>  zu.",
+  "signin / sign-up-using": "Registrieren mit",
+  "signin / sign-in-using": "Anmelden mit"
 }
