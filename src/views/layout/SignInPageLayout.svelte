@@ -1,42 +1,60 @@
 <script>
-    import DatawrapperLogo from './partials/header/DatawrapperLogo.svelte';
-
-    export let title;
+    import DatawrapperLogo from 'layout/partials/header/DatawrapperLogo.svelte';
 </script>
 
-<svelte:head>
-    <title>Datawrapper{title ? ` - ${title}` : ''}</title>
-</svelte:head>
+<div class="container">
+    <div class="columns is-vcentered ">
+        <div class="column is-1" />
+        <div class="column">
+            <div class="columns is-gapless">
+                <div class="column box left">
+                    <DatawrapperLogo height="60" />
 
-<div class="container" style="max-width: 50rem">
-    <DatawrapperLogo color="#ffffff" height="40" />
-    <div class="box mt-6 p-6">
-        <slot />
+                    <div class="terms is-size-7">
+                        By using Datawrapper you agree to our <a
+                            href="https://www.datawrapper.de/terms">Terms of Use</a
+                        >.
+                    </div>
+                </div>
+                <div class="column is-8 box right">
+                    <slot />
+                </div>
+            </div>
+        </div>
+        <div class="column is-1" />
     </div>
 </div>
 
 <style>
-    :global(html, body) {
-        background: linear-gradient(90deg, #0f4656 0%, #085e55 100%);
-        height: 100%;
-        color: white;
-        font-family: 'Roboto', Helvetica, sans-serif;
-        padding-top: 15px;
+    :global(html) {
+        background-color: #207693;
+        background-image: url(https://www.datawrapper.de/wp-content/uploads/2021/08/dw-hero-website-home_big.png);
+    }
+    .columns.is-vcentered {
+        min-height: 100vh;
     }
 
-    :global(button.plain-link) {
-        background: transparent;
-        border: 0;
-        padding: 0;
-        line-height: inherit;
-        font-size: inherit;
-        vertical-align: inherit;
-        color: #1d81a2;
-        vertical-align: baseline;
+    .terms {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        padding: 50px 90px 50px 50px;
     }
-
-    :global(button.plain-link:hover) {
-        text-decoration: underline;
-        color: #15607a;
+    .box.left {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        padding: 50px !important;
+        position: relative;
+    }
+    .box.right {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background: var(--color-dw-background);
+        padding: 50px 100px !important;
+    }
+    @media screen and (min-height: 600px) and (min-width: 600px) {
+        :global(html) {
+            overflow-y: hidden;
+        }
     }
 </style>
