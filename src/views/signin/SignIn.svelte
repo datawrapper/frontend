@@ -39,9 +39,7 @@
     .columns.is-vcentered {
         min-height: 100vh;
     }
-    .columns .column {
-        height: 550px;
-    }
+
     .terms {
         position: absolute;
         bottom: 0px;
@@ -60,23 +58,6 @@
         background: var(--color-dw-background);
         padding: 50px 100px !important;
     }
-    .title {
-        font-family: Bitter;
-        color: #fff;
-        text-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
-        font-weight: 700;
-        font-size: 52px;
-        line-height: 115%;
-    }
-    .subtitle {
-        color: #fff;
-    }
-
-    .hero a {
-        color: #fff;
-        text-decoration: underline;
-    }
-
     .signup-form {
         transition: height 1s ease-in-out;
     }
@@ -84,12 +65,6 @@
     @media screen and (min-height: 600px) and (min-width: 600px) {
         :global(html) {
             overflow-y: hidden;
-        }
-    }
-
-    @media screen and (max-width: 1100px) {
-        .title {
-            font-size: 40px;
         }
     }
 
