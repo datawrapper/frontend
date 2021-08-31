@@ -1,47 +1,51 @@
-$dw_blue: #18a1cd;
-$dw_red: #c71e1d;
-$dw_blue_medium: #1d81a2;
-$dw_blue_dark: #15607a;
-$dw_blue_light: #e9f3f6;
-$dw_green: #39f3bb;
-$dw_green_dark: #09bb9f;
-$dw_gray_20: #333333;
-$dw_gray_30: #4F4F4F;
-$dw_gray_50: #858585;
-$dw_gray_60: #A7A7A7;
-$dw_gray_70: #C9C9C9;
-$dw_gray_80: #E5E5E5;
-$dw_gray_85: #F0F0F0;
-$dw_gray_90: #F5F5F5;
-$dw_gray_95: #F9F9F9;
+$dw-scooter-dark: #15607a;
+$dw-scooter: #1d81a2;
+$dw-scooter-light: #18a1cd;
+$dw-scooter-lightest: #e9f3f6;
 
-$dw_black: $dw_gray_20;
-$dw_background: $dw_gray_95;
-$dw_lightgray: #eaeaea;
-$dw_gray: #e5e5e5;
+$dw-turquoise-dark: #09bb9f;
+$dw-turquoise: #39f3bb;
 
+$dw-firebrick: #C71E1D;
+
+$dw-blue: #588CDB;
+$dw-green: #6ED778;
+$dw-yellow: #FFDC27;
+$dw-red: #CF4870;
+
+
+$dw-black: #111111;
+$dw-black-bis: #333333;
+// $dw-black-ter
+$dw-grey-darker: #4F4F4F;
+$dw-grey-dark: #858585;
+$dw-grey: #A7A7A7;
+$dw-grey-light: #C9C9C9;
+$dw-grey-lighter: #E5E5E5;
+$dw-grey-lightest: #F0F0F0;
+$dw-white-ter: #F5F5F5;
+$dw-white-bis: #F9F9F9;
+$dw-white: #FFFFFF;
 
 
 html {
-    --color-dw-blue: #18a1cd;
-    --color-dw-red: #c71e1d;
-    --color-dw-blue-medium: #1d81a2;
-    --color-dw-blue-dark: #15607a;
-    --color-dw-blue-light: #e9f3f6;
-    --color-dw-green: #39f3bb;
-    --color-dw-green-dark: #09bb9f;
-    --color-dw-background: #f9f9f9;
-    --color-dw-lightgray: #eaeaea;
-    --color-dw-gray: #e5e5e5;
-    --color-dw-gray-20: #333333;
-    --color-dw-gray-30: #4F4F4F;
-    --color-dw-gray-50: #858585;
-    --color-dw-gray-60: #A7A7A7;
-    --color-dw-gray-70: #C9C9C9;
-    --color-dw-gray-80: #E5E5E5;
-    --color-dw-gray-85: #F0F0F0;
-    --color-dw-gray-90: #F5F5F5;
-    --color-dw-gray-95: #F9F9F9;
-    --color-dw-black: var(--dw-gray-20);
+    --color-dw-scooter: #18a1cd;
+    --color-dw-scooter-medium: #1d81a2;
+    --color-dw-scooter-dark: #15607a;
+    --color-dw-scooter-light: #e9f3f6;
+    --color-dw-turquoise: #39f3bb;
+    --color-dw-turquoise-dark: #09bb9f;
+    --color-dw-red: #C71E1D;
+    --color-dw-black: #111111
+    --color-dw-black-bis #333333
+    // --color-dw-black-ter
+    --color-dw-grey-darker: #4F4F4F
+    --color-dw-grey-dark: ##858585
+    --color-dw-grey: #A7A7A7
+    --color-dw-grey-light: #C9C9C9
+    --color-dw-grey-lighter: #E5E5E5 
+    --color-dw-grey-lightest: #F0F0F0
+    --color-dw-white-ter: #F5F5F5
+    --color-dw-white-bis: #F9F9F9
+    --color-dw-white: #FFFFFF
 }
-

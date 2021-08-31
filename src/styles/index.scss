@@ -3,41 +3,45 @@
 @import "./fonts";
 @import "./colors";
 
-html {
-	--box-border-radius: 4px;
-}
 
 // colors
-$primary: $dw_blue_medium;
-$red: $dw_red;
-$green: $dw_green;
-$link: $dw_blue;
-$link-hover: $dw_blue_dark;
-$background: $dw_lightgray;
-$body-background-color: $dw_background;
-$light: $dw_gray;
-$tabs-boxed-link-active-background-color: $dw_background;
-$navbar-background-color: white;
-$navbar-tab-active-background-color: $dw_blue_light;
-$table-background-color: transparent;
-$table-striped-row-even-background-color: hsla(0,0,0, 0.03);
+$primary: $dw-scooter;
 
-// font styles
-$family-sans-serif: "Roboto", Helvetica, sans-serif;
-$family-monospace: "Roboto Mono", monospace;
-$body-size: 14px;
-$size-1: 2.75rem;
-$size-3: 1.75rem;
-$size-7: 0.85rem;
-$title-weight: 400;
-$content-heading-weight: 400;
+$info: $dw-blue;
+$success: $dw-green; 
+$warning: $dw-yellow;
+$danger: $dw-red;
 
-$footer-padding: 3rem 0rem 6rem;
+// $light: $dw-white-ter;
+// $dark: $dw-grey-darker;
 
-$navbar-height: 2rem;
-$navbar-burger-color: $dw_blue_medium;
-$navbar-padding-horizontal: 2rem;
-$navbar-dropdown-arrow: $dw_gray_30;
+$background: $dw-white-bis;
+// $border:
+// $border-hover
+// $border-light
+// $border-light-hover
+$text: $dw-black-bis;
+$text-light: $dw-grey;
+$text-strong: $dw-black-bis;
+
+$code: darken($dw-red, 15%);
+
+
+$link: $dw-scooter;
+// $link-visited
+$link-hover: $dw-scooter-dark;
+// $link-hover-border
+
+$family-sans-serif:  "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+$family-serif: "Bitter", serif;
+$family-monospace: "Roboto Mono", Menlo, Consolas, Monaco, "Liberation Mono", monospace;
+
+$body-background-color: white;
+// $body-size
+$body-font-size: 0.875rem;
+
+$hr-height: 1px;
+
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -105,39 +109,39 @@ $navbar-dropdown-arrow: $dw_gray_30;
 // @import "../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../node_modules/bulma/sass/layout/section.sass";
 
-a:hover {
-	text-decoration: underline;
-}
+// a:hover {
+// 	text-decoration: underline;
+// }
 
-.title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
-	font-weight: $weight-light;
-}
-
-
-.title.is-3 {
-	font-weight: $weight-medium;
-}
+// .title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
+// 	font-weight: $weight-light;
+// }
 
 
-button.is-primary,
-button.is-link,
-button.is-info,
-button.is-danger,
-button.is-dark,
-button.is-black {
-	svg {
-		fill: white;
-	}
-}
+// .title.is-3 {
+// 	font-weight: $weight-medium;
+// }
 
-.button.is-large {
-	font-weight: $weight-medium;
-}
 
-// adjust navbar arrow
-.select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
-	border-width: 2px;
-	border-radius: 0;
-	width: 0.5em;
-	height: 0.5em;
-}
+// button.is-primary,
+// button.is-link,
+// button.is-info,
+// button.is-danger,
+// button.is-dark,
+// button.is-black {
+// 	svg {
+// 		fill: white;
+// 	}
+// }
+
+// .button.is-large {
+// 	font-weight: $weight-medium;
+// }
+
+// // adjust navbar arrow
+// .select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
+// 	border-width: 2px;
+// 	border-radius: 0;
+// 	width: 0.5em;
+// 	height: 0.5em;
+// }

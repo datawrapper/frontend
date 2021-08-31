@@ -110,7 +110,7 @@
 
 <style lang="less">
     :global(.navbar-dropdown) {
-        border-radius: var(--box-border-radius);
+        // border-radius: var(--box-border-radius);
         border: 1px solid var(--color-dw-gray);
         box-shadow: 0px 4px 4px 0px #00000040;
     }
@@ -123,7 +123,7 @@
     div.navbar-item {
         &:hover {
             background: var(--color-dw-gray-90) !important;
-            border-radius: var(--box-border-radius);
+            // border-radius: var(--box-border-radius);
 
             a.navbar-link:hover {
                 background: none !important;
@@ -143,11 +143,11 @@
 
     a.navbar-item:hover {
         background: var(--color-dw-gray-90) !important;
-        border-radius: var(--box-border-radius);
+        // border-radius: var(--box-border-radius);
     }
     .navbar-item.is-active {
         background: var(--color-dw-blue-light) !important;
-        border-radius: var(--box-border-radius);
+        // border-radius: var(--box-border-radius);
     }
 
     .navbar-item {
@@ -171,8 +171,8 @@
         margin-bottom: 0px;
         margin-bottom: -0.5rem;
         padding: 0.5rem 1rem !important;
-        border-bottom-left-radius: var(--box-border-radius);
-        border-bottom-right-radius: var(--box-border-radius);
+        // border-bottom-left-radius: var(--box-border-radius);
+        // border-bottom-right-radius: var(--box-border-radius);
     }
 
     .navbar-separator span {
