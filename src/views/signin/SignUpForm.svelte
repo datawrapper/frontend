@@ -167,7 +167,7 @@
             {#if emailOpen}
                 <div class="signup-form">
                     {#if loginError || loginSuccess}
-                        <Notification type={loginError ? 'danger' : 'success'} closeable={false}>
+                        <Notification type={loginError ? 'danger' : 'success'} deletable={false}>
                             {@html loginError || loginSuccess}
                         </Notification>
                     {/if}

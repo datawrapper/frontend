@@ -51,6 +51,9 @@
         left: 0;
         padding: 50px 90px 50px 50px;
     }
+    .box {
+        box-shadow: none;
+    }
     .box.left {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
