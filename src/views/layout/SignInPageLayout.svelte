@@ -1,6 +1,11 @@
 <script>
     import DatawrapperLogo from 'layout/partials/header/DatawrapperLogo.svelte';
+    export let title;
 </script>
+
+<svelte:head>
+    <title>Datawrapper{title ? ` - ${title}` : ''}</title>
+</svelte:head>
 
 <div class="container">
     <div class="columns is-vcentered ">

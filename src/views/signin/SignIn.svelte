@@ -6,6 +6,6 @@
     export let target;
 </script>
 
-<SignInPageLayout>
+<SignInPageLayout title="Welcome">
     <SignUpForm {__} {target} />
 </SignInPageLayout>
