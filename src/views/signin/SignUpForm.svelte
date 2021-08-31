@@ -58,7 +58,7 @@
                     </div>
                 </div>
             {:else}
-                <ProviderButtons {providers} bind:emailOpen signIn={true} />
+                <ProviderButtons {providers} bind:emailOpen signIn={false} />
             {/if}
 
             <hr />
@@ -103,7 +103,7 @@
                     </div>
                 </div>
             {:else}
-                <ProviderButtons {providers} bind:emailOpen signIn={false} />
+                <ProviderButtons {providers} bind:emailOpen signIn={true} />
             {/if}
 
             <hr />
