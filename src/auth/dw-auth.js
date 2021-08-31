@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const Bell = require('@hapi/bell');
 const get = require('lodash/get');
-const { cookieValidation, adminValidation, createCookieAuthScheme } =
+const { cookieValidation, adminValidation, userValidation, createCookieAuthScheme } =
     require('@datawrapper/service-utils/auth')(require('@datawrapper/orm/models'), {
         includeTeams: true
     });
@@ -31,6 +31,7 @@ const DWAuth = {
 
         server.auth.strategy('session', 'cookie-auth', { validate: cookieValidation });
         server.auth.strategy('admin', 'dw-auth', { validate: adminValidation });
+        server.auth.strategy('user', 'dw-auth', { validate: userValidation });
         server.auth.strategy('simple', 'dw-auth');
 
         server.auth.default('simple');

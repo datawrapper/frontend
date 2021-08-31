@@ -45,6 +45,24 @@ The views are simple Svelte3 components that live inside `src/views`
 <h1 on:click="{knock}">Hello {name}</h1>
 ```
 
+You can use the following authentication strategies to specify who can access the route:
+
+- `'user'` - require signed in user, otherwise redirect to signin
+- `'admin'` - admin only route, throw error if accessed by non-admins
+- `'session'` - a valid session is needed (including guest sessions)
+- `false` - no restrictions
+
+```jsx
+server.route({
+    path: '/users-only',
+    method: 'GET',
+    options: {
+        auth: 'user',
+        async handler(request, h) {}
+    }
+});
+```
+
 ### Server-side rendering + client-side hydration + IE transpiling
 
 Each view is compiled twice, so we can render it server-side and then „hydrate“ it client-side.
