@@ -1,6 +1,6 @@
 <script>
-    import SignUpForm from 'layout/partials/SignUpForm.svelte';
-    import DatawrapperLogo from './layout/partials/header/DatawrapperLogo.svelte';
+    import SignUpForm from './SignUpForm.svelte';
+    import DatawrapperLogo from 'layout/partials/header/DatawrapperLogo.svelte';
 
     export let __;
     export let target;

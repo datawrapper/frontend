@@ -1,5 +1,6 @@
 <script>
     import { getContext } from 'svelte';
+    import ProviderButtons from './ProviderButtons.svelte';
     const messages = getContext('messages');
     let __;
     $: {
@@ -7,19 +8,12 @@
     }
 
     let step = 'signup'; // can also be 'signin', 'password-reset', or 'otp'
-    const providers = ['google', 'twitter', 'facebook', 'github'];
+    const providers = ['google', 'okta', 'onelogin', 'twitter', 'facebook', 'github'];
 
     let emailOpen = false;
     let passwordClear = false;
 
     export let target = '/';
-
-    function capitalize(s) {
-        return s
-            .trim()
-            .toLowerCase()
-            .replace(/\w\S*/g, w => w.replace(/^\w/, c => c.toUpperCase()));
-    }
 </script>
 
 <div class="content block">
@@ -64,31 +58,7 @@
                     </div>
                 </div>
             {:else}
-                <div class="signup-form">
-                    <button
-                        class="button provider-email is-fullwidth mb-2"
-                        on:click={() => (emailOpen = true)}
-                    >
-                        <span class="icon mr-1">
-                            <i class="fa fa-envelope" />
-                        </span>
-                        Sign up using email</button
-                    >
-                </div>
-                <hr />
-                <div class="signup-form">
-                    {#each providers as provider}
-                        <a
-                            href="/signin/{provider}"
-                            class="button provider-{provider} is-fullwidth mb-2"
-                        >
-                            <span class="icon mr-1">
-                                <i class="fa fa-{provider}" />
-                            </span>
-                            Sign up using {capitalize(provider)}</a
-                        >
-                    {/each}
-                </div>
+                <ProviderButtons {providers} bind:emailOpen signIn={true} />
             {/if}
 
             <hr />
@@ -133,31 +103,7 @@
                     </div>
                 </div>
             {:else}
-                <div class="signup-form">
-                    <button
-                        class="button provider-email is-fullwidth mb-2"
-                        on:click={() => (emailOpen = true)}
-                    >
-                        <span class="icon mr-1">
-                            <i class="fa fa-envelope" />
-                        </span>
-                        Sign in using email</button
-                    >
-                </div>
-                <hr />
-                <div class="signup-form">
-                    {#each providers as provider}
-                        <a
-                            href="/signin/{provider}"
-                            class="provider-{provider} button is-fullwidth mb-2"
-                        >
-                            <span class="icon mr-1">
-                                <i class="fa fa-{provider}" />
-                            </span>
-                            Sign in with {capitalize(provider)}</a
-                        >
-                    {/each}
-                </div>
+                <ProviderButtons {providers} bind:emailOpen signIn={false} />
             {/if}
 
             <hr />
@@ -177,51 +123,4 @@
         <p>Please enter your one time password token:</p>
     {/if}
 </div>
-
-<style lang="less">
-    @google: #EA4335;
-    @facebook: #1877F2;
-    @twitter: #1D9BF0;
-
-    .button.is-fullwidth {
-        text-align: left;
-        justify-content: left;
-        padding-left: 70px;
-    }
-
-    .signup-form {
-        max-width: 300px;
-
-        .button .icon {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 50px;
-            height: 100%;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            background: fade(#333333, 10%);
-            color: #333333;
-            font-size: 24px;
-            margin-left: 0;
-
-            i {
-                position: relative;
-                top: 1px;
-            }
-        }
-
-        :global(.button.provider-facebook .icon) {
-            background: fade(@facebook, 10%);
-            color: @facebook;
-        }
-        :global(.button.provider-google .icon) {
-            background: fade(@google, 10%);
-            color: @google;
-        }
-        :global(.button.provider-twitter .icon) {
-            background: fade(@twitter, 10%);
-            color: @twitter;
-        }
-    }
-</style>
+`
