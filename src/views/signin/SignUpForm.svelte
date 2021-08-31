@@ -1,17 +1,29 @@
 <script>
     import { getContext } from 'svelte';
     import ProviderButtons from './ProviderButtons.svelte';
-    const messages = getContext('messages');
-    let __;
-    $: {
-        __ = (key, scope = 'core') => messages.translate(key, scope, $messages);
-    }
+    import CheckPassword from './CheckPassword.svelte';
+
+    export let __;
 
     let step = 'signup'; // can also be 'signin', 'password-reset', or 'otp'
     const providers = ['google', 'okta', 'onelogin', 'twitter', 'facebook', 'github'];
 
+    // eslint-disable-next-line
+    const emailRegex =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    function isValidEmail(s) {
+        return emailRegex.test(s);
+    }
+
     let emailOpen = false;
     let passwordClear = false;
+
+    let suEmail = '';
+    let suPassword = '';
+    let suPasswordOk;
+    let passwordHelp;
+    let passwordSuccess;
+    let passwordError;
 
     export let target = '/';
 </script>
@@ -25,22 +37,54 @@
             {#if emailOpen}
                 <div class="signup-form">
                     <div class="field">
-                        <label for="su-email" class="label">Email</label>
+                        <label for="su-email" class="label">{__('email')}</label>
                         <input
                             id="su-email"
                             placeholder="name@domain.tld"
                             class="input"
+                            class:is-danger={suEmail && !isValidEmail(suEmail)}
+                            bind:value={suEmail}
                             type="email"
                         />
                     </div>
                     <div class="field">
-                        <label for="su-pwd" class="label">Password</label>
-                        <input
-                            id="su-pwd"
-                            class="input"
-                            type={passwordClear ? 'text' : 'password'}
-                        />
+                        <label for="su-pwd" class="label">{__('password')}</label>
+                        {#if passwordClear}
+                            <!-- input types can't be dynamic when using two-way value binding -->
+                            <input
+                                id="su-pwd"
+                                class="input"
+                                bind:value={suPassword}
+                                type="text"
+                                class:is-danger={passwordError}
+                                class:is-success={!passwordError && passwordSuccess}
+                            />
+                        {:else}
+                            <input
+                                class:is-danger={passwordError}
+                                class:is-success={!passwordError && passwordSuccess}
+                                id="su-pwd"
+                                class="input"
+                                bind:value={suPassword}
+                                type="password"
+                            />
+                        {/if}
+                        {#if passwordError}
+                            <p class="help is-danger">{@html passwordError}</p>
+                        {:else if passwordSuccess}
+                            <p class="help is-success is-dark">{@html passwordSuccess}</p>
+                        {:else if passwordHelp}
+                            <p class="help has-text-grey">{@html passwordHelp}</p>
+                        {/if}
                     </div>
+                    <CheckPassword
+                        {__}
+                        bind:password={suPassword}
+                        bind:passwordHelp
+                        bind:passwordSuccess
+                        bind:passwordError
+                        bind:passwordOk={suPasswordOk}
+                    />
                     <div class="field">
                         <label class="checkbox"
                             ><input bind:checked={passwordClear} type="checkbox" />
@@ -53,7 +97,7 @@
                     >
                     <div class="mt-5">
                         <a href="#/back" on:click|preventDefault={() => (emailOpen = false)}>
-                            ←&nbsp;&nbsp;Choose a different provider</a
+                            ←&nbsp;&nbsp;{__('signin / choose-different-provider')}</a
                         >
                     </div>
                 </div>
@@ -69,7 +113,6 @@
                     class="has-text-weight-bold"
                     on:click|preventDefault={() => {
                         step = 'signin';
-                        emailOpen = false;
                     }}>Sign in here</a
                 >.
             </p>
@@ -81,16 +124,18 @@
             {#if emailOpen}
                 <div class="signup-form">
                     <div class="field">
-                        <label for="si-email" class="label">Email</label>
+                        <label for="si-email" class="label">{__('email')}</label>
                         <input
                             id="si-email"
                             placeholder="name@domain.tld"
                             class="input"
+                            class:is-danger={suEmail && !isValidEmail(suEmail)}
+                            bind:value={suEmail}
                             type="email"
                         />
                     </div>
                     <div class="field">
-                        <label for="si-pwd" class="label">Password</label>
+                        <label for="si-pwd" class="label">{__('password')}</label>
                         <input id="si-pwd" class="input" type="password" />
                     </div>
                     <button class="button is-primary mb-2" on:click={() => (emailOpen = true)}>
@@ -98,7 +143,7 @@
                     >
                     <div class="mt-5">
                         <a href="#/back" on:click|preventDefault={() => (emailOpen = false)}>
-                            ←&nbsp;&nbsp;Choose a different provider</a
+                            ←&nbsp;&nbsp;{__('signin / choose-different-provider')}</a
                         >
                     </div>
                 </div>
@@ -108,18 +153,24 @@
 
             <hr />
             <p class="mt-3">
-                <strong>Don't have an account, yet?</strong><br />
+                <strong>{__('signin / no-account-yet')}</strong><br />
                 <a
                     href="#/signin"
                     class="has-text-weight-bold"
                     on:click|preventDefault={() => {
                         step = 'signup';
-                        emailOpen = false;
-                    }}>Create a new account</a
-                >. It's free and done quickly.
+                    }}>{__('signup / create-account')}</a
+                >. {__('signin / its-free')}
             </p>
         </div>
     {:else if step === 'otp'}
-        <p>Please enter your one time password token:</p>
+        <p />
+        <p>{__('signin / enter-otp')}</p>
     {/if}
 </div>
+
+<style>
+    .signup-form {
+        max-width: 300px;
+    }
+</style>
