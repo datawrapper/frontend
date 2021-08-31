@@ -678,7 +678,7 @@ hr {
   background-color: #eaeaea;
   border: none;
   display: block;
-  height: 2px;
+  height: 1px;
   margin: 1.5rem 0; }
 
 img {
@@ -740,7 +740,7 @@ table th {
  */
 .box {
   background-color: white;
-  border-radius: 6px;
+  border-radius: 4px;
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
   color: #4a4a4a;
   display: block;

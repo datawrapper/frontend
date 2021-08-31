@@ -39,6 +39,9 @@ $navbar-burger-color: $dw_blue_medium;
 $navbar-padding-horizontal: 2rem;
 $navbar-dropdown-arrow: $dw_gray_30;
 
+$box-radius: 4px;
+$hr-height: 1px;
+
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
 

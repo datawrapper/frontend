@@ -7,25 +7,27 @@
 </script>
 
 <div class="container">
-    <div class="columns is-vcentered">
+    <div class="columns is-vcentered ">
+        <div class="column is-1" />
         <div class="column">
-            <section class="hero">
-                <div class="hero-body">
-                    <DatawrapperLogo color="white" />
-                    <p class="title mt-4">Enrich your stories with charts, maps, and tables.</p>
-                    <p class="subtitle is-3">
-                        Sign up is free! <a target="_blank" href="https://www.datawrapper.de"
-                            >Learn more about Datawrapper</a
-                        >
-                    </p>
+            <div class="columns is-gapless">
+                <div class="column box left">
+                    <DatawrapperLogo height="60" />
+
+                    <div class="terms is-size-7">
+                        By using Datawrapper you agree to our <a
+                            href="https://www.datawrapper.de/terms">Terms of Use</a
+                        >.
+                    </div>
                 </div>
-            </section>
-        </div>
-        <div class="column is-narrow">
-            <div class="signup-form">
-                <SignUpForm {__} {target} />
+                <div class="column is-8 box right">
+                    <div class="signup-form">
+                        <SignUpForm {__} {target} />
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="column is-1" />
     </div>
 </div>
 
@@ -34,12 +36,30 @@
         background-color: #207693;
         background-image: url(https://www.datawrapper.de/wp-content/uploads/2021/08/dw-hero-website-home_big.png);
     }
-
-    .columns {
-        max-width: 100%;
+    .columns.is-vcentered {
         min-height: 100vh;
     }
-
+    .columns .column {
+        height: 550px;
+    }
+    .terms {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        padding: 50px 90px 50px 50px;
+    }
+    .box.left {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        padding: 50px !important;
+        position: relative;
+    }
+    .box.right {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background: var(--color-dw-background);
+        padding: 50px 100px !important;
+    }
     .title {
         font-family: Bitter;
         color: #fff;
@@ -58,12 +78,6 @@
     }
 
     .signup-form {
-        background: white;
-        border-radius: 4px;
-        width: 100%;
-        max-width: 26rem;
-        padding: 30px;
-        margin-right: 2rem;
         transition: height 1s ease-in-out;
     }
 
