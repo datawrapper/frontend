@@ -9,15 +9,18 @@
 </svelte:head>
 
 <div class="container" style="max-width: 50rem">
-    <DatawrapperLogo color="#ffffff" height="40" />
+    <DatawrapperLogo color="#ffffff" height="60" />
     <div class="box mt-6 p-6">
         <slot />
     </div>
 </div>
 
 <style>
+    :global(html) {
+        background-color: #207693;
+        background-image: url(/lib/static/img/signin-background.png);
+    }
     :global(html, body) {
-        background: linear-gradient(90deg, #0f4656 0%, #085e55 100%);
         height: 100%;
         color: white;
         font-family: 'Roboto', Helvetica, sans-serif;
@@ -38,5 +41,11 @@
     :global(button.plain-link:hover) {
         text-decoration: underline;
         color: #15607a;
+    }
+
+    @media screen and (min-height: 800px) and (min-width: 600px) {
+        :global(html) {
+            overflow-y: hidden;
+        }
     }
 </style>
