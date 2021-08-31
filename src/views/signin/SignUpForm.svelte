@@ -2,8 +2,12 @@
     import { getContext } from 'svelte';
     import ProviderButtons from './ProviderButtons.svelte';
     import CheckPassword from './CheckPassword.svelte';
+    import httpReq from '@datawrapper/shared/httpReq';
+    import Notification from 'layout/partials/bulma/Notification.svelte';
+    import { trackEvent } from '@datawrapper/shared/analytics';
 
     export let __;
+    export let target = '/';
 
     let step = 'signup'; // can also be 'signin', 'password-reset', or 'otp'
     const providers = ['google', 'okta', 'onelogin', 'twitter', 'facebook', 'github'];
@@ -19,16 +23,55 @@
     let passwordClear = false;
 
     let suEmail = '';
+    let siPassword = '';
+    let rememberLogin = true;
     let suPassword = '';
     let suPasswordOk;
     let passwordHelp;
     let passwordSuccess;
     let passwordError;
 
-    export let target = '/';
+    let loginOTP;
+    let loginSuccess;
+    let loginError;
+    let loggingIn = false;
+
+    async function doSignIn() {
+        loginError = loginSuccess = loginOTP = '';
+        loggingIn = true;
+        try {
+            await httpReq.post('/v3/auth/login', {
+                payload: {
+                    email: suEmail,
+                    password: siPassword,
+                    keepSession: rememberLogin,
+                    ...(loginOTP ? { otp: loginOTP } : {})
+                }
+            });
+            step = 'signin';
+            loginSuccess = 'Login successful, reloading page';
+            setTimeout(() => {
+                window.window.location.href = target;
+            }, 2000);
+        } catch (error) {
+            if (error.name === 'HttpReqError') {
+                const body = await error.response.json();
+                if (body.statusCode === 401 && body.message === 'Need OTP') {
+                    step = 'otp';
+                    loginOTP = '';
+                    loggingIn = false;
+                    return;
+                }
+                loginError = body ? body.message : error.message;
+            } else {
+                loginError = error;
+            }
+        }
+        loggingIn = false;
+    }
 </script>
 
-<div class="content">
+<div class="content" data-piwik-mask>
     {#if step === 'signup'}
         <div>
             <h2 class="title is-3">{@html __('login / signup / headline')}</h2>
@@ -123,6 +166,11 @@
             <p>{@html __('login / login / intro')}</p>
             {#if emailOpen}
                 <div class="signup-form">
+                    {#if loginError || loginSuccess}
+                        <Notification type={loginError ? 'danger' : 'success'} closeable={false}>
+                            {@html loginError || loginSuccess}
+                        </Notification>
+                    {/if}
                     <div class="field">
                         <label for="si-email" class="label">{__('email')}</label>
                         <input
@@ -136,9 +184,15 @@
                     </div>
                     <div class="field">
                         <label for="si-pwd" class="label">{__('password')}</label>
-                        <input id="si-pwd" class="input" type="password" />
+                        <input id="si-pwd" bind:value={siPassword} class="input" type="password" />
                     </div>
-                    <button class="button is-primary mb-2" on:click={() => (emailOpen = true)}>
+                    <div class="field">
+                        <label class="checkbox"
+                            ><input bind:checked={rememberLogin} type="checkbox" />
+                            {@html __('Remember login?')}</label
+                        >
+                    </div>
+                    <button class="button is-primary mb-2" on:click={doSignIn}>
                         {@html __('Login')}</button
                     >
                     <div class="mt-5">

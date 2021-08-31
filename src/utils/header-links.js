@@ -98,7 +98,7 @@ module.exports = {
                               fontIcon: 'fa fa-sign-in',
                               title: 'Sign in',
                               type: 'login',
-                              url: '/signin'
+                              url: `/signin?ref=${request.path}`
                           }
                       ]
                     : [
