@@ -7,7 +7,7 @@
     import Tabs from 'layout/partials/bulma/Tabs.svelte';
     import Menu from 'layout/partials/bulma/Menu.svelte';
     import { onMount, onDestroy, getContext } from 'svelte';
-    import SignUp from './layout/partials/SignUpForm.svelte';
+    import SignUp from './signin/SignUpForm.svelte';
 
     export let magicNumber;
     export let visualizations;
@@ -787,7 +787,7 @@
                     <h3 id="signup" class="title is-3">Sign Up dialogue</h3>
                     <div class="columns">
                         <div class="column is-5 box p-5">
-                            <SignUp />
+                            <SignUp {__} />
                         </div>
                     </div>
                 </div>
