@@ -102,7 +102,7 @@
                     </div>
                 </div>
             {:else}
-                <ProviderButtons {providers} bind:emailOpen signIn={false} />
+                <ProviderButtons {__} {providers} bind:emailOpen signIn={false} />
             {/if}
 
             <hr />
@@ -113,7 +113,7 @@
                     class="has-text-weight-bold"
                     on:click|preventDefault={() => {
                         step = 'signin';
-                    }}>Sign in here</a
+                    }}>{__('signin / signin-here')}</a
                 >.
             </p>
         </div>
@@ -148,7 +148,7 @@
                     </div>
                 </div>
             {:else}
-                <ProviderButtons {providers} bind:emailOpen signIn={true} />
+                <ProviderButtons {__} {providers} bind:emailOpen signIn={true} />
             {/if}
 
             <hr />

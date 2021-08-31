@@ -920,5 +920,8 @@
   "signin / its-free": "",
   "signin / enter-otp": "",
   "signin / already-have-account": "",
-  "signin / signin-here": ""
+  "signin / signin-here": "",
+  "signin / terms": "",
+  "signin / sign-up-using": "",
+  "signin / sign-in-using": ""
 }

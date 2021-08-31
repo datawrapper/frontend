@@ -1,6 +1,14 @@
 <script>
     import DatawrapperLogo from 'layout/partials/header/DatawrapperLogo.svelte';
     export let title;
+
+    import { getContext } from 'svelte';
+    const msg = getContext('messages');
+
+    let __;
+    $: {
+        __ = (key, scope = 'core') => msg.translate(key, scope, $msg);
+    }
 </script>
 
 <svelte:head>
@@ -16,9 +24,7 @@
                     <DatawrapperLogo height="60" />
 
                     <div class="terms is-size-7">
-                        By using Datawrapper you agree to our <a
-                            href="https://www.datawrapper.de/terms">Terms of Use</a
-                        >.
+                        {@html __('signin / terms')}
                     </div>
                 </div>
                 <div class="column is-8 box right">
@@ -56,10 +62,5 @@
         border-bottom-left-radius: 0;
         background: var(--color-dw-background);
         padding: 50px 100px !important;
-    }
-    @media screen and (min-height: 600px) and (min-width: 600px) {
-        :global(html) {
-            overflow-y: hidden;
-        }
     }
 </style>
