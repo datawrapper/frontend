@@ -16,7 +16,7 @@
     export let target = '/';
 </script>
 
-<div class="content block">
+<div class="content">
     {#if step === 'signup'}
         <div>
             <h2 class="title is-3">{@html __('login / signup / headline')}</h2>
@@ -123,4 +123,3 @@
         <p>Please enter your one time password token:</p>
     {/if}
 </div>
-`
