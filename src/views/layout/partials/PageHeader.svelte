@@ -27,7 +27,7 @@
 <svelte:window bind:scrollY bind:innerHeight />
 
 <header
-    class={scrolledDown ? 'py-3 mb-3' : 'py-5 mb-5'}
+    class={scrolledDown ? 'py-3' : 'py-5'}
     class:is-sticky={innerHeight > stickyHeaderThreshold}
     id="top"
 >

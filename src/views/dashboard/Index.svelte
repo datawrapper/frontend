@@ -1,6 +1,5 @@
 <script type="text/javascript">
     import MainLayout from 'layout/MainLayout.svelte';
-    import range from 'lodash/range';
     import Changelog from './Changelog.svelte';
     import VisualizationBox from './VisualizationBox.svelte';
 
@@ -10,38 +9,40 @@
 </script>
 
 <MainLayout>
-    <div class="container">
-        <div class="columns">
-            <div class="column is-8">
-                <div class="block mb-6">
-                    <h2 class="title is-3">Recently edited</h2>
-                    <div class="columns is-multiline is-mobile">
-                        {#each recentlyEdited as chart}
-                            <div class="column is-one-third">
-                                <VisualizationBox {chart} />
-                            </div>
-                        {/each}
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8">
+                    <div class="block mb-6">
+                        <h2 class="title is-3">Recently edited</h2>
+                        <div class="columns is-multiline is-mobile">
+                            {#each recentlyEdited as chart}
+                                <div class="column is-one-third">
+                                    <VisualizationBox {chart} />
+                                </div>
+                            {/each}
+                        </div>
+                    </div>
+                    <div class="block mb-6">
+                        <h2 class="title is-3">Recently published</h2>
+                        <div class="columns is-multiline is-mobile">
+                            {#each recentlyPublished as chart}
+                                <div class="column is-one-third">
+                                    <VisualizationBox {chart} />
+                                </div>
+                            {/each}
+                        </div>
                     </div>
                 </div>
-                <div class="block mb-6">
-                    <h2 class="title is-3">Recently published</h2>
-                    <div class="columns is-multiline is-mobile">
-                        {#each recentlyPublished as chart}
-                            <div class="column is-one-third">
-                                <VisualizationBox {chart} />
-                            </div>
-                        {/each}
+                <div class="column">
+                    <div class="block box has-border">
+                        <h2 class="title is-3">My team</h2>
                     </div>
+                    <Changelog />
                 </div>
-            </div>
-            <div class="column">
-                <div class="block box has-border">
-                    <h2 class="title is-3">My team</h2>
-                </div>
-                <Changelog />
             </div>
         </div>
-    </div>
+    </section>
 </MainLayout>
 
 <style>
