@@ -22,9 +22,7 @@
         class="button provider-email is-fullwidth mb-2 has-text-weight-normal"
         on:click={() => (emailOpen = true)}
     >
-        <span class="icon mr-1">
-            <i class="fa fa-envelope" />
-        </span>
+        <SvgIcon icon="mail" size="28px" />
         {__(signIn ? 'signin / sign-in-using' : 'signin / sign-up-using')}
         {__('email')}</button
     >
