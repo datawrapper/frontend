@@ -73,6 +73,8 @@ $navbar-divider-height: 1px;
 $navbar-divider-background-color: $dw-grey-lighter;
 $navbar-dropdown-arrow: $dw-grey-darker;
 
+$section-padding: 1.5rem !default;
+
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
 
