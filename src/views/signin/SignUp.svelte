@@ -43,15 +43,12 @@
             trackEvent('App', 'sign-up');
 
             if (!signupWithoutPassword) {
-                // @todo: translate
-                signupSuccess = 'Sign up successful. Redirecting to user dashboard.';
+                signupSuccess = __('signin / signup-success');
                 setTimeout(() => {
                     window.location.href = target;
                 }, 2000);
             } else {
-                // @todo: translate
-                signupSuccess =
-                    'Please check your e-mail inbox to proceed on your desktop computer.';
+                signupSuccess = __('signin / signup-check-email');
                 signingUp = false;
             }
         } catch (error) {

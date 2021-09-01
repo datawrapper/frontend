@@ -23,10 +23,13 @@
 
 <hr />
 
-<p>Alternatively, sign in with</p>
+<p>{__('signin / alternative-signin')}</p>
 <div class="signup-form" class:two-columns={showAllProvider}>
     {#each visibleProviders as provider}
-        <a href={provider.url} class="button provider-{provider.icon} is-fullwidth mb-2">
+        <a
+            href={provider.url}
+            class="button provider-{provider.label.toLowerCase()} is-fullwidth mb-2"
+        >
             <SvgIcon icon={provider.icon} size="28px" />
             {showAllProvider ? '' : `Sign ${signIn ? 'in' : 'up'} using`}
             {provider.label}</a
@@ -45,6 +48,7 @@
     @twitter: #1D9BF0;
     @okta: #00297a;
     @onelogin: #1C1F2A;
+    @microsoft: #0072c6;
 
     .button.is-fullwidth {
         text-align: left;
@@ -88,6 +92,10 @@
         :global(.button.provider-twitter .icon) {
             background: fade(@twitter, 10%);
             color: @twitter;
+        }
+        :global(.button.provider-microsoft .icon) {
+            background: fade(@microsoft, 10%);
+            color: @microsoft;
         }
     }
 
