@@ -915,7 +915,7 @@
   "publish / publish-info-2": "Deine Visualisierung kann man auch nach der Veröffentlichung nur sehen, wenn man die Visualisierungs-URL kennt. <b>Wir teilen sie nicht öffentlich.</b>",
   "publish / publishing-btn": "Veröffentlichen",
   "signin / choose-different-provider": "Anderen Anbieter auswählen",
-  "signin / no-account-yet": "",
+  "signin / no-account-yet": "Du hast noch kein Nutzerkonto?",
   "signup / create-account": "Benutzerkonto anlegen",
   "signin / its-free": "Es ist kostenlos und schnell erledigt.",
   "signin / enter-otp": "Bitte das OTP-Gerät (z.B. YubiKey) verbinden und aktivieren oder gib einen Code aus deiner konfigurierten OTP-App ein.",
