@@ -95,7 +95,7 @@ module.exports = {
                               order: 69
                           },
                           {
-                              fontIcon: 'fa fa-sign-in',
+                              svgIcon: 'sign-in',
                               title: 'Sign in',
                               type: 'login',
                               url: `/signin?ref=${request.path}`
@@ -170,7 +170,7 @@ module.exports = {
                                   },
                                   {
                                       url: '#/logout',
-                                      svgIcon: 'signout',
+                                      svgIcon: 'sign-out',
                                       type: 'logout',
                                       title: 'Logout'
                                   }
