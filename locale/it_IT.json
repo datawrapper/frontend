@@ -838,7 +838,7 @@
   "controls / color-scale / interpolation / deciles": "",
   "controls / color-scale / interpolation / natural": "",
   "footer / datawrapper-gmbh": "",
-  "Language": "",
+  "Language": "Lingua",
   "chart-size": "",
   "apply-preset": "",
   "describe / histogram / min": "",
@@ -928,5 +928,10 @@
   "signin / login-success": "",
   "signin / signup-check-email": "",
   "signin / signup-success": "",
-  "navbar / teams / no-team": ""
+  "navbar / teams / no-team": "",
+  "navbar / create-new": "",
+  "navbar / dashboard": "",
+  "navbar / create / chart": "Grafico",
+  "navbar / create / map": "Mappa",
+  "navbar / create / table": "Tabella"
 }
