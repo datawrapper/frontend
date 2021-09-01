@@ -928,5 +928,5 @@
   "signin / login-success": "Login successful, reloading page…",
   "signin / signup-check-email": "Please check your e-mail inbox to proceed on your desktop computer.",
   "signin / signup-success": "Sign up successful. Welcome to Datawrapper :)",
-  "navbar / teams / no-team": "No team <span class=\"has-text-grey\">(private)</span>"
+  "navbar / teams / no-team": "No team <span class=\"has-text-grey pl-1\">(private)</span>"
 }
