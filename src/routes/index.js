@@ -8,6 +8,13 @@ module.exports = {
             }
         });
 
+        await server.register(require('./dashboard'), {
+            routes: {
+                // @todo: remove prefix
+                prefix: '/v2'
+            }
+        });
+
         await server.register(require('./preview/index.js'), {
             routes: {
                 prefix: '/preview'
