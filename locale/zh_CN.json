@@ -927,5 +927,6 @@
   "signin / alternative-signin": "",
   "signin / login-success": "",
   "signin / signup-check-email": "",
-  "signin / signup-success": ""
+  "signin / signup-success": "",
+  "navbar / teams / no-team": ""
 }
