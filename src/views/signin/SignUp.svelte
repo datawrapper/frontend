@@ -71,12 +71,12 @@
     <p>{@html __('login / signup / intro')}</p>
 
     {#if emailOpen}
+        {#if signupError || signupSuccess}
+            <Notification type={signupError ? 'warning' : 'success'} deletable={false}>
+                {@html signupError || signupSuccess}
+            </Notification>
+        {/if}
         <div class="signup-form">
-            {#if signupError || signupSuccess}
-                <Notification type={signupError ? 'danger' : 'success'} deletable={false}>
-                    {@html signupError || signupSuccess}
-                </Notification>
-            {/if}
             <div class="field">
                 <label for="su-email" class="label">{__('email')}</label>
                 <input

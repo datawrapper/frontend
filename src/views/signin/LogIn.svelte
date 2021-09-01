@@ -39,7 +39,7 @@
                     ...(loginOTP ? { otp: loginOTP } : {})
                 }
             });
-            step = 'signin';
+            needOTP = false;
             // @todo: translate
             loginSuccess = 'Login successful, reloading page';
             setTimeout(() => {
@@ -75,8 +75,11 @@
         } catch (error) {
             if (error.name === 'HttpReqError') {
                 const body = await error.response.json();
+                const errMsgKey = `signin / password-reset / error / ${body.message}`;
                 loginError = body.message
-                    ? __(`signin / password-reset / error / ${body.message}`)
+                    ? __(errMsgKey) !== errMsgKey
+                        ? __(errMsgKey)
+                        : body.message
                     : error.message;
             } else {
                 loginError = error;
@@ -137,6 +140,7 @@
             {/if}
             {#if !resetPassword}
                 <button class="button is-primary mb-2" on:click={doLogIn}>
+                    {#if loggingIn}<LoadingSpinner />{/if}
                     {@html __('Login')}</button
                 >
                 <div class="mt-3">
