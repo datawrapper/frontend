@@ -8,13 +8,6 @@
 
     let showAllProvider = true;
     $: visibleProviders = showAllProvider ? providers : providers.slice(0, 3);
-
-    function capitalize(s) {
-        return s
-            .trim()
-            .toLowerCase()
-            .replace(/\w\S*/g, w => w.replace(/^\w/, c => c.toUpperCase()));
-    }
 </script>
 
 <div class="signup-form">
@@ -33,10 +26,10 @@
 <p>Alternatively, sign in with</p>
 <div class="signup-form" class:two-columns={showAllProvider}>
     {#each visibleProviders as provider}
-        <a href="/signin/{provider}" class="button provider-{provider} is-fullwidth mb-2">
-            <SvgIcon icon={provider} size="28px" />
+        <a href={provider.url} class="button provider-{provider.icon} is-fullwidth mb-2">
+            <SvgIcon icon={provider.icon} size="28px" />
             {showAllProvider ? '' : `Sign ${signIn ? 'in' : 'up'} using`}
-            {capitalize(provider)}</a
+            {provider.label}</a
         >
     {/each}
     {#if providers.length > visibleProviders.length}

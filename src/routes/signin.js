@@ -11,6 +11,7 @@ module.exports = {
     version: '1.0.0',
     register: async (server, options) => {
         const oauth = server.methods.config('general').oauth;
+        const providers = server.methods.config('frontend').signinProviders || [];
 
         server.route({
             method: 'GET',
@@ -23,6 +24,7 @@ module.exports = {
                 return h.view('signin/Index.svelte', {
                     props: {
                         target: ref || '/',
+                        providers,
                         // @todo: read from config
                         noSignUp: false,
                         noSignIn: false,

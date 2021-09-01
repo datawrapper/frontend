@@ -4,11 +4,12 @@
 
     export let __;
     export let target;
+    export let providers;
     export let noSignIn;
     export let noSignUp;
     export let signupWithoutPassword = false;
 </script>
 
 <SignInPageLayout title="Welcome">
-    <SignUpForm {__} {target} {noSignIn} {noSignUp} {signupWithoutPassword} />
+    <SignUpForm {__} {target} {providers} {noSignIn} {noSignUp} {signupWithoutPassword} />
 </SignInPageLayout>

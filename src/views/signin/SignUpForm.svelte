@@ -9,7 +9,7 @@
     export let noSignIn = false;
     export let signupWithoutPassword = false;
 
-    const providers = ['google', 'okta', 'onelogin', 'twitter', 'facebook', 'github'];
+    export let providers;
 
     let step = noSignIn ? 'signup' : 'login'; // can also be 'login'
 
