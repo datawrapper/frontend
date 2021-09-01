@@ -1,5 +1,8 @@
 <script>
     import purifyHTML from '@datawrapper/shared/purifyHtml';
+    import { getContext } from 'svelte';
+    const config = getContext('config');
+
     export let chart;
 </script>
 
@@ -10,7 +13,7 @@
         </div>
         <img
             alt="preview"
-            src="//charts.datawrapper.local/preview/{chart.id}/{chart.thumbnailHash}/plain.png"
+            src="//{$config.imageDomain}/{chart.id}/{chart.thumbnailHash}/plain.png"
         /></a
     >
 </figure>
