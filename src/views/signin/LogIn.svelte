@@ -40,8 +40,7 @@
                 }
             });
             needOTP = false;
-            // @todo: translate
-            loginSuccess = 'Login successful, reloading page';
+            loginSuccess = __('signin / login-success');
             setTimeout(() => {
                 window.window.location.href = target;
             }, 2000);
@@ -167,7 +166,7 @@
             {/if}
         </div>
     {:else}
-        <ProviderButtons {__} {providers} bind:emailOpen signIn={true} />
+        <ProviderButtons {__} {target} {providers} bind:emailOpen signIn={true} />
     {/if}
 
     {#if !noSignUp}

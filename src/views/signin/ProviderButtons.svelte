@@ -4,6 +4,7 @@
     export let emailOpen;
     export let providers;
     export let signIn = true;
+    export let target;
     export let __;
 
     $: showTwoColumns = providers.length > 3;
@@ -27,7 +28,7 @@
 <div class="signup-form" class:two-columns={showTwoColumns}>
     {#each providers as provider}
         <a
-            href={provider.url}
+            href="{provider.url}{target ? `?ref=${target}` : ''}"
             class="button provider-{provider.label.toLowerCase()} is-fullwidth mb-2"
         >
             <SvgIcon icon={provider.icon} size="28px" />

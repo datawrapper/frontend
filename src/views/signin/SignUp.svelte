@@ -140,7 +140,7 @@
             </div>
         </div>
     {:else}
-        <ProviderButtons {__} {providers} bind:emailOpen signIn={false} />
+        <ProviderButtons {__} {target} {providers} bind:emailOpen signIn={false} />
     {/if}
 
     {#if !noSignIn}
