@@ -3,12 +3,21 @@
     import SvgIcon from 'layout/partials/SvgIcon.svelte';
     import VisArchive from './VisArchive.svelte';
     import TeamSelect from './TeamSelect.svelte';
+    import { post } from '@datawrapper/shared/httpReq';
 
     export let isActive;
 
     const user = getContext('user');
     const config = getContext('config');
     const request = getContext('request');
+
+    async function onNavItemClick(event, item) {
+        if (item.type === 'logout') {
+            event.preventDefault();
+            await post('/v3/auth/logout');
+            window.location.reload();
+        }
+    }
 </script>
 
 <div class="navbar-menu" class:is-active={isActive}>
@@ -29,6 +38,7 @@
                 >
                     <a
                         href={link.url || '#/dropdown'}
+                        on:click={event => onNavItemClick(event, link)}
                         class="navbar-link"
                         class:is-arrowless={link.type !== 'visArchive'}
                         >{#if link.svgIcon}<SvgIcon
@@ -63,11 +73,18 @@
                                 {:else if subItem.type === 'teamSelector'}
                                     <TeamSelect />
                                 {:else if subItem.type === 'html'}
-                                    <div class="navbar-item" style={subItem.style || ''}>
+                                    <div
+                                        class="navbar-item"
+                                        on:click={event => onNavItemClick(event, subItem)}
+                                        style={subItem.style || ''}
+                                    >
                                         {@html subItem.content}
                                     </div>
                                 {:else}
-                                    <a class="navbar-item" href={subItem.url}
+                                    <a
+                                        class="navbar-item"
+                                        href={subItem.url}
+                                        on:click={event => onNavItemClick(event, subItem)}
                                         >{#if subItem.svgIcon}<SvgIcon
                                                 size="20px"
                                                 valign="top"
@@ -88,6 +105,7 @@
                         ? $request.path === '/'
                         : $request.path.startsWith(link.url)}
                     class="navbar-item"
+                    on:click={event => onNavItemClick(event, link)}
                     href={link.url}
                     >{#if link.svgIcon}<SvgIcon
                             size={link.svgIconSize || '20px'}
