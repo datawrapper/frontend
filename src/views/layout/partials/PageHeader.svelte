@@ -74,7 +74,7 @@
     header {
         background: white;
         border-bottom: 1px solid #eee;
-        border-top: 3px solid var(--color-dw-blue-medium);
+        border-top: 3px solid var(--color-dw-scooter);
         transition: padding 0.2s ease-in-out, margin 0.2s ease-in-out;
     }
 
