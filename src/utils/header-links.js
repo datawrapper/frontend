@@ -148,6 +148,8 @@ module.exports = {
                             submenuItems: (frontendConfig.languages || []).map(
                                 ({ id, title, flag }) => ({
                                     id,
+                                    type: 'language',
+                                    style: id === language ? 'font-weight:bold' : '',
                                     title: `<span class="icon">${flag}</span> <span>${title}</span>`
                                 })
                             )
@@ -159,8 +161,9 @@ module.exports = {
                                   },
                                   {
                                       type: 'html',
-                                      content:
-                                          '<span class="has-text-grey is-size-7" style="font-weight:normal">Select active team</span>'
+                                      content: `<span class="has-text-grey is-size-7" style="font-weight:normal">${__(
+                                          'account / my-teams / select-active'
+                                      )}</span>`
                                   },
                                   {
                                       type: 'teamSelector'
