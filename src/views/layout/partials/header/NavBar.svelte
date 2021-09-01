@@ -49,6 +49,7 @@
                         href={link.url || '#/dropdown'}
                         on:click={event => onNavItemClick(event, link)}
                         class="navbar-link"
+                        style={link.style || ''}
                         class:is-arrowless={link.type !== 'visArchive'}
                         >{#if link.svgIcon}<SvgIcon
                                 size={link.svgIconSize || '20px'}
