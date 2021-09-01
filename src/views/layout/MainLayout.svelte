@@ -18,4 +18,7 @@
 </div>
 
 <style type="text/css">
+    :global(body) {
+        background: var(--color-dw-white-bis);
+    }
 </style>
