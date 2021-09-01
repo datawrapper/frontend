@@ -13,9 +13,7 @@
 
 <slot />
 
-<div class="container">
-    <PageFooter />
-</div>
+<PageFooter />
 
 <style type="text/css">
     :global(html) {
