@@ -41,8 +41,8 @@
 
 <style lang="less">
     a {
-        background: var(--color-dw-gray-80);
-        border-radius: var(--box-border-radius);
+        background: var(--color-dw-grey-light);
+        border-radius: 4px;
         display: inline-block;
         width: 100%;
 
