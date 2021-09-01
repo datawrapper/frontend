@@ -11,7 +11,7 @@ module.exports = {
             method: 'GET',
             path: '/',
             options: {
-                auth: 'user',
+                auth: 'session',
                 async handler(request, h) {
                     // note: in a real-world scenario we would want to cache the icon list
                     // so we don't have to read the file system on every request
