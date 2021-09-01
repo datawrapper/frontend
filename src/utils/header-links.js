@@ -29,15 +29,15 @@ module.exports = {
             const user = request.auth.artifacts;
             const isGuest = !user || user.role === 'guest';
             const language = getUserLanguage(request.auth);
-            const __ = key => server.methods.translate(key, { scope: 'core' });
+            const __ = key => server.methods.translate(key, { scope: 'core', language });
             return [
                 ...(!isGuest
                     ? [
                           {
                               id: 'dashboard',
-                              svgIcon: 'rocket',
+                              svgIcon: 'launch',
                               // fontIcon: 'fa fa-fw fa-bar-chart-o',
-                              title: __('Dashboard'),
+                              title: __('navbar / dashboard'),
                               url: '/',
                               order: 5
                           }
@@ -46,27 +46,27 @@ module.exports = {
                 {
                     id: 'create-new',
                     svgIcon: 'add',
-                    title: __('Create new <span style="color:#A7A7A7">…</span>'),
+                    title: `${__('navbar / create-new')} <span style="color:#A7A7A7">…</span>`,
                     order: 10,
                     submenuItems: [
                         {
                             id: 'create-chart',
                             svgIcon: 'dw-chart',
-                            title: __('Chart'),
+                            title: __('navbar / create / chart'),
                             url: '/create/chart',
                             order: 10
                         },
                         {
                             id: 'create-map',
                             svgIcon: 'dw-map',
-                            title: __('Map'),
+                            title: __('navbar / create / map'),
                             url: '/select/map',
                             order: 20
                         },
                         {
                             id: 'create-table',
                             svgIcon: 'dw-table',
-                            title: __('Table'),
+                            title: __('navbar / create / table'),
                             url: '/create/table',
                             order: 30
                         },
@@ -105,7 +105,7 @@ module.exports = {
                           {
                               id: 'my-charts',
                               svgIcon: 'cabinet',
-                              title: __('Archive'),
+                              title: __('My Charts'),
                               url: '/mycharts',
                               order: 60
                           },
@@ -113,7 +113,8 @@ module.exports = {
                               id: 'my-charts',
                               type: 'visArchive',
                               submenuItems: true,
-                              order: 61
+                              order: 61,
+                              style: 'padding-left: 0;margin-left: -20px;'
                           },
                           {
                               type: 'separator',
@@ -131,19 +132,19 @@ module.exports = {
                             ? [
                                   {
                                       url: '/account',
-                                      title: 'Settings',
+                                      title: __('account / settings'),
                                       svgIcon: 'user-menu'
                                   },
                                   {
                                       url: '/account/teams',
-                                      title: 'My teams',
+                                      title: __('account / my-teams'),
                                       svgIcon: 'team'
                                   }
                               ]
                             : []),
                         {
                             url: '/account/teams',
-                            title: 'Language',
+                            title: __('Language'),
                             svgIcon: 'globe',
                             submenuItems: (frontendConfig.languages || []).map(
                                 ({ id, title, flag }) => ({

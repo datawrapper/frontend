@@ -22,6 +22,11 @@ module.exports = {
             },
             async handler(request, h) {
                 const { ref } = request.query;
+
+                if (request.auth.isAuthenticated && request.auth.artifacts?.role !== 'guest') {
+                    return h.redirect(ref || '/');
+                }
+
                 return h.view('signin/Index.svelte', {
                     props: {
                         target: ref || '/',
