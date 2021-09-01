@@ -12,10 +12,21 @@ $success: $dw-green;
 $warning: $dw-yellow;
 $danger: $dw-red;
 
-// $light: $dw-white-ter;
-// $dark: $dw-grey-darker;
+$light: $dw-white-bis;
+$dark: $dw-black-bis;
 
 $background: $dw-white-bis;
+
+// is there any downside defining those sizes as px and not rem?
+
+$size-1: 48px; // 3.428rem;
+$size-2: 32px; // 2.285rem;
+$size-3: 24px; // 1.714rem;
+$size-4: 19px; // 1.357rem;
+$size-5: 16px; // 1.142rem;
+$size-6: 14px; // 1rem;
+$size-7: 12px; // 0.857rem; 
+
 // $border:
 // $border-hover
 // $border-light
@@ -36,9 +47,8 @@ $family-sans-serif:  "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Ro
 $family-serif: "Bitter", serif;
 $family-monospace: "Roboto Mono", Menlo, Consolas, Monaco, "Liberation Mono", monospace;
 
-$body-background-color: white;
 $body-size: 14px;
-$body-font-size: 16px;
+$body-background-color: white;
 
 $hr-height: 1px;
 
@@ -108,40 +118,3 @@ $hr-height: 1px;
 @import "../../node_modules/bulma/sass/layout/footer.sass";
 // @import "../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../node_modules/bulma/sass/layout/section.sass";
-
-// a:hover {
-// 	text-decoration: underline;
-// }
-
-// .title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
-// 	font-weight: $weight-light;
-// }
-
-
-// .title.is-3 {
-// 	font-weight: $weight-medium;
-// }
-
-
-// button.is-primary,
-// button.is-link,
-// button.is-info,
-// button.is-danger,
-// button.is-dark,
-// button.is-black {
-// 	svg {
-// 		fill: white;
-// 	}
-// }
-
-// .button.is-large {
-// 	font-weight: $weight-medium;
-// }
-
-// // adjust navbar arrow
-// .select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
-// 	border-width: 2px;
-// 	border-radius: 0;
-// 	width: 0.5em;
-// 	height: 0.5em;
-// }
