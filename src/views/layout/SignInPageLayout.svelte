@@ -53,18 +53,31 @@
     }
     .box {
         box-shadow: none;
+        border-radius: 0;
     }
     .box.left {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
         padding: 50px !important;
         position: relative;
     }
     .box.right {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
         background: var(--color-dw-background);
         padding: 50px 100px !important;
+    }
+    @media screen and (max-width: 600px) {
+        .box.right {
+            padding: 20px 20px 40px !important;
+        }
+        .box.left {
+            padding: 20px !important;
+        }
+        .terms {
+            position: static;
+            padding: 20px 0 0;
+        }
+        .box.left > :global(svg) {
+            height: 43px;
+            width: 160px;
+        }
     }
     @media screen and (min-height: 600px) and (min-width: 600px) {
         :global(html) {
