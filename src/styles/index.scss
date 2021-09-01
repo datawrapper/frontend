@@ -3,46 +3,55 @@
 @import "./fonts";
 @import "./colors";
 
-html {
-	--box-border-radius: 4px;
-}
 
 // colors
-$primary: $dw_blue_medium;
-$red: $dw_red;
-$green: $dw_green;
-$link: $dw_blue;
-$link-hover: $dw_blue_dark;
-$background: $dw_lightgray;
-$body-background-color: $dw_background;
-$light: $dw_gray;
-$tabs-boxed-link-active-background-color: $dw_background;
-$navbar-background-color: white;
-$navbar-tab-active-background-color: $dw_blue_light;
-$table-background-color: transparent;
-$table-striped-row-even-background-color: hsla(0,0,0, 0.03);
+$primary: $dw-scooter;
 
-$success: $dw_green_dark;
+$info: $dw-blue;
+$success: $dw-green;
+$warning: $dw-yellow;
+$danger: $dw-red;
 
-// font styles
-$family-sans-serif: "Roboto", Helvetica, sans-serif;
-$family-monospace: "Roboto Mono", monospace;
+$light: $dw-white-bis;
+$dark: $dw-black-bis;
+
+$background: $dw-white-bis;
+
+// is there any downside defining those sizes as px and not rem?
+
+$size-1: 48px; // 3.428rem;
+$size-2: 32px; // 2.285rem;
+$size-3: 24px; // 1.714rem;
+$size-4: 19px; // 1.357rem;
+$size-5: 16px; // 1.142rem;
+$size-6: 14px; // 1rem;
+$size-7: 12px; // 0.857rem;
+
+// $border:
+// $border-hover
+// $border-light
+// $border-light-hover
+$text: $dw-black-bis;
+$text-light: $dw-grey;
+$text-strong: $dw-black-bis;
+
+$code: darken($dw-red, 15%);
+
+
+$link: $dw-scooter;
+// $link-visited
+$link-hover: $dw-scooter-dark;
+// $link-hover-border
+
+$family-sans-serif:  "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+$family-serif: "Bitter", serif;
+$family-monospace: "Roboto Mono", Menlo, Consolas, Monaco, "Liberation Mono", monospace;
+
 $body-size: 14px;
-$size-1: 2.75rem;
-$size-3: 1.75rem;
-$size-7: 0.85rem;
-$title-weight: 400;
-$content-heading-weight: 400;
+$body-background-color: white;
 
-$footer-padding: 3rem 0rem 6rem;
-
-$navbar-height: 2rem;
-$navbar-burger-color: $dw_blue_medium;
-$navbar-padding-horizontal: 2rem;
-$navbar-dropdown-arrow: $dw_gray_30;
-
-$box-radius: 4px;
 $hr-height: 1px;
+
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -107,42 +116,5 @@ $hr-height: 1px;
  */
 // @import "../../node_modules/bulma/sass/layout/_all.sass";
 @import "../../node_modules/bulma/sass/layout/footer.sass";
-@import "../../node_modules/bulma/sass/layout/hero.sass";
+// @import "../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../node_modules/bulma/sass/layout/section.sass";
-
-a:hover {
-	text-decoration: underline;
-}
-
-.title.is-1, .subtitle.is-1, .subtitle.is-2, .title.is-2 {
-	font-weight: $weight-light;
-}
-
-
-.title.is-3 {
-	font-weight: $weight-medium;
-}
-
-
-button.is-primary,
-button.is-link,
-button.is-info,
-button.is-danger,
-button.is-dark,
-button.is-black {
-	svg {
-		fill: white;
-	}
-}
-
-.button.is-large {
-	font-weight: $weight-medium;
-}
-
-// adjust navbar arrow
-.select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
-	border-width: 2px;
-	border-radius: 0;
-	width: 0.5em;
-	height: 0.5em;
-}
