@@ -16,6 +16,7 @@ const registerVisualizations = require('@datawrapper/service-utils/registerVisua
 const config = requireConfig();
 const path = require('path');
 const { getUserLanguage } = require('./utils');
+const headerLinks = require('./utils/header-links');
 const {
     SvelteView,
     getView,
@@ -146,6 +147,8 @@ const start = async () => {
     server.method('isDevMode', () => process.env.DW_DEV_MODE);
     server.method('registerVisualization', registerVisualizations(server));
 
+    await server.register(headerLinks);
+
     // hooks
     server.app.event = eventList;
     server.app.events = new FrontendEventEmitter({ logger: server.logger, eventList });
@@ -180,6 +183,9 @@ const start = async () => {
     server.ext('onPreResponse', (request, h) => {
         if (request.response.isBoom) {
             const err = request.response;
+            if (err.output.statusCode === 401) {
+                return h.redirect(`/signin?ref=${request.path}`).temporary();
+            }
             return h
                 .view('Error.svelte', {
                     props: err.output.payload

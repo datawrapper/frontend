@@ -11,6 +11,35 @@ module.exports = {
     version: '1.0.0',
     register: async (server, options) => {
         const oauth = server.methods.config('general').oauth;
+        const { preventGuestAccess } = server.methods.config('frontend');
+        const providers = server.methods.config('frontend').signinProviders || [];
+
+        server.route({
+            method: 'GET',
+            path: '/',
+            options: {
+                auth: 'session'
+            },
+            async handler(request, h) {
+                const { ref } = request.query;
+
+                if (request.auth.isAuthenticated && request.auth.artifacts?.role !== 'guest') {
+                    return h.redirect(ref || '/');
+                }
+
+                return h.view('signin/Index.svelte', {
+                    props: {
+                        target: ref || '/',
+                        providers,
+                        // @todo: read from config
+                        noSignUp: !!preventGuestAccess,
+                        signupWithoutPassword: false
+                    }
+                });
+            }
+        });
+
+        server.methods.prepareView('signin/Index.svelte');
 
         for (var provider in oauth) {
             if (!Object.keys(Bell.providers).includes(provider)) continue;
@@ -68,6 +97,9 @@ module.exports = {
                         if (user) {
                             await user.save();
                         } else {
+                            if (preventGuestAccess) {
+                                throw Boom.unauthorized();
+                            }
                             // create new user
 
                             user = await User.create({
@@ -82,12 +114,14 @@ module.exports = {
                         const session = await login(user.id, request.auth.credentials, true);
                         await request.server.methods.logAction(user.id, `login/${provider}`);
 
+                        const { ref } = request.query;
+
                         return h
                             .response({
                                 [api.sessionID]: session.id
                             })
                             .state(api.sessionID, session.id, getStateOpts(request.server, 90))
-                            .redirect('/');
+                            .redirect(ref || '/');
                     }
                 }
             });

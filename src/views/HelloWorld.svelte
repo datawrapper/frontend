@@ -7,6 +7,7 @@
     import Tabs from 'layout/partials/bulma/Tabs.svelte';
     import Menu from 'layout/partials/bulma/Menu.svelte';
     import { onMount, onDestroy, getContext } from 'svelte';
+    import SignUp from './signin/SignUpForm.svelte';
 
     export let magicNumber;
     export let visualizations;
@@ -78,7 +79,8 @@
                 { url: '#titles', title: 'Titles' },
                 { url: '#content', title: 'Content' },
                 { url: '#table', title: 'Table' },
-                { url: '#forms', title: 'Forms' }
+                { url: '#forms', title: 'Forms' },
+                { url: '#signup', title: 'Sign Up' }
             ]
         },
         {
@@ -103,9 +105,16 @@
             </div>
             <div class="column" bind:this={contentRef}>
                 <div class="section pl-0 pt-0">
-                    <h1 id="welcome" class="title is-1" style="color:#c04" on:click={knock}>
+                    <h1 class="title is-1">Hello world!</h1>
+                    <p class="subtitle is-3 has-text-grey">A Datawrapper demo page</p>
+                    <h3 id="welcome" class="title is-4 mt-3" style="color:#c04" on:click={knock}>
                         {message}
-                    </h1>
+                        {#if $user && $user.activeTeam}
+                            Your active team is <b>{$user.activeTeam.name}</b>.
+                        {:else}
+                            You don't have an active team.
+                        {/if}
+                    </h3>
                     <div class="content">
                         <p class="subtitle">
                             Welcome to the Hello World demo page of our new frontend! The purpose of
@@ -115,7 +124,7 @@
                                 >Bulma CSS framework</a
                             >.
                         </p>
-                        <p>{__('team / invite / intro')}</p>
+                        <p>A translation test: {__('team / invite / intro')}</p>
                         <p>
                             The magic number is&nbsp;<b>{magicNumber}</b>, and it keeps increasing
                             because Svelte client-side hydration works!
@@ -770,6 +779,20 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section pl-0 pt-0">
+                    <h3 id="signup" class="title is-3">Sign Up dialogue</h3>
+                    <div class="columns">
+                        <div class="column is-5 box p-5">
+                            <SignUp
+                                {__}
+                                providers={[
+                                    { label: 'Twitter', url: '/signin/twitter', icon: 'twitter' }
+                                ]}
+                            />
                         </div>
                     </div>
                 </div>

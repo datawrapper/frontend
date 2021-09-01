@@ -21,7 +21,10 @@ module.exports = function (request) {
                 frontendDomain: `${frontendConfig.domain}`,
                 imageDomain: `${generalConfig.imageDomain}`,
                 dev: process.env.DW_DEV_MODE,
-                footerLinks: frontendConfig.footerLinks || []
+                footerLinks: frontendConfig.footerLinks || [],
+                languages: frontendConfig.languages || [],
+                headerLinks: server.methods.getHeaderLinks(request),
+                stickyHeaderThreshold: 800
             },
             request: {
                 method: request.method,
@@ -38,7 +41,9 @@ module.exports = function (request) {
                           name: auth.artifacts.email,
                           language: userLang,
                           isAdmin: auth.artifacts.isAdmin(),
-                          isGuest: false
+                          isGuest: false,
+                          teams: auth.artifacts.teams,
+                          activeTeam: auth.artifacts.activeTeam
                       }
                     : {
                           id: -1,
