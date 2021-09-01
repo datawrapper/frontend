@@ -39,7 +39,7 @@
 <style>
     :global(html) {
         background-color: #207693;
-        background-image: url(/lib/static/img/signin-background.png);
+        background-image: url(/lib/static/img/dw-hero-16-9-bg.jpg);
     }
     @media screen and (min-height: 600px) and (min-width: 600px) {
         :global(html) {
