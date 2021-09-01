@@ -923,5 +923,9 @@
   "signin / signin-here": "",
   "signin / terms": "",
   "signin / sign-up-using": "",
-  "signin / sign-in-using": ""
+  "signin / sign-in-using": "",
+  "signin / alternative-signin": "",
+  "signin / login-success": "",
+  "signin / signup-check-email": "",
+  "signin / signup-success": ""
 }

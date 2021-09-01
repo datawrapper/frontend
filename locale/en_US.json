@@ -923,5 +923,9 @@
   "signin / signin-here": "Sign in here",
   "signin / terms": "By using Datawrapper you agree to our <a href=\"https://www.datawrapper.de/terms\">Terms of Use</a>.",
   "signin / sign-up-using": "Sign up with",
-  "signin / sign-in-using": "Sign in with"
+  "signin / sign-in-using": "Sign in with",
+  "signin / alternative-signin": "Alternatively, sign in with",
+  "signin / login-success": "Login successful, reloading page…",
+  "signin / signup-check-email": "Please check your e-mail inbox to proceed on your desktop computer.",
+  "signin / signup-success": "Sign up successful. Welcome to Datawrapper :)"
 }
