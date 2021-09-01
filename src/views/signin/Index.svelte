@@ -4,8 +4,9 @@
 
     export let __;
     export let target;
+    export let noSignin;
 </script>
 
 <SignInPageLayout title="Welcome">
-    <SignUpForm {__} {target} />
+    <SignUpForm {__} {target} {noSignin} />
 </SignInPageLayout>

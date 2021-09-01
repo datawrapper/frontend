@@ -1,21 +1,69 @@
 <script>
+    import Notification from 'layout/partials/bulma/Notification.svelte';
     import ProviderButtons from './ProviderButtons.svelte';
     import CheckPassword from './CheckPassword.svelte';
+    import { trackEvent } from '@datawrapper/shared/analytics';
+    import { isValidEmail } from './utils';
 
     export let __;
     export let target;
     export let step;
     export let email;
+    export let signupWithoutPassword;
     export let providers;
     export let emailOpen;
     export let password = '';
+    export let noSignin;
 
     let passwordClear = false;
+
+    let signingUp;
+    let signupSuccess;
+    let signupError;
 
     let passwordOk;
     let passwordHelp;
     let passwordSuccess;
     let passwordError;
+
+    async function doSignUp() {
+        if (signingUp) return;
+        // reset messages
+        signingUp = true;
+        signupError = signupSuccess = '';
+        try {
+            await httpReq.post('/v3/auth/signup', {
+                payload: {
+                    email,
+                    invitation: signupWithoutPassword,
+                    password: !signupWithoutPassword ? password : undefined
+                }
+            });
+
+            trackEvent('App', 'sign-up');
+
+            if (!signupWithoutPassword) {
+                // @todo: translate
+                signupSuccess = 'Sign up successful. Redirecting to user dashboard.';
+                setTimeout(() => {
+                    window.location.href = target;
+                }, 2000);
+            } else {
+                // @todo: translate
+                signupSuccess =
+                    'Please check your e-mail inbox to proceed on your desktop computer.';
+                signingUp = false;
+            }
+        } catch (error) {
+            if (error.name === 'HttpReqError') {
+                const body = await error.response.json();
+                signupError = body ? body.message : error.message;
+            } else {
+                signupError = error;
+            }
+            signingUp = false;
+        }
+    }
 </script>
 
 <div>
@@ -24,6 +72,11 @@
 
     {#if emailOpen}
         <div class="signup-form">
+            {#if signupError || signupSuccess}
+                <Notification type={signupError ? 'danger' : 'success'} deletable={false}>
+                    {@html signupError || signupSuccess}
+                </Notification>
+            {/if}
             <div class="field">
                 <label for="su-email" class="label">{__('email')}</label>
                 <input
@@ -80,7 +133,7 @@
                 >
             </div>
 
-            <button class="button is-primary mb-2" on:click={() => (emailOpen = true)}>
+            <button class="button is-primary mb-2" on:click={() => doSignUp()}>
                 {@html __('Sign Up')}</button
             >
             <div class="mt-5">
@@ -93,15 +146,17 @@
         <ProviderButtons {__} {providers} bind:emailOpen signIn={false} />
     {/if}
 
-    <hr />
-    <p class=" mt-3">
-        <strong>{__('signin / already-have-account')}</strong><br />
-        <a
-            href="#/signin"
-            class="has-text-weight-bold"
-            on:click|preventDefault={() => {
-                step = 'signin';
-            }}>{__('signin / signin-here')}</a
-        >.
-    </p>
+    {#if !noSignin}
+        <hr />
+        <p class=" mt-3">
+            <strong>{__('signin / already-have-account')}</strong><br />
+            <a
+                href="#/signin"
+                class="has-text-weight-bold"
+                on:click|preventDefault={() => {
+                    step = 'signin';
+                }}>{__('signin / signin-here')}</a
+            >.
+        </p>
+    {/if}
 </div>
