@@ -3,9 +3,10 @@
     import SvgIcon from 'layout/partials/SvgIcon.svelte';
     import VisArchive from './VisArchive.svelte';
     import TeamSelect from './TeamSelect.svelte';
-    import { post } from '@datawrapper/shared/httpReq';
+    import { post, patch } from '@datawrapper/shared/httpReq';
 
     export let isActive;
+    export let __;
 
     const user = getContext('user');
     const config = getContext('config');
@@ -15,6 +16,14 @@
         if (item.type === 'logout') {
             event.preventDefault();
             await post('/v3/auth/logout');
+            window.location.reload();
+        } else if (item.type === 'language') {
+            event.preventDefault();
+            await patch('/v3/me', {
+                payload: {
+                    language: item.id
+                }
+            });
             window.location.reload();
         }
     }
@@ -71,7 +80,7 @@
                                         {$user.activeTeam ? $user.activeTeam.name : 'My Charts'}
                                     </div>
                                 {:else if subItem.type === 'teamSelector'}
-                                    <TeamSelect />
+                                    <TeamSelect {__} />
                                 {:else if subItem.type === 'html'}
                                     <div
                                         class="navbar-item"
@@ -80,6 +89,32 @@
                                     >
                                         {@html subItem.content}
                                     </div>
+                                {:else if subItem.submenuItems}
+                                    <!-- dropdown with dropdown -->
+                                    <a
+                                        class="navbar-item has-dropdown is-hoverable"
+                                        href="#/dropdown"
+                                    >
+                                        {#if subItem.svgIcon}<SvgIcon
+                                                size="20px"
+                                                valign="top"
+                                                icon={subItem.svgIcon}
+                                            />{/if}{#if subItem.fontIcon}<span class="icon"
+                                                ><i class={subItem.fontIcon} /></span
+                                            >{/if} <span>{@html subItem.title || ''}</span>
+                                        <div class="navbar-dropdown is-right">
+                                            {#each subItem.submenuItems as subItem2}
+                                                <div
+                                                    class="navbar-item"
+                                                    on:click={event =>
+                                                        onNavItemClick(event, subItem2)}
+                                                    style={subItem2.style || ''}
+                                                >
+                                                    {@html subItem2.title}
+                                                </div>
+                                            {/each}
+                                        </div>
+                                    </a>
                                 {:else}
                                     <a
                                         class="navbar-item"
@@ -213,5 +248,17 @@
 
     .navbar-menu :global(.is-size-7) {
         font-weight: normal;
+    }
+
+    .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
+        position: absolute;
+        left: -100%;
+        right: 100%;
+        top: -6px;
+        display: none;
+    }
+
+    .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
+        display: block;
     }
 </style>

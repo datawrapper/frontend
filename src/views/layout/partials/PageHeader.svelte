@@ -4,6 +4,13 @@
     import NavBar from './header/NavBar.svelte';
 
     const config = getContext('config');
+    const msg = getContext('messages');
+
+    let __;
+    $: {
+        __ = (key, scope = 'core') => msg.translate(key, scope, $msg);
+    }
+
     $: stickyHeaderThreshold = $config.stickyHeaderThreshold;
 
     const request = getContext('request');
@@ -58,7 +65,7 @@
                     <span aria-hidden="true" />
                 </a>
             </div>
-            <NavBar {isActive} />
+            <NavBar {isActive} {__} />
         </nav>
     </div>
 </header>
