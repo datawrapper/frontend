@@ -927,5 +927,6 @@
   "signin / alternative-signin": "Oder melde dich an über",
   "signin / login-success": "Anmeldung erfolgreich, Seite wird neu geladen …",
   "signin / signup-check-email": "Bitte prüfe deinen E-Mail-Posteingang, um auf deinem Desktop-Computer fortzufahren.",
-  "signin / signup-success": "Anmeldung erfolgreich. Willkommen bei Datawrapper :)"
+  "signin / signup-success": "Anmeldung erfolgreich. Willkommen bei Datawrapper :)",
+  "navbar / teams / no-team": "Kein Team <span class=\"has-text-grey\">(privat)</span>"
 }
