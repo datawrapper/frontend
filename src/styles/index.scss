@@ -4,7 +4,8 @@
 @import "./colors";
 
 
-// colors
+// COLORS
+
 $primary: $dw-scooter;
 
 $info: $dw-blue;
@@ -16,21 +17,14 @@ $light: $dw-white-bis;
 $dark: $dw-black-bis;
 
 $background: $dw-white-bis;
+$body-background-color: white;
 
-// is there any downside defining those sizes as px and not rem?
-
-$size-1: 48px; // 3.428rem;
-$size-2: 32px; // 2.285rem;
-$size-3: 24px; // 1.714rem;
-$size-4: 19px; // 1.357rem;
-$size-5: 16px; // 1.142rem;
-$size-6: 14px; // 1rem;
-$size-7: 12px; // 0.857rem;
 
 // $border:
 // $border-hover
 // $border-light
 // $border-light-hover
+
 $text: $dw-black-bis;
 $text-light: $dw-grey;
 $text-strong: $dw-black-bis;
@@ -43,14 +37,32 @@ $link: $dw-scooter;
 $link-hover: $dw-scooter-dark;
 // $link-hover-border
 
+// FOTNTS
+
 $family-sans-serif:  "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 $family-serif: "Bitter", serif;
 $family-monospace: "Roboto Mono", Menlo, Consolas, Monaco, "Liberation Mono", monospace;
 
-$body-size: 14px;
-$body-background-color: white;
+// SIZES
+
+$body-size: 16px;
+$body-font-size: 14px;
+
+$size-1: 3rem; // = 48px @ 16px base
+$size-2: 2rem; // = 32px @ 16px base
+$size-3: 1.5rem; // = 24px @ 16px base
+$size-4: 1.25rem; // = 20px @ 16px base
+$size-5: 1rem; // 16px @ 16px base
+$size-6: 0.875rem; // = 14px @ 16px base
+$size-7: 0.75rem; // = 12px @ 16px base
+
+// $size-small: $size-7
+// $size-normal: $size-6
+// $size-medium: $size-5
+// $size-large: $size-4
 
 $hr-height: 1px;
+$hr-background-color: $dw-shade;
 
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
@@ -114,7 +126,7 @@ $hr-height: 1px;
  * BULMA LAYOUT
  * https://bulma.io/documentation/layout/
  */
-// @import "../../node_modules/bulma/sass/layout/_all.sass";
-@import "../../node_modules/bulma/sass/layout/footer.sass";
+@import "../../node_modules/bulma/sass/layout/_all.sass";
+// @import "../../node_modules/bulma/sass/layout/footer.sass";
 // @import "../../node_modules/bulma/sass/layout/hero.sass";
-@import "../../node_modules/bulma/sass/layout/section.sass";
+// @import "../../node_modules/bulma/sass/layout/section.sass";
