@@ -11,6 +11,30 @@ module.exports = {
     version: '1.0.0',
     register: async (server, options) => {
         const oauth = server.methods.config('general').oauth;
+        const { preventGuestAccess } = server.methods.config('frontend');
+        const providers = server.methods.config('frontend').signinProviders || [];
+
+        server.route({
+            method: 'GET',
+            path: '/',
+            options: {
+                auth: 'session'
+            },
+            async handler(request, h) {
+                const { ref } = request.query;
+                return h.view('signin/Index.svelte', {
+                    props: {
+                        target: ref || '/',
+                        providers,
+                        // @todo: read from config
+                        noSignUp: !!preventGuestAccess,
+                        signupWithoutPassword: false
+                    }
+                });
+            }
+        });
+
+        server.methods.prepareView('signin/Index.svelte');
 
         for (var provider in oauth) {
             if (!Object.keys(Bell.providers).includes(provider)) continue;
@@ -68,6 +92,9 @@ module.exports = {
                         if (user) {
                             await user.save();
                         } else {
+                            if (preventGuestAccess) {
+                                throw Boom.unauthorized();
+                            }
                             // create new user
 
                             user = await User.create({

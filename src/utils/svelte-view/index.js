@@ -125,33 +125,47 @@ const SvelteView = {
             context.props.stores = context.stores;
 
             // eslint-disable-next-line
-            const ssrFunc = new Function(ssr + ';return App');
-            const { css, html, head } = ssrFunc().render(context.props);
+            try {
+                const ssrFunc = new Function(ssr + ';return App');
 
-            // remove stores that we already have in client-side cache
-            Object.keys(context.storeCached).forEach(key => {
-                context.props.stores[key] = {};
-            });
+                const { css, html, head } = ssrFunc().render(context.props);
 
-            const output = ejs.render(template, {
-                SSR_HEAD: head,
-                SSR_CSS: css.code,
-                NODE_ENV: process.env.NODE_ENV,
-                SSR_HTML: html,
-                PAGE: page,
-                PAGE_PROPS: jsesc(JSON.stringify(context.props), {
-                    isScriptContext: true,
-                    json: true,
-                    wrap: true
-                }),
-                DW_DEV_MODE: process.env.DW_DEV_MODE,
-                STORE_HASHES: jsesc(JSON.stringify(context.storeHashes), {
-                    isScriptContext: true,
-                    json: true,
-                    wrap: true
-                })
-            });
-            return output;
+                // remove stores that we already have in client-side cache
+                Object.keys(context.storeCached).forEach(key => {
+                    context.props.stores[key] = {};
+                });
+
+                const output = ejs.render(template, {
+                    SSR_HEAD: head,
+                    SSR_CSS: css.code,
+                    NODE_ENV: process.env.NODE_ENV,
+                    SSR_HTML: html,
+                    PAGE: page,
+                    PAGE_PROPS: jsesc(JSON.stringify(context.props), {
+                        isScriptContext: true,
+                        json: true,
+                        wrap: true
+                    }),
+                    DW_DEV_MODE: process.env.DW_DEV_MODE,
+                    STORE_HASHES: jsesc(JSON.stringify(context.storeHashes), {
+                        isScriptContext: true,
+                        json: true,
+                        wrap: true
+                    })
+                });
+                return output;
+            } catch (err) {
+                const errLines = err.stack.split('\n');
+                const errLine = errLines.find(d => d.includes('at eval (eval at runtime'));
+
+                if (errLine) {
+                    const [m, line, col] = errLine.match(/<anonymous>:(\d+):(\d+)/);
+                    const lines = ssr.split('\n');
+                    console.error('Error near:\n');
+                    console.error(lines.slice(+line - 3, +line + 4)); // before line
+                }
+                throw err;
+            }
         };
     },
     context: require('./context')

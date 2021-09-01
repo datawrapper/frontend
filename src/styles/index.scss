@@ -22,6 +22,8 @@ $navbar-tab-active-background-color: $dw_blue_light;
 $table-background-color: transparent;
 $table-striped-row-even-background-color: hsla(0,0,0, 0.03);
 
+$success: $dw_green_dark;
+
 // font styles
 $family-sans-serif: "Roboto", Helvetica, sans-serif;
 $family-monospace: "Roboto Mono", monospace;
@@ -38,6 +40,9 @@ $navbar-height: 2rem;
 $navbar-burger-color: $dw_blue_medium;
 $navbar-padding-horizontal: 2rem;
 $navbar-dropdown-arrow: $dw_gray_30;
+
+$box-radius: 4px;
+$hr-height: 1px;
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -102,7 +107,7 @@ $navbar-dropdown-arrow: $dw_gray_30;
  */
 // @import "../../node_modules/bulma/sass/layout/_all.sass";
 @import "../../node_modules/bulma/sass/layout/footer.sass";
-// @import "../../node_modules/bulma/sass/layout/hero.sass";
+@import "../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../node_modules/bulma/sass/layout/section.sass";
 
 a:hover {

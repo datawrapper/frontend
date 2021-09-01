@@ -12,11 +12,13 @@
     const heds = {
         404: 'error / not-found / hed',
         403: 'error / forbidden / hed',
+        401: 'error / unauthorized / hed',
         400: 'error / bad-request / hed'
     };
     const texts = {
         404: 'error / not-found / text',
         403: 'error / forbidden / text',
+        401: 'error / unauthorized / text',
         400: 'error / bad-request / text'
     };
 
@@ -29,7 +31,7 @@
 <MainLayout title="Error {statusCode} / {error}">
     <div class="container">
         <div class="columns">
-            <div class="column is-four-fifths">
+            <div class="column is-8">
                 <h3 class="is-size-4 mb-2 has-text-grey">
                     Error {statusCode} ({error}{#if message !== error}&nbsp;/&nbsp;{message}{/if})
                 </h3>
@@ -55,6 +57,9 @@
                         )}
                     </p>
                 </div>
+            </div>
+            <div class="column is-4">
+                {#if statusCode === 401}{/if}
             </div>
         </div>
     </div>
