@@ -6,8 +6,7 @@
     export let signIn = true;
     export let __;
 
-    let showAllProvider = true;
-    $: visibleProviders = showAllProvider ? providers : providers.slice(0, 3);
+    $: showTwoColumns = providers.length > 3;
 </script>
 
 <div class="signup-form">
@@ -22,24 +21,20 @@
 </div>
 
 <hr />
-
-<p>{__('signin / alternative-signin')}</p>
-<div class="signup-form" class:two-columns={showAllProvider}>
-    {#each visibleProviders as provider}
+{#if showTwoColumns}
+    <p>{__('signin / alternative-signin')}</p>
+{/if}
+<div class="signup-form" class:two-columns={showTwoColumns}>
+    {#each providers as provider}
         <a
             href={provider.url}
             class="button provider-{provider.label.toLowerCase()} is-fullwidth mb-2"
         >
             <SvgIcon icon={provider.icon} size="28px" />
-            {showAllProvider ? '' : `Sign ${signIn ? 'in' : 'up'} using`}
+            {showTwoColumns ? '' : __(signIn ? 'signin / sign-in-using' : 'signin / sign-up-using')}
             {provider.label}</a
         >
     {/each}
-    {#if providers.length > visibleProviders.length}
-        <a href="#/show-all" on:click|preventDefault={() => (showAllProvider = true)}
-            >Show all login options</a
-        >
-    {/if}
 </div>
 
 <style lang="less">

@@ -787,7 +787,12 @@
                     <h3 id="signup" class="title is-3">Sign Up dialogue</h3>
                     <div class="columns">
                         <div class="column is-5 box p-5">
-                            <SignUp {__} />
+                            <SignUp
+                                {__}
+                                providers={[
+                                    { label: 'Twitter', url: '/signin/twitter', icon: 'twitter' }
+                                ]}
+                            />
                         </div>
                     </div>
                 </div>
