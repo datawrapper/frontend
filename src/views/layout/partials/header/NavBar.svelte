@@ -200,6 +200,10 @@
         }
     }
 
+    .navbar-item.has-dropdown:hover .navbar-link {
+        background: transparent;
+    }
+
     :global(.navbar-compact) .navbar-separator span {
         transition: height, margin 0.2 ease-in-out;
         margin-top: 0.23rem;
