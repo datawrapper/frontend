@@ -2,6 +2,10 @@
     import LoadingSpinner from 'layout/partials/LoadingSpinner.svelte';
     import { onMount } from 'svelte';
     import Parser from 'rss-parser/dist/rss-parser';
+    import dayjs from 'dayjs';
+    import relativeTime from 'dayjs/plugin/relativeTime';
+
+    dayjs.extend(relativeTime);
 
     let error = false;
     let items = [];
@@ -22,7 +26,11 @@
             {:else}
                 {#each items.slice(0, 10) as item}
                     <div class="item block">
-                        <div>{item.title}</div>
+                        <div class="has-text-grey is-size-7 is-uppercase mb-1">
+                            {@html item.title.split(' / ')[1]} -- {dayjs(
+                                item.title.split(' / ')[0]
+                            ).fromNow()}
+                        </div>
                         <div class="content">{@html item.content}</div>
                     </div>
                 {/each}
