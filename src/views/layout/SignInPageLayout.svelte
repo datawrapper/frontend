@@ -16,20 +16,28 @@
 </svelte:head>
 
 <section class="hero is-fullheight">
-    <div class="hero-body is-justify-content-center">
-        <div class="box columns is-radiusless p-0">
-            <div
-                class="column p-6 is-flex is-flex-direction-column is-justify-content-space-between"
-            >
-                <DatawrapperLogo height="60" />
-                <div class="terms is-size-7 is-hidden-mobile">
-                    {@html __('signin / terms')}
+    <div class="hero-body">
+        <div class="container is-max-desktop box p-0 is-radiusless">
+            <div class="columns is-gapless">
+                <div class="column is-one-third is-flex is-flex-direction-column">
+                    <div
+                        class="p-6 is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1"
+                    >
+                        <DatawrapperLogo height="60" />
+                        <div class="terms is-size-7 is-hidden-mobile">
+                            {@html __('signin / terms')}
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="column is-8 p-6 has-background-light">
-                <slot />
-                <div class="terms is-size-7 is-hidden-tablet">
-                    {@html __('signin / terms')}
+                <div class="column has-background-light is-flex is-flex-direction-column">
+                    <div
+                        class="p-6 is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1"
+                    >
+                        <slot />
+                        <div class="terms is-size-7 is-hidden-tablet">
+                            {@html __('signin / terms')}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,7 +46,7 @@
 
 <style>
     :global(html) {
-        background-color: #207693;
+        background-color: var(--color-dw-scooter);
         background-image: url(/lib/static/img/dw-hero-16-9-bg.jpg);
     }
     @media screen and (min-height: 600px) and (min-width: 600px) {
