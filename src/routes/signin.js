@@ -41,27 +41,6 @@ module.exports = {
 
         server.methods.prepareView('signin/Index.svelte');
 
-        server.route({
-            method: 'GET',
-            path: '/',
-            options: {
-                auth: 'session'
-            },
-            async handler(request, h) {
-                const { ref } = request.query;
-                return h.view('signin/Index.svelte', {
-                    props: {
-                        target: ref,
-                        // @todo: read from config
-                        noSignUp: false,
-                        noSignIn: false
-                    }
-                });
-            }
-        });
-
-        server.methods.prepareView('signin/Index.svelte');
-
         for (var provider in oauth) {
             if (!Object.keys(Bell.providers).includes(provider)) continue;
 

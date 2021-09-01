@@ -12,6 +12,8 @@ module.exports = {
     register: async (server, options) => {
         const config = server.methods.config();
 
+        server.methods.prepareView('edit/Index.svelte');
+
         server.route({
             method: 'GET',
             path: '/{chartId}/{step?}',
@@ -35,7 +37,7 @@ module.exports = {
 
                     const data = await api(`/charts/${chart.id}/data`, { json: false });
 
-                    return h.view('edit/App.svelte', {
+                    return h.view('edit/Index.svelte', {
                         props: {
                             rawChart: chart,
                             rawData: data,

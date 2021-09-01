@@ -5,7 +5,7 @@
     import Header from './nav/Header.svelte';
     import Describe from './Describe.svelte';
     import Publish from './Publish.svelte';
-    import UploadData from './UploadData.svelte';
+    import Upload from './Upload.svelte';
     import Visualize from './Visualize.svelte';
 
     import { data, chart, unsavedChanges, initChartStore, initDataStore } from './stores';
@@ -20,7 +20,7 @@
             index: 1,
             id: 'upload',
             title: 'Upload data',
-            ui: UploadData
+            ui: Upload
         },
         {
             index: 2,
