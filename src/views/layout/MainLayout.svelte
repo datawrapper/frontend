@@ -18,7 +18,7 @@
 </div>
 
 <style type="text/css">
-    :global(body) {
+    :global(html) {
         background: var(--color-dw-white-bis);
     }
 </style>
