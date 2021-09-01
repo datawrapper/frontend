@@ -3,6 +3,8 @@
     import { getContext } from 'svelte';
     import { patch } from '@datawrapper/shared/httpReq';
 
+    export let __;
+
     const user = getContext('user');
 
     async function select(team) {
@@ -37,11 +39,11 @@
         class="navbar-item team-select"
         class:is-active-team={!$user.activeTeam}
     >
-        <SvgIcon icon="user{!$user.activeTeam ? '-check' : ''}" size="20px" /> No team
-        <span class="has-text-grey">(private)</span>
+        <SvgIcon icon="user{!$user.activeTeam ? '-check' : ''}" size="20px" />
+        {@html __('navbar / teams / no-team')}
     </a>
 {:else}
-    <a class="navbar-item" href="/account/teams"> Create a team </a>
+    <a class="navbar-item" href="/account/teams"> {__('account / my-teams / create')} </a>
 {/if}
 
 <style>
