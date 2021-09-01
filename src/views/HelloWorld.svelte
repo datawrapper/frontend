@@ -7,6 +7,7 @@
     import Tabs from 'layout/partials/bulma/Tabs.svelte';
     import Menu from 'layout/partials/bulma/Menu.svelte';
     import { onMount, onDestroy, getContext } from 'svelte';
+    import SignUp from './signin/SignUpForm.svelte';
 
     export let magicNumber;
     export let visualizations;
@@ -78,7 +79,8 @@
                 { url: '#titles', title: 'Titles' },
                 { url: '#content', title: 'Content' },
                 { url: '#table', title: 'Table' },
-                { url: '#forms', title: 'Forms' }
+                { url: '#forms', title: 'Forms' },
+                { url: '#signup', title: 'Sign Up' }
             ]
         },
         {
@@ -777,6 +779,20 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section pl-0 pt-0">
+                    <h3 id="signup" class="title is-3">Sign Up dialogue</h3>
+                    <div class="columns">
+                        <div class="column is-5 box p-5">
+                            <SignUp
+                                {__}
+                                providers={[
+                                    { label: 'Twitter', url: '/signin/twitter', icon: 'twitter' }
+                                ]}
+                            />
                         </div>
                     </div>
                 </div>

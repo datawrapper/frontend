@@ -183,6 +183,9 @@ const start = async () => {
     server.ext('onPreResponse', (request, h) => {
         if (request.response.isBoom) {
             const err = request.response;
+            if (err.output.statusCode === 401) {
+                return h.redirect(`/signin?ref=${request.path}`).temporary();
+            }
             return h
                 .view('Error.svelte', {
                     props: err.output.payload

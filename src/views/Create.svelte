@@ -15,7 +15,7 @@
     import httpReq from '@datawrapper/shared/httpReq';
     import { autoTickFormatDate } from '@datawrapper/shared/autoTickFormat';
     import delimited from '@datawrapper/chart-core/lib/dw/dataset/delimited';
-    import SignInPageLayout from './layout/SignInPageLayout.svelte';
+    import SignInPageLayout from './layout/OldSignInPageLayout.svelte';
 
     let loggedIn = false;
     let ds;

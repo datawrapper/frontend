@@ -26,17 +26,23 @@ module.exports = {
 
         // add some core header links
         server.methods.registerHeaderLinks(request => {
+            const user = request.auth.artifacts;
+            const isGuest = !user || user.role === 'guest';
             const language = getUserLanguage(request.auth);
             const __ = key => server.methods.translate(key, { scope: 'core' });
             return [
-                {
-                    id: 'dashboard',
-                    svgIcon: 'rocket',
-                    // fontIcon: 'fa fa-fw fa-bar-chart-o',
-                    title: __('Dashboard'),
-                    url: '/',
-                    order: 5
-                },
+                ...(!isGuest
+                    ? [
+                          {
+                              id: 'dashboard',
+                              svgIcon: 'rocket',
+                              // fontIcon: 'fa fa-fw fa-bar-chart-o',
+                              title: __('Dashboard'),
+                              url: '/',
+                              order: 5
+                          }
+                      ]
+                    : []),
                 {
                     id: 'create-new',
                     svgIcon: 'add',
@@ -64,29 +70,17 @@ module.exports = {
                             url: '/create/table',
                             order: 30
                         },
-                        {
-                            type: 'activeTeam',
-                            order: 999
-                        }
+                        ...(!isGuest
+                            ? [
+                                  {
+                                      type: 'activeTeam',
+                                      order: 999
+                                  }
+                              ]
+                            : [])
                     ]
                 },
-                {
-                    id: 'my-charts',
-                    svgIcon: 'cabinet',
-                    title: __('Archive'),
-                    url: '/mycharts',
-                    order: 60
-                },
-                {
-                    id: 'my-charts',
-                    type: 'visArchive',
-                    submenuItems: true,
-                    order: 61
-                },
-                {
-                    type: 'separator',
-                    order: 69
-                },
+
                 // {
                 //     id: 'settings',
                 //     // fontIcon: 'im im-globe',
@@ -94,6 +88,38 @@ module.exports = {
                 //     order: 90,
                 //
                 // },
+                ...(isGuest
+                    ? [
+                          {
+                              type: 'separator',
+                              order: 69
+                          },
+                          {
+                              fontIcon: 'fa fa-sign-in',
+                              title: 'Sign in',
+                              type: 'login',
+                              url: `/signin?ref=${request.path}`
+                          }
+                      ]
+                    : [
+                          {
+                              id: 'my-charts',
+                              svgIcon: 'cabinet',
+                              title: __('Archive'),
+                              url: '/mycharts',
+                              order: 60
+                          },
+                          {
+                              id: 'my-charts',
+                              type: 'visArchive',
+                              submenuItems: true,
+                              order: 61
+                          },
+                          {
+                              type: 'separator',
+                              order: 69
+                          }
+                      ]),
                 {
                     id: 'settings',
                     svgIcon: 'menu',
@@ -101,16 +127,20 @@ module.exports = {
                     // svgIconCrisp: true,
                     order: 95,
                     submenuItems: [
-                        {
-                            url: '/account',
-                            title: 'Settings',
-                            svgIcon: 'user-menu'
-                        },
-                        {
-                            url: '/account/teams',
-                            title: 'My teams',
-                            svgIcon: 'team'
-                        },
+                        ...(!isGuest
+                            ? [
+                                  {
+                                      url: '/account',
+                                      title: 'Settings',
+                                      svgIcon: 'user-menu'
+                                  },
+                                  {
+                                      url: '/account/teams',
+                                      title: 'My teams',
+                                      svgIcon: 'team'
+                                  }
+                              ]
+                            : []),
                         {
                             url: '/account/teams',
                             title: 'Language',
@@ -122,25 +152,30 @@ module.exports = {
                                 })
                             )
                         },
-                        {
-                            type: 'separator'
-                        },
-                        {
-                            type: 'html',
-                            content:
-                                '<span class="has-text-grey is-size-7" style="font-weight:normal">Select active team</span>'
-                        },
-                        {
-                            type: 'teamSelector'
-                        },
-                        {
-                            type: 'separator'
-                        },
-                        {
-                            url: '/account/teams',
-                            svgIcon: 'signout',
-                            title: 'Logout'
-                        }
+                        ...(!isGuest
+                            ? [
+                                  {
+                                      type: 'separator'
+                                  },
+                                  {
+                                      type: 'html',
+                                      content:
+                                          '<span class="has-text-grey is-size-7" style="font-weight:normal">Select active team</span>'
+                                  },
+                                  {
+                                      type: 'teamSelector'
+                                  },
+                                  {
+                                      type: 'separator'
+                                  },
+                                  {
+                                      url: '#/logout',
+                                      svgIcon: 'signout',
+                                      type: 'logout',
+                                      title: 'Logout'
+                                  }
+                              ]
+                            : [])
                     ]
                 }
             ];
