@@ -11,6 +11,7 @@ module.exports = {
     version: '1.0.0',
     register: async (server, options) => {
         const oauth = server.methods.config('general').oauth;
+        const { preventGuestAccess } = server.methods.config('frontend');
         const providers = server.methods.config('frontend').signinProviders || [];
 
         server.route({
@@ -26,8 +27,7 @@ module.exports = {
                         target: ref || '/',
                         providers,
                         // @todo: read from config
-                        noSignUp: false,
-                        noSignIn: false,
+                        noSignUp: !!preventGuestAccess,
                         signupWithoutPassword: false
                     }
                 });
@@ -92,6 +92,9 @@ module.exports = {
                         if (user) {
                             await user.save();
                         } else {
+                            if (preventGuestAccess) {
+                                throw Boom.unauthorized();
+                            }
                             // create new user
 
                             user = await User.create({
