@@ -64,6 +64,7 @@ $size-7: 0.75rem; // = 12px @ 16px base
 $hr-height: 1px;
 $hr-background-color: $dw-shade;
 
+$section-padding: 1.5rem !default;
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";

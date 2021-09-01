@@ -5,6 +5,7 @@ const svelte = require('rollup-plugin-svelte');
 const { default: resolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const alias = require('@rollup/plugin-alias');
+const json = require('@rollup/plugin-json');
 const replace = require('@rollup/plugin-replace');
 const { less } = require('svelte-preprocess-less');
 const { terser } = require('rollup-plugin-terser');
@@ -94,6 +95,7 @@ function buildOptions(page, ssr) {
                     layout: join(__dirname, '../../views/layout')
                 }
             }),
+            json(),
             svelte({
                 compilerOptions: {
                     dev: !production,
@@ -115,6 +117,17 @@ function buildOptions(page, ssr) {
             }),
             commonjs(),
             production && terser()
-        ]
+        ],
+        onwarn
     };
+}
+
+function onwarn(warning, handler) {
+    if (
+        warning.code === 'CIRCULAR_DEPENDENCY' &&
+        warning.importer.includes('node_modules/xmlbuilder')
+    ) {
+        return;
+    }
+    handler(warning);
 }
