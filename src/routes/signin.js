@@ -109,12 +109,14 @@ module.exports = {
                         const session = await login(user.id, request.auth.credentials, true);
                         await request.server.methods.logAction(user.id, `login/${provider}`);
 
+                        const { ref } = request.query;
+
                         return h
                             .response({
                                 [api.sessionID]: session.id
                             })
                             .state(api.sessionID, session.id, getStateOpts(request.server, 90))
-                            .redirect('/');
+                            .redirect(ref || '/');
                     }
                 }
             });
