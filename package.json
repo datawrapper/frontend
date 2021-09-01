@@ -12,7 +12,7 @@
     "dependencies": {
         "@babel/core": "^7.12.10",
         "@babel/preset-env": "^7.12.11",
-        "@datawrapper/chart-core": "^8.41.0",
+        "@datawrapper/chart-core": "^8.41.1",
         "@datawrapper/icons": "^1.4.0",
         "@datawrapper/locales": "^1.2.6",
         "@datawrapper/orm": "^3.25.0",
