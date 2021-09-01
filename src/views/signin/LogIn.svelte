@@ -1,6 +1,7 @@
 <script>
     import httpReq from '@datawrapper/shared/httpReq';
     import Notification from 'layout/partials/bulma/Notification.svelte';
+    import LoadingSpinner from 'layout/partials/LoadingSpinner.svelte';
     import ProviderButtons from './ProviderButtons.svelte';
     import { isValidEmail } from './utils';
 
@@ -11,7 +12,7 @@
     export let providers;
     export let noSignUp;
 
-    let email = '';
+    export let email = '';
     let password = '';
     let rememberLogin = true;
 
@@ -60,18 +61,41 @@
         }
         loggingIn = false;
     }
+
+    async function doResetPassword() {
+        requestingPassword = true;
+        loginError = loginSuccess = '';
+        try {
+            await httpReq.post('/v3/auth/reset-password', {
+                payload: {
+                    email
+                }
+            });
+            loginSuccess = __('signin / password-reset / success');
+        } catch (error) {
+            if (error.name === 'HttpReqError') {
+                const body = await error.response.json();
+                loginError = body.message
+                    ? __(`signin / password-reset / error / ${body.message}`)
+                    : error.message;
+            } else {
+                loginError = error;
+            }
+        }
+        requestingPassword = false;
+    }
 </script>
 
 <div>
     <h2 class="title is-3">{@html __('login / login / headline')}</h2>
     <p>{@html __('login / login / intro')}</p>
     {#if emailOpen}
+        {#if loginError || loginSuccess}
+            <Notification type={loginError ? 'warning' : 'success'} deletable={false}>
+                {@html loginError || loginSuccess}
+            </Notification>
+        {/if}
         <div class="signup-form">
-            {#if loginError || loginSuccess}
-                <Notification type={loginError ? 'danger' : 'success'} deletable={false}>
-                    {@html loginError || loginSuccess}
-                </Notification>
-            {/if}
             {#if !needOTP}
                 <div class="field">
                     <label for="si-email" class="label">{__('email')}</label>
@@ -115,16 +139,28 @@
                 <button class="button is-primary mb-2" on:click={doLogIn}>
                     {@html __('Login')}</button
                 >
+                <div class="mt-3">
+                    <a
+                        on:click|preventDefault={() => (resetPassword = true)}
+                        href="#/forgot-password">{@html __("Can't recall your password?")}</a
+                    >
+                </div>
+                <div class="mt-5">
+                    <a href="#/back" on:click|preventDefault={() => (emailOpen = false)}>
+                        ←&nbsp;&nbsp;{__('signin / choose-different-provider')}</a
+                    >
+                </div>
             {:else}
-                <button class="button is-primary mb-2" on:click={resetPassword}>
-                    {@html __('Send new password')}</button
-                >
+                <button class="button is-primary mb-2" on:click={doResetPassword}>
+                    {#if requestingPassword}<LoadingSpinner />{/if}
+                    {@html __('Send new password')}
+                </button>
+                <div class="mt-3">
+                    <a on:click|preventDefault={() => (resetPassword = false)} href="#/return"
+                        >{@html __('Return to login...')}</a
+                    >
+                </div>
             {/if}
-            <div class="mt-5">
-                <a href="#/back" on:click|preventDefault={() => (emailOpen = false)}>
-                    ←&nbsp;&nbsp;{__('signin / choose-different-provider')}</a
-                >
-            </div>
         </div>
     {:else}
         <ProviderButtons {__} {providers} bind:emailOpen signIn={true} />

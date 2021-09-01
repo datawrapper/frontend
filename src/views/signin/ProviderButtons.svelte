@@ -1,4 +1,6 @@
 <script>
+    import SvgIcon from '../layout/partials/SvgIcon.svelte';
+
     export let emailOpen;
     export let providers;
     export let signIn = true;
@@ -34,9 +36,7 @@
 <div class="signup-form" class:two-columns={showAllProvider}>
     {#each visibleProviders as provider}
         <a href="/signin/{provider}" class="button provider-{provider} is-fullwidth mb-2">
-            <span class="icon mr-1">
-                <i class="fa fa-{provider}" />
-            </span>
+            <SvgIcon icon={provider} size="28px" />
             {showAllProvider ? '' : `Sign ${signIn ? 'in' : 'up'} using`}
             {capitalize(provider)}</a
         >
@@ -52,6 +52,8 @@
     @google: #EA4335;
     @facebook: #1877F2;
     @twitter: #1D9BF0;
+    @okta: #00297a;
+    @onelogin: #1C1F2A;
 
     .button.is-fullwidth {
         text-align: left;
@@ -62,28 +64,31 @@
     .signup-form {
         max-width: 300px;
 
-        .button .icon {
+        .button :global(.icon) {
             position: absolute;
             left: 0;
             top: 0;
-            width: 50px;
-            height: 100%;
+            width: 50px !important;
+            height: 100% !important;
             border-top-left-radius: 4px;
             border-bottom-left-radius: 4px;
             background: fade(#333333, 10%);
             color: #333333;
             font-size: 24px;
             margin-left: 0;
-
-            i {
-                position: relative;
-                top: 1px;
-            }
         }
 
         :global(.button.provider-facebook .icon) {
             background: fade(@facebook, 10%);
             color: @facebook;
+        }
+        :global(.button.provider-okta .icon) {
+            background: fade(@okta, 10%);
+            color: @okta;
+        }
+        :global(.button.provider-onelogin .icon) {
+            background: fade(@onelogin, 10%);
+            color: @onelogin;
         }
         :global(.button.provider-google .icon) {
             background: fade(@google, 10%);

@@ -7,6 +7,7 @@
     export let target = '/';
     export let noSignUp = false;
     export let noSignIn = false;
+    export let signupWithoutPassword = false;
 
     const providers = ['google', 'okta', 'onelogin', 'twitter', 'facebook', 'github'];
 
@@ -18,7 +19,16 @@
 
 <div class="content" data-piwik-mask>
     {#if step === 'signup' && !noSignUp}
-        <SignUp {__} {providers} {target} {noSignIn} bind:emailOpen bind:email bind:step />
+        <SignUp
+            {__}
+            {providers}
+            {target}
+            {noSignIn}
+            {signupWithoutPassword}
+            bind:emailOpen
+            bind:email
+            bind:step
+        />
     {:else if step === 'login' && !noSignIn}
         <LogIn {__} {providers} {target} {noSignUp} bind:emailOpen bind:email bind:step />
     {/if}

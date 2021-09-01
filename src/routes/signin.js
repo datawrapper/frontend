@@ -22,10 +22,11 @@ module.exports = {
                 const { ref } = request.query;
                 return h.view('signin/Index.svelte', {
                     props: {
-                        target: ref,
+                        target: ref || '/',
                         // @todo: read from config
                         noSignUp: false,
-                        noSignIn: false
+                        noSignIn: false,
+                        signupWithoutPassword: false
                     }
                 });
             }

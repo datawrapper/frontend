@@ -13,7 +13,7 @@
     export let providers;
     export let emailOpen;
     export let password = '';
-    export let noSignin;
+    export let noSignIn;
 
     let passwordClear = false;
 
@@ -146,7 +146,7 @@
         <ProviderButtons {__} {providers} bind:emailOpen signIn={false} />
     {/if}
 
-    {#if !noSignin}
+    {#if !noSignIn}
         <hr />
         <p class=" mt-3">
             <strong>{__('signin / already-have-account')}</strong><br />
@@ -154,7 +154,7 @@
                 href="#/signin"
                 class="has-text-weight-bold"
                 on:click|preventDefault={() => {
-                    step = 'signin';
+                    step = 'login';
                 }}>{__('signin / signin-here')}</a
             >.
         </p>
