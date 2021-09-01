@@ -23,7 +23,10 @@
     let needOTP = false;
     let loginOTP;
 
-    async function doSignIn() {
+    let resetPassword = false;
+    let requestingPassword = false;
+
+    async function doLogIn() {
         loginError = loginSuccess = loginOTP = '';
         loggingIn = true;
         try {
@@ -81,16 +84,18 @@
                         type="email"
                     />
                 </div>
-                <div class="field">
-                    <label for="si-pwd" class="label">{__('password')}</label>
-                    <input id="si-pwd" bind:value={password} class="input" type="password" />
-                </div>
-                <div class="field">
-                    <label class="checkbox"
-                        ><input bind:checked={rememberLogin} type="checkbox" />
-                        {@html __('Remember login?')}</label
-                    >
-                </div>
+                {#if !resetPassword}
+                    <div class="field">
+                        <label for="si-pwd" class="label">{__('password')}</label>
+                        <input id="si-pwd" bind:value={password} class="input" type="password" />
+                    </div>
+                    <div class="field">
+                        <label class="checkbox"
+                            ><input bind:checked={rememberLogin} type="checkbox" />
+                            {@html __('Remember login?')}</label
+                        >
+                    </div>
+                {/if}
             {:else}
                 <p>{__('signin / enter-otp')}</p>
                 <div class="field">
@@ -106,7 +111,15 @@
                     />
                 </div>
             {/if}
-            <button class="button is-primary mb-2" on:click={doSignIn}> {@html __('Login')}</button>
+            {#if !resetPassword}
+                <button class="button is-primary mb-2" on:click={doLogIn}>
+                    {@html __('Login')}</button
+                >
+            {:else}
+                <button class="button is-primary mb-2" on:click={resetPassword}>
+                    {@html __('Send new password')}</button
+                >
+            {/if}
             <div class="mt-5">
                 <a href="#/back" on:click|preventDefault={() => (emailOpen = false)}>
                     ←&nbsp;&nbsp;{__('signin / choose-different-provider')}</a
