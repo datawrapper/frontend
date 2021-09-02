@@ -104,13 +104,6 @@ module.exports = {
                     : [
                           {
                               id: 'my-charts',
-                              svgIcon: 'cabinet',
-                              title: __('My Charts'),
-                              url: '/mycharts',
-                              order: 60
-                          },
-                          {
-                              id: 'my-charts',
                               type: 'visArchive',
                               submenuItems: true,
                               order: 61,

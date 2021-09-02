@@ -37,6 +37,9 @@
                 <div class="navbar-separator mx-3">
                     <span aria-hidden="true" />
                 </div>
+            {:else if link.type === 'visArchive'}
+                <!-- visualization archive is a special component -->
+                <VisArchive {link} {__} />
             {:else if link.submenuItems}
                 <!-- top level navbar entry with submenu -->
                 <div
@@ -56,69 +59,60 @@
                         <NavBarIcon item={link} />
                         <span>{@html link.title || ''}</span></a
                     >
-                    {#if link.type === 'visArchive'}
-                        <!-- visualization archive is a special component -->
-                        <VisArchive />
-                    {:else}
-                        <!-- navbar dropdown menu -->
-                        <div class="navbar-dropdown is-right">
-                            {#each link.submenuItems as subItem}
-                                {#if subItem.type === 'separator'}
-                                    <hr class="navbar-divider" />
-                                {:else if subItem.type === 'activeTeam'}
-                                    <div class="navbar-item active-team is-size-7">
-                                        In: <SvgIcon
-                                            icon="folder{$user.activeTeam ? '-shared' : ''}"
-                                            color="#a7a7a7"
-                                            className="mx-1"
-                                            size="1.2rem"
-                                        />
-                                        {$user.activeTeam ? $user.activeTeam.name : 'My Charts'}
+                    <!-- navbar dropdown menu -->
+                    <div class="navbar-dropdown is-right">
+                        {#each link.submenuItems as subItem}
+                            {#if subItem.type === 'separator'}
+                                <hr class="navbar-divider" />
+                            {:else if subItem.type === 'activeTeam'}
+                                <div class="navbar-item active-team is-size-7">
+                                    In: <SvgIcon
+                                        icon="folder{$user.activeTeam ? '-shared' : ''}"
+                                        color="#a7a7a7"
+                                        className="mx-1"
+                                        size="1.2rem"
+                                    />
+                                    {$user.activeTeam ? $user.activeTeam.name : 'My Charts'}
+                                </div>
+                            {:else if subItem.type === 'teamSelector'}
+                                <TeamSelect {__} />
+                            {:else if subItem.type === 'html'}
+                                <div
+                                    class="navbar-item"
+                                    on:click={event => onNavItemClick(event, subItem)}
+                                    style={subItem.style || ''}
+                                >
+                                    {@html subItem.content}
+                                </div>
+                            {:else if subItem.submenuItems}
+                                <!-- dropdown with dropdown -->
+                                <a class="navbar-item has-dropdown is-hoverable" href="#/dropdown">
+                                    <NavBarIcon item={subItem} />
+                                    <span>{@html subItem.title || ''}</span>
+                                    <div class="navbar-dropdown is-right">
+                                        {#each subItem.submenuItems as subItem2}
+                                            <div
+                                                class="navbar-item {subItem2.class || ''}"
+                                                on:click={event => onNavItemClick(event, subItem2)}
+                                                style={subItem2.style}
+                                            >
+                                                <NavBarIcon item={subItem2} />
+                                                <span>{@html subItem2.title}</span>
+                                            </div>
+                                        {/each}
                                     </div>
-                                {:else if subItem.type === 'teamSelector'}
-                                    <TeamSelect {__} />
-                                {:else if subItem.type === 'html'}
-                                    <div
-                                        class="navbar-item"
-                                        on:click={event => onNavItemClick(event, subItem)}
-                                        style={subItem.style || ''}
-                                    >
-                                        {@html subItem.content}
-                                    </div>
-                                {:else if subItem.submenuItems}
-                                    <!-- dropdown with dropdown -->
-                                    <a
-                                        class="navbar-item has-dropdown is-hoverable"
-                                        href="#/dropdown"
-                                    >
-                                        <NavBarIcon item={subItem} />
-                                        <span>{@html subItem.title || ''}</span>
-                                        <div class="navbar-dropdown is-right">
-                                            {#each subItem.submenuItems as subItem2}
-                                                <div
-                                                    class="navbar-item {subItem2.class || ''}"
-                                                    on:click={event =>
-                                                        onNavItemClick(event, subItem2)}
-                                                    style={subItem2.style}
-                                                >
-                                                    <NavBarIcon item={subItem2} />
-                                                    <span>{@html subItem2.title}</span>
-                                                </div>
-                                            {/each}
-                                        </div>
-                                    </a>
-                                {:else}
-                                    <a
-                                        class="navbar-item"
-                                        href={subItem.url}
-                                        on:click={event => onNavItemClick(event, subItem)}
-                                        ><NavBarIcon item={subItem} />
-                                        <span>{@html subItem.title || ''}</span></a
-                                    >
-                                {/if}
-                            {/each}
-                        </div>
-                    {/if}
+                                </a>
+                            {:else}
+                                <a
+                                    class="navbar-item"
+                                    href={subItem.url}
+                                    on:click={event => onNavItemClick(event, subItem)}
+                                    ><NavBarIcon item={subItem} />
+                                    <span>{@html subItem.title || ''}</span></a
+                                >
+                            {/if}
+                        {/each}
+                    </div>
                 </div>
             {:else}
                 <!-- top-level navbar link/icon -->
