@@ -43,17 +43,15 @@
         <span>{@html link.title || ''}</span></a
     >
 
-    <div class="navbar-dropdown is-right">
+    <div class="navbar-dropdown is-right is-boxed">
         {#if !items.length}
-            <div class="has-text-grey is-size-7" style="text-align: center;">
+            <div class="has-text-grey is-size-7 has-text-centered">
                 <SvgIcon
-                    valign="sub"
+                    valign="middle"
                     icon="loading-spinner"
                     timing="steps(12)"
                     duration="1s"
-                    color="var(--color-dw-gray-30)"
-                    className="ml-2 mr-0"
-                    size="1.1rem"
+                    className="mr-2 is-size-6"
                     spin
                 /> loading...
             </div>

@@ -89,7 +89,7 @@
                                 <a class="navbar-item has-dropdown is-hoverable" href="#/dropdown">
                                     <NavBarIcon item={subItem} />
                                     <span>{@html subItem.title || ''}</span>
-                                    <div class="navbar-dropdown is-righ  is-boxed">
+                                    <div class="navbar-dropdown is-right  is-boxed">
                                         {#each subItem.submenuItems as subItem2}
                                             <div
                                                 class="navbar-item {subItem2.class || ''}"
@@ -134,45 +134,33 @@
     .navbar-menu {
         :global(.navbar-item) {
             border-radius: var(--radius);
-
-            // margin: 0 0.2rem;
-            // padding: 0.25rem 1rem !important;
-            // transition: all 0.5s ease-in-out;
-            // &:hover {
-            //     background: var(--color-dw-grey-lightest) !important;
-            //     // border-radius: 4px;
-
-            //     a.navbar-link:hover {
-            //         background: none !important;
-            //     }
-            // }
-
-            // &.just-arrow {
-            //     padding: 0 !important;
-            //     margin: 0 !important;
-            //     // margin-left: -1.5em!important;
-
-            //     .navbar-link:after {
-            //         right: 1.4em;
-            //     }
-            // }
+            transition: none !important;
+            font-size: 16px;
+            font-family: Roboto;
+            font-weight: 500;
+            margin: 0 0.2rem;
+            padding: 0.25rem 1rem !important;
+            transition: all 0.5s ease-in-out;
+            &:hover {
+                background: var(--color-dw-grey-lightest) !important;
+                border-radius: 4px;
+                a.navbar-link:hover {
+                    background: none !important;
+                }
+            }
+            &.is-active {
+                background: var(--color-dw-scooter-lightest) !important;
+                border-radius: 4px;
+            }
+            &.just-arrow {
+                padding: 0 !important;
+                margin: 0 !important;
+                // margin-left: -1.5em!important;
+                .navbar-link:after {
+                    right: 1.4em;
+                }
+            }
         }
-
-        // :global(a.navbar-item:hover) {
-        //     background: var(--color-dw-grey-lightest) !important;
-        //     border-radius: 4px;
-        // }
-
-        // :global(.navbar-dropdown) {
-        //     border-radius: 4px;
-        //     border: 1px solid var(--color-dw-grey);
-        //     box-shadow: 0px 4px 4px 0px #00000040;
-        // }
-
-        // :global(.navbar-dropdown .navbar-item) {
-        //     font-weight: normal;
-        //     font-size: 14px;
-        // }
 
         :global(.navbar-dropdown .navbar-item.active-team) {
             background: #f9f9f9;
