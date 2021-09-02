@@ -27,6 +27,7 @@
             href="#/select-team/{team.id}"
             class="navbar-item team-select"
             class:is-active-team={team.active}
+            class:has-icon-grey-light={!team.active}
             on:click|preventDefault={() => select(team)}
         >
             <SvgIcon icon="team{team.active ? '-check' : ''}" size="20px" />
@@ -38,6 +39,7 @@
         on:click|preventDefault={() => select(null)}
         class="navbar-item team-select"
         class:is-active-team={!$user.activeTeam}
+        class:has-icon-grey-light={$user.activeTeam}
     >
         <SvgIcon icon="user{!$user.activeTeam ? '-check' : ''}" size="20px" />
         {@html __('navbar / teams / no-team')}
@@ -47,13 +49,17 @@
 {/if}
 
 <style>
-    .team-select :global(.icon) {
-        color: var(--color-dw-gray-50) !important;
-    }
     .team-select.is-active-team {
         cursor: default;
     }
     .team-select.is-active-team :global(.icon) {
-        color: var(--color-dw-blue-medium) !important;
+        background: var(--color-dw-scooter-lightest);
+        padding: 2px;
+        border: 2px solid var(--color-dw-scooter-lightest);
+        box-sizing: content-box;
+        border-radius: 2px;
+        position: relative;
+        top: -2px;
+        left: -2px;
     }
 </style>
