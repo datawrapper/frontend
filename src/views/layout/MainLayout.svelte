@@ -16,7 +16,4 @@
 <PageFooter />
 
 <style type="text/css">
-    :global(html) {
-        background: var(--color-dw-white-bis);
-    }
 </style>
