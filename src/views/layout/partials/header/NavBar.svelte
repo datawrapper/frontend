@@ -139,6 +139,8 @@
 <style lang="less">
     .navbar-menu {
         :global(.navbar-item) {
+            border-radius: var(--radius);
+
             // margin: 0 0.2rem;
             // padding: 0.25rem 1rem !important;
             // transition: all 0.5s ease-in-out;
