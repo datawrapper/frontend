@@ -136,6 +136,7 @@ const SvelteView = {
                 });
 
                 const output = ejs.render(template, {
+                    HTML_CLASS: context.htmlClass || '',
                     SSR_HEAD: head,
                     SSR_CSS: css.code,
                     NODE_ENV: process.env.NODE_ENV,
