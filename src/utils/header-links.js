@@ -150,8 +150,9 @@ module.exports = {
                                 ({ id, title, flag }) => ({
                                     id,
                                     type: 'language',
-                                    style: id === language ? 'font-weight:bold' : '',
-                                    title: `<span class="icon">${flag}</span> <span>${title}</span>`
+                                    svgIcon: id === language ? 'check-circle' : 'circle',
+                                    class: id === language ? '' : 'has-icon-grey-light',
+                                    title: `${title}`
                                 })
                             )
                         },
