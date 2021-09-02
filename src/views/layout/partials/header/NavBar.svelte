@@ -1,9 +1,10 @@
 <script>
     import { getContext } from 'svelte';
-    import SvgIcon from 'layout/partials/SvgIcon.svelte';
     import VisArchive from './VisArchive.svelte';
     import TeamSelect from './TeamSelect.svelte';
     import { post, patch } from '@datawrapper/shared/httpReq';
+    import SvgIcon from 'layout/partials/SvgIcon.svelte';
+    import NavBarIcon from './NavBarIcon.svelte';
 
     export let isActive;
     export let __;
@@ -51,15 +52,9 @@
                         class="navbar-link"
                         style={link.style || ''}
                         class:is-arrowless={link.type !== 'visArchive'}
-                        >{#if link.svgIcon}<SvgIcon
-                                size={link.svgIconSize || '20px'}
-                                crisp={!!link.svgIconCrisp}
-                                valign="top"
-                                icon={link.svgIcon}
-                                className={link.title ? '' : 'mr-0'}
-                            />{/if}{#if link.fontIcon}<span class="icon"
-                                ><i class={link.fontIcon} /></span
-                            >{/if} <span>{@html link.title || ''}</span></a
+                    >
+                        <NavBarIcon item={link} />
+                        <span>{@html link.title || ''}</span></a
                     >
                     {#if link.type === 'visArchive'}
                         <!-- visualization archive is a special component -->
@@ -96,13 +91,8 @@
                                         class="navbar-item has-dropdown is-hoverable"
                                         href="#/dropdown"
                                     >
-                                        {#if subItem.svgIcon}<SvgIcon
-                                                size="20px"
-                                                valign="top"
-                                                icon={subItem.svgIcon}
-                                            />{/if}{#if subItem.fontIcon}<span class="icon"
-                                                ><i class={subItem.fontIcon} /></span
-                                            >{/if} <span>{@html subItem.title || ''}</span>
+                                        <NavBarIcon item={subItem} />
+                                        <span>{@html subItem.title || ''}</span>
                                         <div class="navbar-dropdown is-right">
                                             {#each subItem.submenuItems as subItem2}
                                                 <div
@@ -111,11 +101,8 @@
                                                         onNavItemClick(event, subItem2)}
                                                     style={subItem2.style}
                                                 >
-                                                    {#if subItem2.svgIcon}<SvgIcon
-                                                            size="20px"
-                                                            valign="top"
-                                                            icon={subItem2.svgIcon}
-                                                        />{/if} <span>{@html subItem2.title}</span>
+                                                    <NavBarIcon item={subItem2} />
+                                                    <span>{@html subItem2.title}</span>
                                                 </div>
                                             {/each}
                                         </div>
@@ -125,13 +112,8 @@
                                         class="navbar-item"
                                         href={subItem.url}
                                         on:click={event => onNavItemClick(event, subItem)}
-                                        >{#if subItem.svgIcon}<SvgIcon
-                                                size="20px"
-                                                valign="top"
-                                                icon={subItem.svgIcon}
-                                            />{/if}{#if subItem.fontIcon}<span class="icon"
-                                                ><i class={subItem.fontIcon} /></span
-                                            >{/if} <span>{@html subItem.title || ''}</span></a
+                                        ><NavBarIcon item={subItem} />
+                                        <span>{@html subItem.title || ''}</span></a
                                     >
                                 {/if}
                             {/each}
@@ -147,14 +129,7 @@
                     class="navbar-item"
                     on:click={event => onNavItemClick(event, link)}
                     href={link.url}
-                    >{#if link.svgIcon}<SvgIcon
-                            size={link.svgIconSize || '20px'}
-                            crisp={!!link.svgIconCrisp}
-                            valign="top"
-                            icon={link.svgIcon}
-                        />{/if}{#if link.fontIcon}<span class="icon"
-                            ><i class={link.fontIcon} /></span
-                        >{/if} <span>{@html link.title || ''}</span></a
+                    ><NavBarIcon item={link} /> <span>{@html link.title || ''}</span></a
                 >
             {/if}
         {/each}
@@ -195,15 +170,6 @@
                     right: 1.4em;
                 }
             }
-        }
-
-        :global(.navbar-item .icon) {
-            margin-right: 1ex;
-            color: var(--color-dw-scooter);
-        }
-
-        :global(.navbar-item.has-icon-grey-light .icon) {
-            color: var(--color-dw-grey-light);
         }
 
         :global(a.navbar-item:hover) {

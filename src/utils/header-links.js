@@ -151,7 +151,7 @@ module.exports = {
                                     id,
                                     type: 'language',
                                     svgIcon: id === language ? 'check-circle' : 'circle',
-                                    class: id === language ? '' : 'has-icon-grey-light',
+                                    svgIconClass: id === language ? '' : 'has-text-grey-light',
                                     title: `${title}`
                                 })
                             )
