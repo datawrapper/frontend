@@ -39,7 +39,7 @@
             {:else if link.submenuItems}
                 <!-- top level navbar entry with submenu -->
                 <div
-                    class="navbar-item has-dropdown is-hoverable"
+                    class="navbar-item has-dropdown is-hoverable is-size-5 has-text-weight-medium"
                     class:just-arrow={link.type === 'visArchive' &&
                         !link.title &&
                         !link.icon &&
@@ -144,7 +144,7 @@
                     class:is-active={link.url === '/'
                         ? $request.path === '/'
                         : $request.path.startsWith(link.url)}
-                    class="navbar-item"
+                    class="navbar-item is-size-5 has-text-weight-medium"
                     on:click={event => onNavItemClick(event, link)}
                     href={link.url}
                     >{#if link.svgIcon}<SvgIcon
@@ -164,37 +164,32 @@
 <style lang="less">
     .navbar-menu {
         :global(.navbar-item) {
-            transition: none !important;
-            font-size: 16px;
-            font-family: Roboto;
-            font-weight: 500;
-            margin: 0 0.2rem;
-            padding: 0.25rem 1rem !important;
-            transition: all 0.5s ease-in-out;
+            // margin: 0 0.2rem;
+            // padding: 0.25rem 1rem !important;
+            // transition: all 0.5s ease-in-out;
+            // &:hover {
+            //     background: var(--color-dw-grey-lightest) !important;
+            //     // border-radius: 4px;
 
-            &:hover {
-                background: var(--color-dw-grey-lightest) !important;
-                border-radius: 4px;
+            //     a.navbar-link:hover {
+            //         background: none !important;
+            //     }
+            // }
 
-                a.navbar-link:hover {
-                    background: none !important;
-                }
-            }
+            // &.is-active {
+            //     background: var(--color-dw-scooter-lightest) !important;
+            //     border-radius: 4px;
+            // }
 
-            &.is-active {
-                background: var(--color-dw-scooter-lightest) !important;
-                border-radius: 4px;
-            }
+            // &.just-arrow {
+            //     padding: 0 !important;
+            //     margin: 0 !important;
+            //     // margin-left: -1.5em!important;
 
-            &.just-arrow {
-                padding: 0 !important;
-                margin: 0 !important;
-                // margin-left: -1.5em!important;
-
-                .navbar-link:after {
-                    right: 1.4em;
-                }
-            }
+            //     .navbar-link:after {
+            //         right: 1.4em;
+            //     }
+            // }
         }
 
         :global(.navbar-item .icon) {
