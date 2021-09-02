@@ -106,12 +106,16 @@
                                         <div class="navbar-dropdown is-right">
                                             {#each subItem.submenuItems as subItem2}
                                                 <div
-                                                    class="navbar-item"
+                                                    class="navbar-item {subItem2.class || ''}"
                                                     on:click={event =>
                                                         onNavItemClick(event, subItem2)}
-                                                    style={subItem2.style || ''}
+                                                    style={subItem2.style}
                                                 >
-                                                    {@html subItem2.title}
+                                                    {#if subItem2.svgIcon}<SvgIcon
+                                                            size="20px"
+                                                            valign="top"
+                                                            icon={subItem2.svgIcon}
+                                                        />{/if} <span>{@html subItem2.title}</span>
                                                 </div>
                                             {/each}
                                         </div>
@@ -169,8 +173,8 @@
             transition: all 0.5s ease-in-out;
 
             &:hover {
-                background: var(--color-dw-gray-90) !important;
-                border-radius: var(--box-border-radius);
+                background: var(--color-dw-grey-lightest) !important;
+                border-radius: 4px;
 
                 a.navbar-link:hover {
                     background: none !important;
@@ -178,8 +182,8 @@
             }
 
             &.is-active {
-                background: var(--color-dw-blue-light) !important;
-                border-radius: var(--box-border-radius);
+                background: var(--color-dw-scooter-lightest) !important;
+                border-radius: 4px;
             }
 
             &.just-arrow {
@@ -195,16 +199,16 @@
 
         :global(.navbar-item .icon) {
             margin-right: 1ex;
-            color: var(--color-dw-blue-medium);
+            color: var(--color-dw-scooter);
         }
 
         :global(a.navbar-item:hover) {
-            background: var(--color-dw-gray-90) !important;
-            border-radius: var(--box-border-radius);
+            background: var(--color-dw-grey-lightest) !important;
+            border-radius: 4px;
         }
 
         :global(.navbar-dropdown) {
-            border-radius: var(--box-border-radius);
+            border-radius: 4px;
             border: 1px solid var(--color-dw-gray);
             box-shadow: 0px 4px 4px 0px #00000040;
         }
@@ -222,8 +226,8 @@
             margin-bottom: 0px;
             margin-bottom: -0.5rem;
             padding: 0.5rem 1rem !important;
-            border-bottom-left-radius: var(--box-border-radius);
-            border-bottom-right-radius: var(--box-border-radius);
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
         }
 
         .navbar-separator span {
@@ -261,5 +265,8 @@
 
     .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
         display: block;
+    }
+    :global(.navbar-item.has-icon-grey-light > .icon) {
+        color: var(--color-dw-grey-lightest);
     }
 </style>
