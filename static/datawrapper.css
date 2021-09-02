@@ -4178,7 +4178,7 @@ a.navbar-item,
 .navbar-link:not(.is-arrowless) {
   padding-right: 2.5em; }
   .navbar-link:not(.is-arrowless)::after {
-    border-color: #1D81A2;
+    border-color: #4F4F4F;
     margin-top: -0.375em;
     right: 1.125em; }
 
@@ -7697,3 +7697,9 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 .footer {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem; }
+
+.select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
+  border-width: 2px;
+  border-radius: 0;
+  width: 0.5em;
+  height: 0.5em; }
