@@ -367,6 +367,11 @@ html {
   --color-dw-white-bis: #F9F9F9;
   --color-dw-white: #FFFFFF; }
 
+html {
+  --radius-small: $radius-small;
+  --radius: $radius;
+  --radius-large: $radius-large; }
+
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name, .pagination-previous,
