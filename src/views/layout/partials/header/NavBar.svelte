@@ -270,8 +270,4 @@
     .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
         display: block;
     }
-    :global(.has-icon-grey-light) > .icon svg {
-        background: red;
-        color: var(--color-dw-grey-light) !important;
-    }
 </style>
