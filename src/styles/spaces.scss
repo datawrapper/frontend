@@ -1,0 +1,26 @@
+
+// $dw-responsive-spacing-shortcuts: ("margin": "r-m", "padding": "r-p") !default;
+// $dw-responsive-spacing-directions: ("top": "t", "right": "r", "bottom": "b", "left": "l") !default;
+// $dw-responsive-spacing-horizontal: "x" !default;
+// $dw-responsive-spacing-vertical: "y" !default;
+// $dw-responsive-spacing-values: ("0": 0, "1": 0.25rem, "2": 0.5rem, "3": 0.75rem, "4": 1rem, "5": 1.5rem, "6": 3rem) !default;
+
+// @each $property, $shortcut in $dw-responsive-spacing-shortcuts
+//   @each $name, $value in $dw-responsive-spacing-values
+//     // All directions
+//     .#{$shortcut}-#{$name}
+//       #{$property}: $value !important
+//     // Cardinal directions
+//     @each $direction, $suffix in $dw-responsive-spacing-directions
+//       .#{$shortcut}#{$suffix}-#{$name}
+//         #{$property}-#{$direction}: $value !important
+//     // Horizontal axis
+//     @if $dw-responsive-spacing-horizontal != null
+//       .#{$shortcut}#{$dw-responsive-spacing-horizontal}-#{$name}
+//         #{$property}-left: $value !important
+//         #{$property}-right: $value !important
+//     // Vertical axis
+//     @if $dw-responsive-spacing-vertical != null
+//       .#{$shortcut}#{$dw-responsive-spacing-vertical}-#{$name}
+//         #{$property}-top: $value !important
+//         #{$property}-bottom: $value !important

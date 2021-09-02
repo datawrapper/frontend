@@ -18,8 +18,8 @@
 
     let scrollY = 0;
     $: scrolledDown = scrollY > 0;
-    const logoSize = 43;
-    $: logoScale = scrolledDown ? 34 / 43 : 1;
+    const logoSize = 45;
+    $: logoScale = scrolledDown ? 35 / 45 : 1;
 
     let innerHeight = 0;
 </script>
@@ -27,7 +27,7 @@
 <svelte:window bind:scrollY bind:innerHeight />
 
 <header
-    class={scrolledDown ? 'py-3 mb-3' : 'py-5 mb-5'}
+    class={scrolledDown ? 'py-1' : 'py-5'}
     class:is-sticky={innerHeight > stickyHeaderThreshold}
     id="top"
 >
@@ -73,7 +73,7 @@
 <style>
     header {
         background: white;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--color-dw-grey-lighter);
         border-top: 3px solid var(--color-dw-scooter);
         transition: padding 0.2s ease-in-out, margin 0.2s ease-in-out;
     }
