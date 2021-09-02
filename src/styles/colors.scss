@@ -30,23 +30,23 @@ $dw-white: #FFFFFF;
 $dw-shade: rgba(0,0,0,.1);
 
 html {
-    --color-dw-scooter-dark: #15607A;
-    --color-dw-scooter: #1D81A2;
-    --color-dw-scooter-light: #18A1CD;
-    --color-dw-scooter-lightest: #e9f3f6;
-    --color-dw-turquoise: #39f3bb;
-    --color-dw-turquoise-dark: #09bb9f;
-    --color-dw-firebrick: #C71E1D;
-    --color-dw-black: #111111;
-    --color-dw-black-bis: #333333;
+    --color-dw-scooter-dark: #{$dw-scooter-dark};
+    --color-dw-scooter: #{$dw-scooter};
+    --color-dw-scooter-light: #{$dw-scooter-light};
+    --color-dw-scooter-lightest: #{$dw-scooter-lightest};
+    --color-dw-turquoise: #{$dw-turquoise};
+    --color-dw-turquoise-dark: #{$dw-turquoise-dark};
+    --color-dw-firebrick: #{$dw-firebrick};
+    --color-dw-black: #{$dw-black};
+    --color-dw-black-bis: #{$dw-black-bis};
     // --color-dw-black-ter
-    --color-dw-grey-darker: #4F4F4F;
-    --color-dw-grey-dark: #858585;
-    --color-dw-grey: #A7A7A7;
-    --color-dw-grey-light: #C9C9C9;
-    --color-dw-grey-lighter: #E5E5E5;
-    --color-dw-grey-lightest: #F0F0F0;
-    --color-dw-white-ter: #F5F5F5;
-    --color-dw-white-bis: #F9F9F9;
-    --color-dw-white: #FFFFFF;
+    --color-dw-grey-darker: #{$dw-grey-darker};
+    --color-dw-grey-dark: #{$dw-grey-dark};
+    --color-dw-grey: #{$dw-grey};
+    --color-dw-grey-light: #{$dw-grey-light};
+    --color-dw-grey-lighter: #{$dw-grey-lighter};
+    --color-dw-grey-lightest: #{$dw-grey-lightest};
+    --color-dw-white-ter: #{$dw-white-ter};
+    --color-dw-white-bis: #{$dw-white-bis};
+    --color-dw-white: #{$dw-white};
 }

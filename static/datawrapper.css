@@ -367,11 +367,6 @@ html {
   --color-dw-white-bis: #F9F9F9;
   --color-dw-white: #FFFFFF; }
 
-html {
-  --radius-small: $radius-small;
-  --radius: $radius;
-  --radius-large: $radius-large; }
-
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name, .pagination-previous,
@@ -7708,3 +7703,8 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   border-radius: 0;
   width: 0.5em;
   height: 0.5em; }
+
+html {
+  --radius-small:  2px;
+  --radius:  4px;
+  --radius-large:  6px; }
