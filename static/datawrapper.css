@@ -4191,10 +4191,10 @@ a.navbar-item,
     padding-right: 1.5rem; }
 
 .navbar-divider {
-  background-color: #F9F9F9;
+  background-color: #E5E5E5;
   border: none;
   display: none;
-  height: 2px;
+  height: 1px;
   margin: 0.5rem 0; }
 
 @media screen and (max-width: 1023px) {
