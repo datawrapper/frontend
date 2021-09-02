@@ -100,6 +100,7 @@
 <MainLayout title="Hello world">
     <section class="section">
         <div class="container">
+            content
             <div class="columns">
                 <div class="column is-one-fifth">
                     <Menu content={contentRef} sticky groups={menuGroups} />
@@ -863,3 +864,9 @@
         </div>
     </section>
 </MainLayout>
+
+<style type="text/css">
+    /* :global(html) {
+        background: var(--color-dw-white-bis);
+    } */
+</style>
