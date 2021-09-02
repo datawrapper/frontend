@@ -27,11 +27,14 @@
             href="#/select-team/{team.id}"
             class="navbar-item team-select"
             class:is-active-team={team.active}
-            class:has-icon-grey-light={!team.active}
             on:click|preventDefault={() => select(team)}
         >
-            <SvgIcon icon="team{team.active ? '-check' : ''}" size="20px" />
-            {team.name}
+            <SvgIcon
+                className={team.active ? '' : 'has-text-grey-light'}
+                icon="team{team.active ? '-check' : ''}"
+                size="20px"
+            />
+            <span>{team.name}</span>
         </a>
     {/each}
     <a
@@ -39,10 +42,13 @@
         on:click|preventDefault={() => select(null)}
         class="navbar-item team-select"
         class:is-active-team={!$user.activeTeam}
-        class:has-icon-grey-light={$user.activeTeam}
     >
-        <SvgIcon icon="user{!$user.activeTeam ? '-check' : ''}" size="20px" />
-        {@html __('navbar / teams / no-team')}
+        <SvgIcon
+            className={!$user.activeTeam ? '' : 'has-text-grey-light'}
+            icon="user{!$user.activeTeam ? '-check' : ''}"
+            size="20px"
+        />
+        <span>{@html __('navbar / teams / no-team')}</span>
     </a>
 {:else}
     <a class="navbar-item" href="/account/teams"> {__('account / my-teams / create')} </a>
@@ -54,12 +60,12 @@
     }
     .team-select.is-active-team :global(.icon) {
         background: var(--color-dw-scooter-lightest);
-        padding: 2px;
+        /* padding: 2px;
         border: 2px solid var(--color-dw-scooter-lightest);
         box-sizing: content-box;
         border-radius: 2px;
         position: relative;
         top: -2px;
-        left: -2px;
+        left: -2px; */
     }
 </style>
