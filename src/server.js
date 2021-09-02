@@ -188,6 +188,7 @@ const start = async () => {
             }
             return h
                 .view('Error.svelte', {
+                    htmlClass: 'has-background-white-ter',
                     props: err.output.payload
                 })
                 .code(err.output.payload.statusCode);
