@@ -67,6 +67,7 @@ $hr-background-color: $dw-shade;
 
 $navbar-divider-height: 1px;
 $navbar-divider-background-color: $dw-grey-lighter;
+$navbar-dropdown-arrow: $dw-grey-darker;
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -133,3 +134,11 @@ $navbar-divider-background-color: $dw-grey-lighter;
 // @import "../../node_modules/bulma/sass/layout/footer.sass";
 // @import "../../node_modules/bulma/sass/layout/hero.sass";
 // @import "../../node_modules/bulma/sass/layout/section.sass";
+
+// adjust navbar arrow
+.select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
+	border-width: 2px;
+	border-radius: 0;
+	width: 0.5em;
+	height: 0.5em;
+}
