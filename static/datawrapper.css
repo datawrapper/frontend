@@ -4370,7 +4370,7 @@ a.navbar-item,
     color: #0a0a0a; }
   a.navbar-item.is-active:not(:focus):not(:hover),
   .navbar-link.is-active:not(:focus):not(:hover) {
-    background-color: transparent; }
+    background-color: #e9f3f6; }
   .navbar-item.has-dropdown:focus .navbar-link, .navbar-item.has-dropdown:hover .navbar-link, .navbar-item.has-dropdown.is-active .navbar-link {
     background-color: #F5F5F5; } }
 

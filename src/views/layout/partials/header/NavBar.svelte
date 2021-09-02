@@ -43,7 +43,7 @@
             {:else if link.submenuItems}
                 <!-- top level navbar entry with submenu -->
                 <div
-                    class="navbar-item has-dropdown is-hoverable is-size-5 has-text-weight-medium"
+                    class="navbar-item has-dropdown is-hoverable is-size-5 has-text-weight-medium ml-1"
                     class:just-arrow={link.type === 'visArchive' &&
                         !link.title &&
                         !link.icon &&
@@ -60,7 +60,7 @@
                         <span>{@html link.title || ''}</span></a
                     >
                     <!-- navbar dropdown menu -->
-                    <div class="navbar-dropdown is-right">
+                    <div class="navbar-dropdown is-right is-boxed">
                         {#each link.submenuItems as subItem}
                             {#if subItem.type === 'separator'}
                                 <hr class="navbar-divider" />
@@ -89,7 +89,7 @@
                                 <a class="navbar-item has-dropdown is-hoverable" href="#/dropdown">
                                     <NavBarIcon item={subItem} />
                                     <span>{@html subItem.title || ''}</span>
-                                    <div class="navbar-dropdown is-right">
+                                    <div class="navbar-dropdown is-righ  is-boxed">
                                         {#each subItem.submenuItems as subItem2}
                                             <div
                                                 class="navbar-item {subItem2.class || ''}"
@@ -120,7 +120,7 @@
                     class:is-active={link.url === '/'
                         ? $request.path === '/'
                         : $request.path.startsWith(link.url)}
-                    class="navbar-item is-size-5 has-text-weight-medium"
+                    class="navbar-item is-size-5 has-text-weight-medium ml-1"
                     on:click={event => onNavItemClick(event, link)}
                     href={link.url}
                     ><NavBarIcon item={link} /> <span>{@html link.title || ''}</span></a
@@ -145,11 +145,6 @@
             //     a.navbar-link:hover {
             //         background: none !important;
             //     }
-            // }
-
-            // &.is-active {
-            //     background: var(--color-dw-scooter-lightest) !important;
-            //     border-radius: 4px;
             // }
 
             // &.just-arrow {
