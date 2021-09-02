@@ -76,7 +76,7 @@
                                 <TeamSelect {__} />
                             {:else if subItem.type === 'html'}
                                 <div
-                                    class="navbar-item"
+                                    class="navbar-item has-text-weight-normal "
                                     on:click={event => onNavItemClick(event, subItem)}
                                     style={subItem.style || ''}
                                 >
@@ -84,25 +84,29 @@
                                 </div>
                             {:else if subItem.submenuItems}
                                 <!-- dropdown with dropdown -->
-                                <a class="navbar-item has-dropdown is-hoverable" href="#/dropdown">
+                                <a
+                                    class="navbar-item has-dropdown is-hoverable has-text-weight-normal "
+                                    href="#/dropdown"
+                                >
                                     <NavBarIcon item={subItem} />
                                     <span>{@html subItem.title || ''}</span>
                                     <div class="navbar-dropdown is-right  is-boxed">
                                         {#each subItem.submenuItems as subItem2}
-                                            <div
-                                                class="navbar-item {subItem2.class || ''}"
+                                            <a
+                                                class="navbar-item has-text-weight-normal {subItem2.class ||
+                                                    ''}"
                                                 on:click={event => onNavItemClick(event, subItem2)}
                                                 style={subItem2.style}
                                             >
                                                 <NavBarIcon item={subItem2} />
                                                 <span>{@html subItem2.title}</span>
-                                            </div>
+                                            </a>
                                         {/each}
                                     </div>
                                 </a>
                             {:else}
                                 <a
-                                    class="navbar-item"
+                                    class="navbar-item has-text-weight-normal"
                                     href={subItem.url}
                                     on:click={event => onNavItemClick(event, subItem)}
                                     ><NavBarIcon item={subItem} />
@@ -130,18 +134,21 @@
 
 <style lang="less">
     .navbar-menu {
-        :global(.navbar-item) {
+        :global(.navbar-item, .navbar-link) {
             border-radius: var(--radius);
         }
-        :global(.just-arrow) {
-            padding: 0 !important;
-            margin: 0 !important;
+        :global(a.navbar-item:hover) {
+            color: var(--color-dw-scooter);
         }
-
+        :global(.just-arrow) {
+            // padding: 0 !important;
+            // margin: 0 !important;
+        }
+        // :global(.navbar-item.just-arrow:hover .navbar-link) {
+        //     background: transparent;
+        // }
         :global(.navbar-dropdown .navbar-item.active-team) {
             background: #f9f9f9;
-            font-weight: normal;
-            color: #a7a7a7;
             margin: 0;
             margin-bottom: 0px;
             margin-bottom: -0.5rem;
@@ -157,15 +164,17 @@
             width: 1px;
             align-self: center;
         }
+        .navbar-item.has-dropdown {
+            .navbar-link:hover {
+                color: inherit;
+            }
+        }
     }
     :global(.navbar-compact) .navbar-separator {
         transition: height 0.2 ease-in-out;
         height: 1.5em;
     }
 
-    // .navbar-item.has-dropdown:hover .navbar-link {
-    //     background: transparent;
-    // }
     .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
         position: absolute;
         left: -100%;

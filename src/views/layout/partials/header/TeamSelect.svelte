@@ -40,7 +40,7 @@
     <a
         href="#/select-team/none"
         on:click|preventDefault={() => select(null)}
-        class="navbar-item team-select"
+        class="navbar-item team-select has-text-weight-normal"
         class:is-active-team={!$user.activeTeam}
     >
         <SvgIcon
@@ -51,7 +51,9 @@
         <span>{@html __('navbar / teams / no-team')}</span>
     </a>
 {:else}
-    <a class="navbar-item" href="/account/teams"> {__('account / my-teams / create')} </a>
+    <a class="navbar-item has-text-weight-normal" href="/account/teams">
+        {__('account / my-teams / create')}
+    </a>
 {/if}
 
 <style>

@@ -25,7 +25,7 @@
 
 <a
     class:is-active={url === '/' ? $request.path === '/' : $request.path.startsWith(url)}
-    class="navbar-item is-size-5 has-text-weight-medium"
+    class="navbar-item is-size-5 has-text-weight-medium ml-1 pr-1"
     href={url}><NavBarIcon item={{ svgIcon: 'cabinet', title: true }} /> <span>{title}</span></a
 >
 <div
@@ -35,7 +35,7 @@
     <a
         href={link.url || '#/dropdown'}
         on:click|preventDefault
-        class="navbar-link"
+        class="navbar-link pl-3 pr-5"
         style={link.style || ''}
         class:is-arrowless={link.type !== 'visArchive'}
     >
@@ -73,6 +73,10 @@
 </div>
 
 <style>
+    .just-arrow .navbar-link:not(.is-arrowless)::after {
+        right: unset;
+        position: relative;
+    }
     .navbar-dropdown {
         width: 260px;
     }

@@ -106,8 +106,7 @@ module.exports = {
                               id: 'my-charts',
                               type: 'visArchive',
                               submenuItems: true,
-                              order: 61,
-                              style: 'padding-left: 0;margin-left: -20px;'
+                              order: 61
                           },
                           {
                               type: 'separator',
@@ -156,7 +155,7 @@ module.exports = {
                                   },
                                   {
                                       type: 'html',
-                                      content: `<span class="has-text-grey is-size-7" style="font-weight:normal">${__(
+                                      content: `<span class="has-text-grey is-size-7">${__(
                                           'account / my-teams / select-active'
                                       )}</span>`
                                   },
