@@ -202,6 +202,10 @@
             color: var(--color-dw-scooter);
         }
 
+        :global(.navbar-item.has-icon-grey-light .icon) {
+            color: var(--color-dw-grey-light);
+        }
+
         :global(a.navbar-item:hover) {
             background: var(--color-dw-grey-lightest) !important;
             border-radius: 4px;
@@ -209,7 +213,7 @@
 
         :global(.navbar-dropdown) {
             border-radius: 4px;
-            border: 1px solid var(--color-dw-gray);
+            border: 1px solid var(--color-dw-grey);
             box-shadow: 0px 4px 4px 0px #00000040;
         }
 
@@ -231,7 +235,7 @@
         }
 
         .navbar-separator span {
-            border-left: 1px solid var(--color-dw-gray);
+            border-left: 1px solid var(--color-dw-grey);
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
             display: inline-block;
@@ -266,7 +270,10 @@
     .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
         display: block;
     }
-    :global(.navbar-item.has-icon-grey-light > .icon) {
-        color: var(--color-dw-grey-lightest);
+    :global(.has-icon-grey-light) {
+    }
+    :global(.has-icon-grey-light) > .icon svg {
+        background: red;
+        color: var(--color-dw-grey-light) !important;
     }
 </style>
