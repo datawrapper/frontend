@@ -167,21 +167,21 @@
             // }
         }
 
-        :global(a.navbar-item:hover) {
-            background: var(--color-dw-grey-lightest) !important;
-            border-radius: 4px;
-        }
+        // :global(a.navbar-item:hover) {
+        //     background: var(--color-dw-grey-lightest) !important;
+        //     border-radius: 4px;
+        // }
 
-        :global(.navbar-dropdown) {
-            border-radius: 4px;
-            border: 1px solid var(--color-dw-grey);
-            box-shadow: 0px 4px 4px 0px #00000040;
-        }
+        // :global(.navbar-dropdown) {
+        //     border-radius: 4px;
+        //     border: 1px solid var(--color-dw-grey);
+        //     box-shadow: 0px 4px 4px 0px #00000040;
+        // }
 
-        :global(.navbar-dropdown .navbar-item) {
-            font-weight: normal;
-            font-size: 14px;
-        }
+        // :global(.navbar-dropdown .navbar-item) {
+        //     font-weight: normal;
+        //     font-size: 14px;
+        // }
 
         :global(.navbar-dropdown .navbar-item.active-team) {
             background: #f9f9f9;
@@ -205,9 +205,9 @@
         }
     }
 
-    .navbar-item.has-dropdown:hover .navbar-link {
-        background: transparent;
-    }
+    // .navbar-item.has-dropdown:hover .navbar-link {
+    //     background: transparent;
+    // }
 
     :global(.navbar-compact) .navbar-separator span {
         transition: height, margin 0.2 ease-in-out;
