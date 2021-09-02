@@ -101,18 +101,20 @@
 />
 
 <MainLayout title="{$chart.title} - [{$chart.id}] - {activeStep.title}">
-    <!-- step nav -->
-    <Header
-        {steps}
-        {bcPath}
-        bind:activeStep
-        bind:lastActiveStep
-        on:navigate={evt => navigateTo(evt.detail)}
-    />
-    <!-- step content -->
-    <div class="block">
-        {#if activeStep}
-            <svelte:component this={activeStep.ui} {chart} {visualizations} {data} />
-        {/if}
-    </div>
+    <section class="section">
+        <!-- step nav -->
+        <Header
+            {steps}
+            {bcPath}
+            bind:activeStep
+            bind:lastActiveStep
+            on:navigate={evt => navigateTo(evt.detail)}
+        />
+        <!-- step content -->
+        <div class="block">
+            {#if activeStep}
+                <svelte:component this={activeStep.ui} {chart} {visualizations} {data} />
+            {/if}
+        </div>
+    </section>
 </MainLayout>

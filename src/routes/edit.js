@@ -38,6 +38,7 @@ module.exports = {
                     const data = await api(`/charts/${chart.id}/data`, { json: false });
 
                     return h.view('edit/Index.svelte', {
+                        htmlClass: 'has-background-white-ter',
                         props: {
                             rawChart: chart,
                             rawData: data,

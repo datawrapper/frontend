@@ -28,12 +28,12 @@
     on:click|preventDefault={() => !active && dispatch('navigate', step)}
     bind:offsetHeight={height}
     bind:offsetWidth={width}
-    class="px-4 py-2 is-size-5"
+    class="px-4 py-3 is-size-5"
     class:active
     class:visited
     style="clip-path: path('{clipPath}');"
 >
-    <span class="step ml-1 mr-3">{step.index}</span>{@html step.title}
+    <span class="step ml-1 mr-3 is-size-2">{step.index}</span>{@html step.title}
     {#if !active && visited}
         <i class="fa fa-check" />
     {/if}
@@ -41,13 +41,14 @@
 
 <style lang="less">
     a {
-        background: var(--color-dw-grey-light);
+        background: var(--color-dw-grey-lighter);
         border-radius: 4px;
         display: inline-block;
         width: 100%;
+        line-height: 2rem;
 
         &.active {
-            background: var(--color-dw-red);
+            background: var(--color-dw-firebrick);
             color: white;
             cursor: default;
 
@@ -60,7 +61,6 @@
         display: inline-block;
         font-weight: bold;
         color: white;
-        font-size: 2rem;
         vertical-align: -0.2rem;
         text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
     }
