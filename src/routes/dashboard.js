@@ -52,6 +52,7 @@ module.exports = {
                         fb.forEach(({ id }) => recentlyPublishedIds.push(id));
                     }
                     return h.view('dashboard/Index.svelte', {
+                        htmlClass: 'has-background-white-ter',
                         props: {
                             recentlyEdited: await getCharts(
                                 uniq(recentlyEditedIds).slice(0, numCharts * 2),
