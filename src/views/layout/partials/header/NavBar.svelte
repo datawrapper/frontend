@@ -34,9 +34,7 @@
     <div class="navbar-end">
         {#each $config.headerLinks as link}
             {#if link.type === 'separator'}
-                <div class="navbar-separator mx-3">
-                    <span aria-hidden="true" />
-                </div>
+                <hr class="navbar-separator mx-3 my-0" />
             {:else if link.type === 'visArchive'}
                 <!-- visualization archive is a special component -->
                 <VisArchive {link} {__} />
@@ -134,32 +132,10 @@
     .navbar-menu {
         :global(.navbar-item) {
             border-radius: var(--radius);
-            transition: none !important;
-            font-size: 16px;
-            font-family: Roboto;
-            font-weight: 500;
-            margin: 0 0.2rem;
-            padding: 0.25rem 1rem !important;
-            transition: all 0.5s ease-in-out;
-            &:hover {
-                background: var(--color-dw-grey-lightest) !important;
-                border-radius: 4px;
-                a.navbar-link:hover {
-                    background: none !important;
-                }
-            }
-            &.is-active {
-                background: var(--color-dw-scooter-lightest) !important;
-                border-radius: 4px;
-            }
-            &.just-arrow {
-                padding: 0 !important;
-                margin: 0 !important;
-                // margin-left: -1.5em!important;
-                .navbar-link:after {
-                    right: 1.4em;
-                }
-            }
+        }
+        :global(.just-arrow) {
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
         :global(.navbar-dropdown .navbar-item.active-team) {
@@ -174,31 +150,22 @@
             border-bottom-right-radius: 4px;
         }
 
-        .navbar-separator span {
-            border-left: 1px solid var(--color-dw-grey);
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-            display: inline-block;
-            height: 2.2rem;
-            transition: all 0.5s ease-in-out;
+        .navbar-separator {
+            display: flex;
+            background: var(--color-dw-grey-light);
+            height: 3em;
+            width: 1px;
+            align-self: center;
         }
+    }
+    :global(.navbar-compact) .navbar-separator {
+        transition: height 0.2 ease-in-out;
+        height: 1.5em;
     }
 
     // .navbar-item.has-dropdown:hover .navbar-link {
     //     background: transparent;
     // }
-
-    :global(.navbar-compact) .navbar-separator span {
-        transition: height, margin 0.2 ease-in-out;
-        margin-top: 0.23rem;
-        margin-bottom: 0.23rem;
-        height: 2.2rem;
-    }
-
-    .navbar-menu :global(.is-size-7) {
-        font-weight: normal;
-    }
-
     .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
         position: absolute;
         left: -100%;

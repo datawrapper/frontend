@@ -73,7 +73,8 @@ $navbar-item-hover-background-color: $dw-white-ter;
 $navbar-item-active-background-color: $dw-scooter-lightest;
 $navbar-divider-height: 1px;
 $navbar-divider-background-color: $dw-grey-lighter;
-$navbar-dropdown-arrow: $dw-grey-darker;
+$navbar-dropdown-arrow: $dw-grey-dark;
+$navbar-dropdown-offset: 7px;
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
