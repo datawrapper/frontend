@@ -1,0 +1,46 @@
+
+/*
+ * CUSTOMIZE BULMA
+ */
+
+
+// adjust bulma dropdowm arrow
+.select:not(.is-multiple):not(.is-loading)::after,
+.navbar-link:not(.is-arrowless)::after {
+	border-width: 2px;
+	border-radius: 0;
+	width: 0.5em;
+	height: 0.5em;
+}
+
+
+// Navbar
+
+@include touch {
+  .navbar-menu {
+    .navbar-item:not(:last-child), .navbar-link {
+      border-radius: 0;
+      border-bottom: 1px solid $grey-lighter;
+    }
+    .navbar-dropdown {
+      .navbar-item {
+        border-bottom: none;
+        padding: .5rem;
+      }
+    }
+  }
+}
+
+
+@include desktop {
+    .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
+      position: absolute;
+      left: -100%;
+      right: 100%;
+      top: -6px;
+      display: none;
+  }
+  .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
+      display: block;
+  }
+}

@@ -46,7 +46,7 @@ module.exports = {
                 {
                     id: 'create-new',
                     svgIcon: 'add',
-                    title: `${__('navbar / create-new')} <span style="color:#A7A7A7">…</span>`,
+                    title: `${__('navbar / create-new')} <span class="has-text-grey">…</span>`,
                     order: 10,
                     submenuItems: [
                         {
@@ -116,6 +116,8 @@ module.exports = {
                 {
                     id: 'settings',
                     svgIcon: 'menu',
+                    title: 'More',
+                    style: 'something',
                     svgIconSize: '30px',
                     // svgIconCrisp: true,
                     order: 95,
@@ -155,7 +157,7 @@ module.exports = {
                                   },
                                   {
                                       type: 'html',
-                                      content: `<span class="has-text-grey is-size-7">${__(
+                                      content: `<span class="has-text-grey is-size-7" style="margin-bottom:-.25rem">${__(
                                           'account / my-teams / select-active'
                                       )}</span>`
                                   },

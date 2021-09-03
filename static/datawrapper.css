@@ -347,6 +347,9 @@
   font-weight: 700;
   src: local("Bitter Bold"), local("Bitter-Bold"), url("fonts/bitter/bitter_700.woff2") format("woff2"), url("fonts/bitter/bitter_700.woff") format("woff"), url("fonts/bitter/bitter_700.eot?#iefix") format("embedded-opentype"), url("fonts/bitter/bitter_700.svg#Bitter") format("svg"), url("fonts/bitter/bitter_700.ttf") format("truetype"); }
 
+/*
+ * CUSTOM COLORS
+ */
 html {
   --color-dw-scooter-dark: #15607A;
   --color-dw-scooter: #1D81A2;
@@ -367,6 +370,9 @@ html {
   --color-dw-white-bis: #F9F9F9;
   --color-dw-white: #FFFFFF; }
 
+/*
+ * BULMA
+ */
 /* Bulma Utilities */
 .button, .input, .textarea, .select select, .file-cta,
 .file-name, .pagination-previous,
@@ -4262,7 +4268,7 @@ a.navbar-item,
       background-color: #F9F9F9;
       color: #111111; }
     .navbar.is-transparent .navbar-dropdown a.navbar-item.is-active {
-      background-color: #F9F9F9;
+      background-color: #e9f3f6;
       color: #1D81A2; }
   .navbar-burger {
     display: none; }
@@ -4318,7 +4324,7 @@ a.navbar-item,
         background-color: #F9F9F9;
         color: #111111; }
       .navbar-dropdown a.navbar-item.is-active {
-        background-color: #F9F9F9;
+        background-color: #e9f3f6;
         color: #1D81A2; }
     .navbar.is-spaced .navbar-dropdown, .navbar-dropdown.is-boxed {
       border-radius: 6px;
@@ -7698,13 +7704,35 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   background-color: transparent;
   padding: 3rem 1.5rem 6rem; }
 
-.select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
+html {
+  --radius-small:  2px;
+  --radius:  4px;
+  --radius-large:  6px; }
+
+/*
+ * CUSTOMIZE BULMA
+ */
+.select:not(.is-multiple):not(.is-loading)::after,
+.navbar-link:not(.is-arrowless)::after {
   border-width: 2px;
   border-radius: 0;
   width: 0.5em;
   height: 0.5em; }
 
-html {
-  --radius-small:  2px;
-  --radius:  4px;
-  --radius-large:  6px; }
+@media screen and (max-width: 1023px) {
+  .navbar-menu .navbar-item:not(:last-child), .navbar-menu .navbar-link {
+    border-radius: 0;
+    border-bottom: 1px solid #E5E5E5; }
+  .navbar-menu .navbar-dropdown .navbar-item {
+    border-bottom: none;
+    padding: .5rem; } }
+
+@media screen and (min-width: 1024px) {
+  .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
+    position: absolute;
+    left: -100%;
+    right: 100%;
+    top: -6px;
+    display: none; }
+  .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
+    display: block; } }

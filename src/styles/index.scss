@@ -83,13 +83,20 @@ $section-padding: 1.5rem;
 $hr-height: 1px;
 $hr-background-color: $dw-shade;
 
+
+// NAVBAR
+
 $navbar-item-hover-background-color: $dw-white-bis;
 $navbar-item-active-background-color: $dw-scooter-lightest;
+$navbar-dropdown-item-active-background-color: $dw-scooter-lightest;
 $navbar-divider-height: 1px;
 $navbar-divider-background-color: $dw-grey-lighter;
 $navbar-dropdown-arrow: $dw-grey-darker;
 
-// $navbar-dropdown-offset: 7px;
+
+/*
+ * BULMA
+ */
 
 @import "../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../node_modules/bulma/sass/base/_all.sass";
@@ -157,13 +164,6 @@ $navbar-dropdown-arrow: $dw-grey-darker;
 // @import "../../node_modules/bulma/sass/layout/hero.sass";
 // @import "../../node_modules/bulma/sass/layout/section.sass";
 
-// adjust navbar arrow
-.select:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
-	border-width: 2px;
-	border-radius: 0;
-	width: 0.5em;
-	height: 0.5em;
-}
-
 // set bulma variables as css vars. needs to be done after import of bulma
 @import "./vars";
+@import "./customize";

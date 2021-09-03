@@ -29,13 +29,13 @@
     href={url}><NavBarIcon item={{ svgIcon: 'cabinet', title: true }} /> <span>{title}</span></a
 >
 <div
-    class="navbar-item has-dropdown is-hoverable is-size-5 has-text-weight-medium"
+    class="navbar-item has-dropdown is-hoverable is-size-5 has-text-weight-medium is-hidden-touch"
     class:just-arrow={link.type === 'visArchive' && !link.title && !link.icon && !link.svgIcon}
 >
     <a
         href={link.url || '#/dropdown'}
         on:click|preventDefault
-        class="navbar-link pl-3 pr-5"
+        class="navbar-link px-2 mr-2"
         style={link.style || ''}
         class:is-arrowless={link.type !== 'visArchive'}
     >
@@ -78,9 +78,9 @@
         top: unset;
         position: relative;
     }
-    .navbar-dropdown {
+    /* .navbar-dropdown {
         width: 260px;
-    }
+    } */
 
     img {
         vertical-align: baseline;
@@ -88,12 +88,12 @@
         top: 2px;
         max-height: auto;
     }
-    .vis-archive-item {
+    /* .vis-archive-item {
         display: inline-block;
         width: 98%;
         font-weight: normal !important;
         padding-right: 1rem !important;
         white-space: normal !important;
         font-size: 13px !important;
-    }
+    } */
 </style>

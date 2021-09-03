@@ -34,7 +34,7 @@
     <div class="navbar-end">
         {#each $config.headerLinks as link}
             {#if link.type === 'separator'}
-                <hr class="navbar-separator mx-3 my-0" />
+                <hr class="navbar-separator mx-3 my-0 is-hidden-touch" />
             {:else if link.type === 'visArchive'}
                 <!-- visualization archive is a special component -->
                 <VisArchive {link} {__} />
@@ -142,12 +142,8 @@
         // padding: 0 !important;
         // margin: 0 !important;
     }
-    // :global(.navbar-item.just-arrow:hover .navbar-link) {
-    //     background: transparent;
-    // }
 
     // Seperator (vertical)
-
     .navbar-separator {
         display: flex;
         background: var(--color-dw-grey-light);
@@ -157,9 +153,11 @@
     }
 
     // Drowpdown
-
     :global(.navbar-dropdown) {
         padding: 0.25rem 0;
+    }
+    :global(.navbar-dropdown .navbar-divider) {
+        margin: 0.25rem 0;
     }
     :global(.navbar-item.has-dropdown .navbar-link:hover) {
         color: inherit;
@@ -183,23 +181,11 @@
         transition: height 0.2 ease-in-out;
         height: 1.5em;
     }
-    :global(.navbar-compact .navbar-item, .navbar-compact .navbar-link) {
+    :global(.navbar-compact > .navbar-item, .navbar-compact .navbar-link) {
         padding: 0.15rem 1rem;
         transition: padding 0.2s ease-in-out;
     }
-    :global(.navbar-compact .navbar-item.navbar-item.has-dropdown) {
+    :global(.navbar-compact > .navbar-item.has-dropdown) {
         padding: 0;
-    }
-
-    // Second Level Dropdown
-    .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
-        position: absolute;
-        left: -100%;
-        right: 100%;
-        top: -6px;
-        display: none;
-    }
-    .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
-        display: block;
     }
 </style>
