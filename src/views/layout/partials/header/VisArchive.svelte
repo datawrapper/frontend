@@ -75,6 +75,7 @@
 <style>
     .just-arrow .navbar-link:not(.is-arrowless)::after {
         right: unset;
+        top: unset;
         position: relative;
     }
     .navbar-dropdown {

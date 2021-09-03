@@ -21,7 +21,7 @@ module.exports = {
                     );
                     const icons = (await readdir(iconPath)).map(file => file.replace('.svg', ''));
                     return h.view('HelloWorld.svelte', {
-                        htmlClass: 'has-background-white-ter',
+                        htmlClass: 'has-background-white',
                         props: {
                             icons,
                             magicNumber: 42,

@@ -63,12 +63,10 @@
                             {#if subItem.type === 'separator'}
                                 <hr class="navbar-divider" />
                             {:else if subItem.type === 'activeTeam'}
-                                <div class="navbar-item active-team is-size-7">
+                                <div class="navbar-item active-team is-size-7 has-text-grey-dark">
                                     In: <SvgIcon
                                         icon="folder{$user.activeTeam ? '-shared' : ''}"
-                                        color="#a7a7a7"
                                         className="mx-1"
-                                        size="1.2rem"
                                     />
                                     {$user.activeTeam ? $user.activeTeam.name : 'My Charts'}
                                 </div>
@@ -133,48 +131,67 @@
 </div>
 
 <style lang="less">
-    .navbar-menu {
-        :global(.navbar-item, .navbar-link) {
-            border-radius: var(--radius);
-        }
-        :global(a.navbar-item:hover) {
-            color: var(--color-dw-scooter);
-        }
-        :global(.just-arrow) {
-            // padding: 0 !important;
-            // margin: 0 !important;
-        }
-        // :global(.navbar-item.just-arrow:hover .navbar-link) {
-        //     background: transparent;
-        // }
-        :global(.navbar-dropdown .navbar-item.active-team) {
-            background: #f9f9f9;
-            margin: 0;
-            margin-bottom: 0px;
-            margin-bottom: -0.5rem;
-            padding: 0.5rem 1rem !important;
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
-        }
-
-        .navbar-separator {
-            display: flex;
-            background: var(--color-dw-grey-light);
-            height: 3em;
-            width: 1px;
-            align-self: center;
-        }
-        .navbar-item.has-dropdown {
-            .navbar-link:hover {
-                color: inherit;
-            }
-        }
+    // Navbar Items
+    :global(.navbar-item, .navbar-link) {
+        border-radius: var(--radius);
     }
+    :global(a.navbar-item:hover) {
+        color: var(--color-dw-scooter);
+    }
+    :global(.just-arrow) {
+        // padding: 0 !important;
+        // margin: 0 !important;
+    }
+    // :global(.navbar-item.just-arrow:hover .navbar-link) {
+    //     background: transparent;
+    // }
+
+    // Seperator (vertical)
+
+    .navbar-separator {
+        display: flex;
+        background: var(--color-dw-grey-light);
+        height: 3em;
+        width: 1px;
+        align-self: center;
+    }
+
+    // Drowpdown
+
+    :global(.navbar-dropdown) {
+        padding: 0.25rem 0;
+    }
+    :global(.navbar-item.has-dropdown .navbar-link:hover) {
+        color: inherit;
+    }
+    :global(.navbar-item.has-dropdown .navbar-item) {
+        margin: 0 0.25rem;
+    }
+
+    // Create Menu: Active Team
+    .navbar-dropdown .navbar-item.active-team {
+        background: var(--color-dw-white-ter);
+        margin: 0.25rem 0 -0.25rem;
+        border-radius: 0px 0px 5px 5px;
+    }
+    :global(.navbar-dropdown .navbar-item.active-team .icon) {
+        color: inherit;
+    }
+
+    // NavBar Compact
     :global(.navbar-compact) .navbar-separator {
         transition: height 0.2 ease-in-out;
         height: 1.5em;
     }
+    :global(.navbar-compact .navbar-item, .navbar-compact .navbar-link) {
+        padding: 0.15rem 1rem;
+        transition: padding 0.2s ease-in-out;
+    }
+    :global(.navbar-compact .navbar-item.navbar-item.has-dropdown) {
+        padding: 0;
+    }
 
+    // Second Level Dropdown
     .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
         position: absolute;
         left: -100%;
@@ -182,7 +199,6 @@
         top: -6px;
         display: none;
     }
-
     .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
         display: block;
     }

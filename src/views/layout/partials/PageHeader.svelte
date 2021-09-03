@@ -93,9 +93,4 @@
         padding-top: 0;
         padding-bottom: 0;
     }
-
-    .navbar-compact .navbar-item {
-        padding: 0.15rem 1rem !important;
-        transition: padding 0.2s ease-in-out;
-    }
 </style>
