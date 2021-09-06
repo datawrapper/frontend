@@ -41,6 +41,7 @@ module.exports = {
                         svgonly: fakeBoolean,
                         map2svg: fakeBoolean,
                         transparent: fakeBoolean,
+                        scheme: Joi.string().optional(),
                         logo: Joi.string().optional().valid('auto', 'on', 'off').default('auto')
                     })
                 }
@@ -54,8 +55,6 @@ module.exports = {
                     config.api.sessionID,
                     auth.credentials && auth.credentials.data ? auth.credentials.data.id : ''
                 );
-
-                let chart;
 
                 const queryString = Object.entries({
                     published: request.query.published,
