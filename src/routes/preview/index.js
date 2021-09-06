@@ -1,8 +1,7 @@
-const { getDependencies } = require('@datawrapper/chart-core/lib/get-dependencies.js');
 const { fakeBoolean } = require('@datawrapper/schemas/themeData/shared');
 const { Team } = require('@datawrapper/orm/models');
 const chartCore = require('@datawrapper/chart-core');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const Boom = require('@hapi/boom');
 const jsesc = require('jsesc');
 const get = require('lodash/get');
@@ -12,7 +11,6 @@ module.exports = {
     version: '1.0.0',
     register: async (server, options) => {
         const { loadLocales, loadVendorLocale, createAPI, initCaches } = require('./utils');
-        const { getStyles, getVis, getTheme } = initCaches(server);
         const locales = await loadLocales();
         const config = server.methods.config();
         const apiBase = `${config.api.https ? 'https' : 'http'}://${config.api.subdomain}.${
@@ -24,6 +22,13 @@ module.exports = {
             path: '/{chartId}',
             options: {
                 validate: {
+                    params: Joi.object({
+                        chartId: Joi.string()
+                            .alphanum()
+                            .length(5)
+                            .required()
+                            .description('5 character long chart ID.')
+                    }),
                     query: Joi.object({
                         theme: Joi.string().optional(),
                         ott: Joi.string().optional(),
@@ -36,7 +41,8 @@ module.exports = {
                         svgonly: fakeBoolean,
                         map2svg: fakeBoolean,
                         transparent: fakeBoolean,
-                        scheme: Joi.string().optional()
+                        scheme: Joi.string().optional(),
+                        logo: Joi.string().optional().valid('auto', 'on', 'off').default('auto')
                     })
                 }
             },
@@ -50,83 +56,56 @@ module.exports = {
                     auth.credentials && auth.credentials.data ? auth.credentials.data.id : ''
                 );
 
-                let chart;
-
                 const queryString = Object.entries({
                     published: request.query.published,
-                    ott: request.query.ott
+                    ott: request.query.ott,
+                    theme: request.query.theme,
+                    transparent: request.query.transparent,
+                    logo: request.query.logo
                 })
                     .filter(([, value]) => Boolean(value))
                     .map(([key, value]) => `${key}=${value}`)
                     .join('&');
 
-                let publishData, vis, theme, css, csv;
+                let props;
 
                 try {
-                    publishData = await api(`/charts/${chartId}/publish/data?${queryString}`);
-                    chart = publishData.chart;
-                    csv = publishData.data;
-                    delete publishData.data;
-                    delete publishData.chart;
+                    props = await api(`/charts/${chartId}/publish/data?${queryString}`);
                 } catch (ex) {
                     return Boom.unauthorized();
                 }
 
-                const themeName = request.query.theme || chart.theme;
+                const chartLocale = props.chart.language || 'en-US';
 
-                try {
-                    const results = await Promise.all([
-                        getVis(api, chart.type),
-                        getTheme(api, themeName),
-                        getStyles(api, chart.type, themeName, !!request.query.transparent)
-                    ]);
+                const dependencies = ['dw-2.0.min.js'];
 
-                    vis = results[0];
-                    theme = results[1];
-                    css = results[2];
-
-                    theme.less = '';
-                    vis.locale = publishData.locales;
-                    delete publishData.locales;
-                } catch (error) {
-                    server.logger.error(
-                        `Error fetching information for ${chart.id}: ${error.message}`
-                    );
-                    return Boom.badImplementation();
-                }
-
-                const chartLocale = chart.language || 'en-US';
-
-                const deps = getDependencies({
-                    locale: chartLocale,
-                    dependencies: vis.dependencies
+                const team = await Team.findByPk(props.chart.organizationId);
+                props = Object.assign(props, {
+                    isIframe: true,
+                    isPreview: true,
+                    polyfillUri: '/lib/polyfills',
+                    locales: {
+                        dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
+                        numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
+                    }
                 });
 
-                const libraries = vis.libraries.map(lib => lib.uri);
+                const css = props.styles;
+                const fonts = props.theme.fontsCSS;
+                delete props.styles;
+                delete props.theme.fontsCSS;
 
-                const team = await Team.findByPk(chart.organizationId);
+                const assets = {};
+                props.assets.forEach(({ name, value }) => {
+                    assets[name] = {
+                        value
+                    };
+                });
+                props.assets = assets;
 
-                const props = {
-                    data: {
-                        visJSON: vis,
-                        chartJSON: chart,
-                        publishData,
-                        chartData: csv,
-                        isPreview: true,
-                        chartLocale,
-                        locales: {
-                            dayjs: loadVendorLocale(locales, 'dayjs', chartLocale, team),
-                            numeral: loadVendorLocale(locales, 'numeral', chartLocale, team)
-                        },
-                        metricPrefix: {} /* NOTE: What about this? */,
-                        themeId: theme.id,
-                        fontsJSON: theme.fonts,
-                        typographyJSON: theme.data.typography,
-                        polyfillUri: `/lib/polyfills`
-                    },
-                    theme,
-                    translations: vis.locale
-                };
+                const libraries = props.visualization.libraries.map(lib => lib.uri);
+
+                props.frontendDomain = config.frontend.domain;
 
                 const { html, head } = chartCore.svelte.render(props);
 
@@ -138,16 +117,17 @@ module.exports = {
                     }),
                     CHART_HTML: html,
                     CHART_HEAD: head,
-                    VIS_SCRIPT: `${apiBase}/visualizations/${props.data.visJSON.id}/script.js`,
+                    CHART_LOCALE: chartLocale,
+                    VIS_SCRIPT: `${apiBase}/visualizations/${props.visualization.id}/script.js`,
                     MAIN_SCRIPT: '/lib/chart-core/main.js',
                     POLYFILL_SCRIPT: '/lib/chart-core/load-polyfills.js',
-                    DEPS: deps.map(el => `/lib/chart-core/${el}`),
+                    DEPS: dependencies.map(el => `/lib/chart-core/${el}`),
                     LIBRARIES: libraries,
-                    CSS: css,
+                    CSS: `${fonts}\n${css}`,
                     CHART_CLASS: [
-                        `vis-height-${get(vis, 'height', 'fit')}`,
-                        `theme-${get(theme, 'id')}`,
-                        `vis-${get(vis, 'id')}`
+                        `vis-height-${get(props.visualization, 'height', 'fit')}`,
+                        `theme-${get(props.theme, 'id')}`,
+                        `vis-${get(props.visualization, 'id')}`
                     ]
                 });
             }

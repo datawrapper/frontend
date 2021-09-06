@@ -95,6 +95,13 @@ const start = async () => {
                 return {};
             }
         });
+
+        await server.register({
+            plugin: require('hapi-dev-errors'),
+            options: {
+                showErrors: process.env.NODE_ENV !== 'production'
+            }
+        });
     }
 
     await ORM.init(config);

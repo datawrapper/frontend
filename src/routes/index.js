@@ -33,5 +33,7 @@ module.exports = {
                 prefix: '/create'
             }
         });
+
+        server.methods.prepareView('Error.svelte');
     }
 };
