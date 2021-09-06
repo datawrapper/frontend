@@ -13,11 +13,9 @@
 	height: 0.5em;
 }
 
-
 /*
  * Navbar
  */
-
 
  // Navbar touch sizes adjustment
 
@@ -61,3 +59,23 @@
     }
   }
 }
+
+/*
+ * Sign-in
+ */
+ 
+ @include touch {
+  //  .signup-form.two-columns {
+  //    display: flex;
+  //    flex-direction: column;
+  //  }
+ }
+ @include desktop {
+  .signup-form {
+    max-width: 200px !important;
+    &.two-columns {
+      columns: 2;
+      max-width: 400px !important;
+    }
+   }
+ }

@@ -41,7 +41,7 @@
             {:else if link.submenuItems}
                 <!-- top level navbar entry with submenu -->
                 <div
-                    class="navbar-item has-dropdown is-hoverable is-size-5 has-text-weight-medium ml-1"
+                    class="navbar-item has-dropdown is-hoverable is-size-5 has-text-weight-medium ml-1 {link.class || ''}"
                     class:just-arrow={link.type === 'visArchive' &&
                         !link.title &&
                         !link.icon &&
@@ -106,7 +106,8 @@
                                 </a>
                             {:else}
                                 <a
-                                    class="navbar-item has-text-weight-normal"
+                                    class="navbar-item has-text-weight-normal {subItem.class ||
+                                        ''}"
                                     href={subItem.url}
                                     on:click={event => onNavItemClick(event, subItem)}
                                     ><NavBarIcon item={subItem} />

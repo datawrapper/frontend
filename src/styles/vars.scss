@@ -2,4 +2,10 @@ html {
   --radius-small:  #{$radius-small};
   --radius:  #{$radius};
   --radius-large:  #{$radius-large};
+  --mobile: #{$tablet} - 1px;
+  --tablet: #{$tablet};
+  --touch: #{$desktop} - 1px;
+  --desktop: #{$desktop};
+  --widescreen: #{$widescreen};
+  --fullhd: #{$fullhd};
 }

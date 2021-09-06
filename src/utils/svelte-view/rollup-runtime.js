@@ -12,6 +12,7 @@ const { readFile, unlink } = require('fs-extra');
 const { join } = require('path');
 const tempfile = require('tempfile');
 const production = process.env.NODE_ENV === 'production';
+const preprocess = require('svelte-preprocess');
 
 module.exports.build = async function (page, ssr) {
     const bundle = await rollup.rollup(buildOptions(page, ssr));
@@ -102,11 +103,9 @@ function buildOptions(page, ssr) {
                     accessors: !production,
                     customElement: page.endsWith('.element.svelte')
                 },
-                preprocess: {
-                    style: less({
-                        sourceMap: false
-                    })
-                },
+                preprocess: preprocess({
+                    //
+                }),
                 emitCss: false
             }),
             resolve({

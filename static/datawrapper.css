@@ -7744,3 +7744,13 @@ html {
   .navbar-end > .navbar-item:last-child > .navbar-link .icon {
     font-size: 30px;
     margin-right: 0; } }
+
+/*
+ * Sign-in
+ */
+@media screen and (min-width: 1024px) {
+  .signup-form {
+    max-width: 200px !important; }
+    .signup-form.two-columns {
+      columns: 2;
+      max-width: 400px !important; } }

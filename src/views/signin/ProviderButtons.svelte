@@ -12,7 +12,7 @@
 
 <div class="signup-form">
     <button
-        class="button provider-email is-fullwidth mb-2 has-text-weight-normal"
+        class="button provider-email mb-2 has-text-weight-normal is-fullwidth"
         on:click={() => (emailOpen = true)}
     >
         <SvgIcon icon="mail" size="28px" />
@@ -29,12 +29,10 @@
     {#each providers as provider}
         <a
             href="{provider.url}{target ? `?ref=${target}` : ''}"
-            class="button provider-{provider.label.toLowerCase()} is-fullwidth mb-2"
-        >
-            <SvgIcon icon={provider.icon} size="28px" />
+            class="button provider-{provider.label.toLowerCase()} mb-2 is-fullwidth">
+            <SvgIcon icon={provider.icon} />
             {showTwoColumns ? '' : __(signIn ? 'signin / sign-in-using' : 'signin / sign-up-using')}
-            {provider.label}</a
-        >
+            {provider.label}</a>
     {/each}
 </div>
 
@@ -46,10 +44,10 @@
     @onelogin: #1C1F2A;
     @microsoft: #0072c6;
 
-    .button.is-fullwidth {
+    .button {
         text-align: left;
         justify-content: left;
-        padding-left: 65px;
+        padding-left:3rem;
     }
 
     .signup-form {
@@ -59,12 +57,12 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 50px !important;
+            width: 2.4rem !important;
             height: 100% !important;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            background: fade(#333333, 10%);
-            color: #333333;
+            border-top-left-radius: var(--radius);
+            border-bottom-left-radius: var(--radius);
+            background: fade(#333, 10%);
+            color: var(--color-dw-black-bis);
             font-size: 24px;
             margin-left: 0;
         }
@@ -95,8 +93,4 @@
         }
     }
 
-    .signup-form.two-columns {
-        columns: 2;
-        max-width: 400px;
-    }
 </style>

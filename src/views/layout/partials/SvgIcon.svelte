@@ -1,6 +1,6 @@
 <script>
     export let icon = 'api';
-    export let size = '1em'; // need to refactor this
+    export let size;
     export let color = 'currentColor';
     export let valign = 'sub';
     export let crisp = false;
@@ -15,7 +15,7 @@
 <span
     class="icon {className}"
     class:spin
-    style="vertical-align: {valign}; {spin
+    style="vertical-align: {valign}; {size ? `font-size:${size}` : ''} {spin
         ? `animation-duration:${duration};  animation-timing-function: ${timing};`
         : ''}"
 >
