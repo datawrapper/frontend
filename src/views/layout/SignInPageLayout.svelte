@@ -44,11 +44,19 @@
 </section>
 
 <style lang="scss">
+    @import 'bulma/sass/utilities/_all.sass';
     :global(html) {
         background-color: var(--color-dw-scooter);
         background-image: url(/lib/static/img/dw-hero-16-9-bg.jpg);
     }
 
+    @include desktop {
+        .hero-body {
+            .container {
+                background: red;
+            }
+        }
+    }
     @media screen and (min-height: 600px) and (min-width: 600px) {
         :global(html) {
             overflow-y: hidden;
