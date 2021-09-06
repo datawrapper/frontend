@@ -7719,6 +7719,9 @@ html {
   width: 0.5em;
   height: 0.5em; }
 
+/*
+ * Navbar
+ */
 @media screen and (max-width: 1023px) {
   .navbar-menu .navbar-item:not(:last-child), .navbar-menu .navbar-link {
     border-radius: 0;
@@ -7735,4 +7738,9 @@ html {
     top: -6px;
     display: none; }
   .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
-    display: block; } }
+    display: block; }
+  .navbar-end > .navbar-item:last-child > .navbar-link .navbar-title {
+    display: none; }
+  .navbar-end > .navbar-item:last-child > .navbar-link .icon {
+    font-size: 30px;
+    margin-right: 0; } }

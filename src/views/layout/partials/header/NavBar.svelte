@@ -55,7 +55,7 @@
                         class:is-arrowless={link.type !== 'visArchive'}
                     >
                         <NavBarIcon item={link} />
-                        <span>{@html link.title || ''}</span></a
+                        <span class="navbar-title">{@html link.title || ''}</span></a
                     >
                     <!-- navbar dropdown menu -->
                     <div class="navbar-dropdown is-right is-boxed">
@@ -97,7 +97,9 @@
                                                 style={subItem2.style}
                                             >
                                                 <NavBarIcon item={subItem2} />
-                                                <span>{@html subItem2.title}</span>
+                                                <span class="navbar-title"
+                                                    >{@html subItem2.title}</span
+                                                >
                                             </a>
                                         {/each}
                                     </div>
@@ -108,7 +110,7 @@
                                     href={subItem.url}
                                     on:click={event => onNavItemClick(event, subItem)}
                                     ><NavBarIcon item={subItem} />
-                                    <span>{@html subItem.title || ''}</span></a
+                                    <span class="navbar-title">{@html subItem.title || ''}</span></a
                                 >
                             {/if}
                         {/each}

@@ -14,7 +14,12 @@
 }
 
 
-// Navbar
+/*
+ * Navbar
+ */
+
+
+ // Navbar touch sizes adjustment
 
 @include touch {
   .navbar-menu {
@@ -31,6 +36,7 @@
   }
 }
 
+// Navbar dekstop sizes adjustments
 
 @include desktop {
     .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
@@ -42,5 +48,16 @@
   }
   .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
       display: block;
+  }
+
+  // hide label for burger menu on desktop @@ needs to be refactored
+  .navbar-end>.navbar-item:last-child>.navbar-link { 
+    .navbar-title {
+      display: none;
+    }
+    .icon {
+      font-size: 30px;
+      margin-right: 0;
+    }
   }
 }

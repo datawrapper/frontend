@@ -34,7 +34,7 @@
                 icon="team{team.active ? '-check' : ''}"
                 size="20px"
             />
-            <span>{team.name}</span>
+            <span class="navbar-title">{team.name}</span>
         </a>
     {/each}
     <a
@@ -48,7 +48,7 @@
             icon="user{!$user.activeTeam ? '-check' : ''}"
             size="20px"
         />
-        <span>{@html __('navbar / teams / no-team')}</span>
+        <span class="navbar-title">{@html __('navbar / teams / no-team')}</span>
     </a>
 {:else}
     <a class="navbar-item has-text-weight-normal" href="/account/teams">

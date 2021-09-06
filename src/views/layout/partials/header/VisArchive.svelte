@@ -40,18 +40,18 @@
         class:is-arrowless={link.type !== 'visArchive'}
     >
         <NavBarIcon item={link} />
-        <span>{@html link.title || ''}</span></a
+        <span class="navbar-title">{@html link.title || ''}</span></a
     >
 
     <div class="navbar-dropdown is-right is-boxed">
         {#if !items.length}
-            <div class="has-text-grey is-size-7 has-text-centered">
+            <div class=" navbar-item has-text-grey is-size-7 has-text-centered">
                 <SvgIcon
                     valign="middle"
                     icon="loading-spinner"
                     timing="steps(12)"
                     duration="1s"
-                    className="mr-2 is-size-6"
+                    className="mr-2 is-size-6 has-text-grey"
                     spin
                 /> loading...
             </div>

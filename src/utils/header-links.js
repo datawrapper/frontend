@@ -91,14 +91,14 @@ module.exports = {
                 ...(isGuest
                     ? [
                           {
-                              type: 'separator',
-                              order: 69
-                          },
-                          {
                               svgIcon: 'sign-in',
                               title: 'Sign in',
                               type: 'login',
                               url: `/signin?ref=${request.path}`
+                          },
+                          {
+                              type: 'separator',
+                              order: 69
                           }
                       ]
                     : [
@@ -117,8 +117,8 @@ module.exports = {
                     id: 'settings',
                     svgIcon: 'menu',
                     title: 'More',
-                    style: 'something',
-                    svgIconSize: '30px',
+                    style: '', // need a class here instead of inline style
+                    // svgIconSize: '30px',
                     // svgIconCrisp: true,
                     order: 95,
                     submenuItems: [

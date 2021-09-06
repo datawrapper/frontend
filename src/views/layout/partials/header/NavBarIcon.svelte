@@ -4,7 +4,7 @@
 </script>
 
 {#if item.svgIcon}<SvgIcon
-        size={item.svgIconSize || '20px'}
+        size={item.svgIconSize}
         crisp={!!item.svgIconCrisp}
         valign="top"
         icon={item.svgIcon}
@@ -15,5 +15,6 @@
     :global(.navbar-item .icon) {
         margin-right: 1ex;
         color: var(--color-dw-scooter);
+        font-size: 20px;
     }
 </style>
