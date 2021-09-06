@@ -118,8 +118,7 @@
                     <div class="field">
                         <label class="checkbox"
                             ><input bind:checked={rememberLogin} type="checkbox" />
-                            {@html __('Remember login?')}</label
-                        >
+                            {@html __('Remember login?')}</label>
                     </div>
                 {/if}
             {:else}

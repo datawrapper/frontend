@@ -65,10 +65,10 @@
  */
  
  @include touch {
-  //  .signup-form.two-columns {
-  //    display: flex;
-  //    flex-direction: column;
-  //  }
+   .signup-form.two-columns {
+     display: flex;
+     flex-direction: column;
+   }
  }
  @include desktop {
   .signup-form {

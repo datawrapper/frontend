@@ -21,8 +21,7 @@
             <div class="columns is-gapless">
                 <div class="column is-one-third is-flex is-flex-direction-column">
                     <div
-                        class="p-6 is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1"
-                    >
+                        class="p-6 is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1">
                         <DatawrapperLogo height="60" />
                         <div class="terms is-size-7 is-hidden-mobile">
                             {@html __('signin / terms')}
@@ -50,14 +49,6 @@
         background-image: url(/lib/static/img/dw-hero-16-9-bg.jpg);
     }
 
-    @import "bulma/sass/utilities/_all.sass";
-    @include desktop {
-        .hero-body {
-            .container {
-                background: red;
-            }
-        }
-    }
     @media screen and (min-height: 600px) and (min-width: 600px) {
         :global(html) {
             overflow-y: hidden;

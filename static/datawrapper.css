@@ -7707,50 +7707,10 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 html {
   --radius-small:  2px;
   --radius:  4px;
-  --radius-large:  6px; }
-
-/*
- * CUSTOMIZE BULMA
- */
-.select:not(.is-multiple):not(.is-loading)::after,
-.navbar-link:not(.is-arrowless)::after {
-  border-width: 2px;
-  border-radius: 0;
-  width: 0.5em;
-  height: 0.5em; }
-
-/*
- * Navbar
- */
-@media screen and (max-width: 1023px) {
-  .navbar-menu .navbar-item:not(:last-child), .navbar-menu .navbar-link {
-    border-radius: 0;
-    border-bottom: 1px solid #E5E5E5; }
-  .navbar-menu .navbar-dropdown .navbar-item {
-    border-bottom: none;
-    padding: .5rem; } }
-
-@media screen and (min-width: 1024px) {
-  .navbar-item.has-dropdown .navbar-item.has-dropdown .navbar-dropdown {
-    position: absolute;
-    left: -100%;
-    right: 100%;
-    top: -6px;
-    display: none; }
-  .navbar-item.has-dropdown .navbar-item.has-dropdown:hover .navbar-dropdown {
-    display: block; }
-  .navbar-end > .navbar-item:last-child > .navbar-link .navbar-title {
-    display: none; }
-  .navbar-end > .navbar-item:last-child > .navbar-link .icon {
-    font-size: 30px;
-    margin-right: 0; } }
-
-/*
- * Sign-in
- */
-@media screen and (min-width: 1024px) {
-  .signup-form {
-    max-width: 200px !important; }
-    .signup-form.two-columns {
-      columns: 2;
-      max-width: 400px !important; } }
+  --radius-large:  6px;
+  --mobile: 769px - 1px;
+  --tablet: 769px;
+  --touch: 1024px - 1px;
+  --desktop: 1024px;
+  --widescreen: 1216px;
+  --fullhd: 1408px; }
